@@ -1,0 +1,19 @@
+table{
+  margin-left: 1em;
+  margin-bottom: 2em;
+  margin-top: 2em;
+}
+
+td {
+  padding-left: 0em;
+}
+
+
+th {
+  padding-bottom: 0.2em;
+  padding-right: 1.5em;
+  color: #880D1E;
+    font-size: 1.2em;
+  text-align: left;
+}
+
