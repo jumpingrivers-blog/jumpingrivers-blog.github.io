@@ -1,0 +1,29 @@
+---
+title: "Official StanCon Sponsor"
+slug: "Stan2017"
+date: 2017-10-13
+excerpt: "Proud sponsor of StanCon 2018"
+tags: [rstats]
+image: "img/2017/stan.png"
+draft: true
+---
+
+  
+
+ 
+
+> Stan is freedom-respecting, open-source software for facilitating statistical inference at 
+> the frontiers of applied statistics.
+
+Or to put it another way, it makes Bayesian inference fast.
+
+[StanCon](http://mc-stan.org/events/stancon2018/) is the premier conference for all things 
+Stan related. 
+
+image = "img/2017/stan.png"
+showonlyimage = false
+date = "2016-11-05T19:44:32+05:30"
+title = "Official StanCon Sponsor"
+draft = false
+weight = 2
+ 
