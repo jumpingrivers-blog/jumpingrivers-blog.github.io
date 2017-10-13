@@ -8,6 +8,7 @@ image: "img/2017/stan.png"
 draft: false
 ---
 
+testing
 
 > Stan is freedom-respecting, open-source software for facilitating statistical inference at 
 > the frontiers of applied statistics.
