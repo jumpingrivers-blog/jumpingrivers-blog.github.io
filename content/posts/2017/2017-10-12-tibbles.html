@@ -1,0 +1,275 @@
+---
+title: "The Trouble with Tibbles"
+author: "Theo Roe"
+date: 2017-10-13
+output: html_document
+image: "img/2017/tibbles.png"
+draft: false
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#what-are-tibbles">What are tibbles?</a></li>
+<li><a href="#precursors">Precursors</a></li>
+<li><a href="#tribblemaking">Tribblemaking</a></li>
+<li><a href="#tibbles-vs-data-frames">Tibbles vs Data Frames</a></li>
+<li><a href="#disadvantages">Disadvantages</a></li>
+<li><a href="#to-summarise..">To Summarise..</a></li>
+</ul>
+</div>
+
+<p>Let’s get something straight, there isn’t really any trouble with tibbles. I’m hoping you’ve noticed this is a play on 1967 Star Trek episode, “The Trouble with Tribbles”. I’ve recently got myself a job as a Data Scientist, here, at <a href="https://www.jumpingrivers.com/">Jumping Rivers</a>. Having never come across tibbles until this point, I now find myself using them in nearly every R script I compose. Be that your timeless standard R script, your friendly Shiny app or an analytical Markdown document.</p>
+<div id="what-are-tibbles" class="section level2">
+<h2>What are tibbles?</h2>
+<p>Presumably this is why you came here, right?</p>
+<p>Tibbles are a modern take on data frames, but crucially they are <em>still</em> data frames. Well, what’s the difference then? There’s a quote I found somewhere on the internet that decribes the difference quite well;</p>
+<p><em>“keeping what time has proven to be effective, and throwing out what is not”</em>.</p>
+<p>Basically, some clever people took the classic <code>data.frame</code>, shook it til the ineffective parts fell out, then added some new, more appropriate features.</p>
+</div>
+<div id="precursors" class="section level2">
+<h2>Precursors</h2>
+<pre class="r"><code># The easiest way to get access is to isstall the tibble package.
+install.packages(&quot;tibble&quot;)
+
+# Alternatively, tibbles are a part of the tidyverse and hence installing the whole tidyverse will give you access.
+install.packages(&quot;tidverse&quot;)</code></pre>
+<pre class="r"><code># I am just going to use tibble.
+library(tibble)</code></pre>
+</div>
+<div id="tribblemaking" class="section level2">
+<h2>Tribblemaking</h2>
+<p>There are 3 ways to form a tibble. It pretty much acts as your friendly old pal <code>data.frame</code> does. Just like standard data frames, we can create tibbles, coerce objects into tibbles and import data sets into <code>R</code> as a tibble. Below is a table of the traditional <code>data.frame</code> commands and their respective <code>tidyverse</code> commands.</p>
+<table>
+<thead>
+<tr class="header">
+<th><em>Formation Type</em></th>
+<th><em>Data Frame Commands</em></th>
+<th><em>Tibbles Commands</em></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>Creation</em></td>
+<td><code>data.frame</code></td>
+<td><code>data_frame</code> <code>tibble</code> <code>tribble</code></td>
+</tr>
+<tr class="even">
+<td><em>Coercion</em></td>
+<td><code>as.data.frame</code></td>
+<td><code>as_data_frame</code> <code>as_tibble</code></td>
+</tr>
+<tr class="odd">
+<td><em>Importing</em></td>
+<td><code>read.*</code></td>
+<td><code>read_delim</code> <code>read_csv</code> <code>read_csv2</code> <code>read_tsv</code></td>
+</tr>
+</tbody>
+</table>
+<p>Let’s take a closer look…</p>
+<div id="creation." class="section level4">
+<h4>1) Creation.</h4>
+<p>Just as <code>data.frame</code> creates data frames,<code>tibble</code>, <code>data_frame</code> and <code>tribble</code> all create tibbles.</p>
+<p>Standard data frame.</p>
+<pre class="r"><code>data.frame(a = 1:5, 
+           b = letters[1:5])  
+##   a b
+## 1 1 a
+## 2 2 b
+## 3 3 c
+## 4 4 d
+## 5 5 e</code></pre>
+<p>A tibble using <code>data_frame</code>.</p>
+<pre class="r"><code>data_frame(a = 1:5, 
+           b = letters[1:5])
+## # A tibble: 5 x 2
+##       a     b
+##   &lt;int&gt; &lt;chr&gt;
+## 1     1     a
+## 2     2     b
+## 3     3     c
+## 4     4     d
+## 5     5     e</code></pre>
+<p>A tibble using <code>tibble</code>.</p>
+<pre class="r"><code>tibble(a = 1:5, 
+           b = letters[1:5])
+## # A tibble: 5 x 2
+##       a     b
+##   &lt;int&gt; &lt;chr&gt;
+## 1     1     a
+## 2     2     b
+## 3     3     c
+## 4     4     d
+## 5     5     e</code></pre>
+<p>A tibble using <code>tribble</code>.</p>
+<pre class="r"><code>tribble( ~a, ~b, 
+       #---|----
+          1, &quot;a&quot;, 
+          2, &quot;b&quot;)
+## # A tibble: 2 x 2
+##       a     b
+##   &lt;dbl&gt; &lt;chr&gt;
+## 1     1     a
+## 2     2     b</code></pre>
+<p>Notice the odd one out? <code>tribble</code> is different. It’s a way of laying out small amounts of data in an easy to read form. I’m not too keen on these, as even writing out that simple 2 x 2 tribble got tedious.</p>
+</div>
+<div id="coercion." class="section level4">
+<h4>2) Coercion.</h4>
+<p>Just as <code>as.data.frame</code> coerces objects into data frames, <code>as_data_frame</code> and <code>as_tibble</code> coerce objects into tibbles.</p>
+<pre class="r"><code>df = data.frame(a = 1:5, b = letters[1:5])</code></pre>
+<pre class="r"><code>as_data_frame(df)
+## # A tibble: 5 x 2
+##       a      b
+##   &lt;int&gt; &lt;fctr&gt;
+## 1     1      a
+## 2     2      b
+## 3     3      c
+## 4     4      d
+## 5     5      e
+as_tibble(df)
+## # A tibble: 5 x 2
+##       a      b
+##   &lt;int&gt; &lt;fctr&gt;
+## 1     1      a
+## 2     2      b
+## 3     3      c
+## 4     4      d
+## 5     5      e</code></pre>
+<p>You can coerce more than just data frames, too. Objects such as lists, matrices, vectors and single instances of class are convertible.</p>
+</div>
+<div id="importing." class="section level4">
+<h4>3) Importing.</h4>
+<p>There’s a few options to read in data files within the <code>tidyverse</code>, so we’ll just compare <code>read_csv</code> and its representative <code>data.frame</code> pal, <code>read.csv</code>. Let’s take a look at them. I have here an example data set that I’ve created in MS Excel. You can download/look at this data <a href="https://gist.github.com/theoroe3/8bc989b644adc24117bc66f50c292fc8">here</a>. To get access to this function you’ll need the <code>readr</code> package. Again this is part of the <code>tidyverse</code> so either will do.</p>
+<pre class="r"><code>library(readr)</code></pre>
+<pre class="r"><code>url = &quot;https://gist.githubusercontent.com/theoroe3/8bc989b644adc24117bc66f50c292fc8/raw/f677a2ad811a9854c9d174178b0585a87569af60/tibbles_data.csv&quot;</code></pre>
+<pre class="r"><code>tib = read_csv(url)</code></pre>
+<pre class="r"><code>tib
+## # A tibble: 4 x 4
+##    `&lt;-`   `8`   `%`  name
+##   &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;
+## 1     1     2  0.25     t
+## 2     2     4  0.25     h
+## 3     3     6  0.25     e
+## 4     4     8  0.25     o</code></pre>
+<hr />
+<pre class="r"><code>df = read.csv(url)</code></pre>
+<pre class="r"><code>df
+##   X.. X8   X. name
+## 1   1  2 0.25    t
+## 2   2  4 0.25    h
+## 3   3  6 0.25    e
+## 4   4  8 0.25    o</code></pre>
+<p>Not only does <code>read_csv</code> return a pretty tibble, it is also much faster. For proof, check out <a href="http://yetanothermathprogrammingconsultant.blogspot.co.uk/2016/12/reading-csv-files-in-r-readcsv-vs.html">this article</a> by Erwin Kalvelagen. The keen eyes amongst you will have noticed something odd about the variable names… we’ll get on to that soon.</p>
+</div>
+</div>
+<div id="tibbles-vs-data-frames" class="section level2">
+<h2>Tibbles vs Data Frames</h2>
+<p>Did you notice a key difference in the <code>tibble</code>s and <code>data.frame</code>s above? Take a look again.</p>
+<pre class="r"><code>tibble(a = 1:26, b = letters)
+## # A tibble: 26 x 2
+##       a     b
+##   &lt;int&gt; &lt;chr&gt;
+## 1     1     a
+## 2     2     b
+## 3     3     c
+## 4     4     d
+## 5     5     e
+## # ... with 21 more rows</code></pre>
+<p>The first thing you should notice is the pretty print process. The class of each column is now displayed above it and the dimensions of the tibble are shown at the top. The default print option within tibbles mean they will only display 10 rows if the data frame has more than 20 rows (I’ve changed mine to display 5 rows). Neat. Along side that we now only view columns that will fit on the screen. This is already looking quite the part. The row settings can be changed via</p>
+<pre class="r"><code> options(tibble.print_max = 3, tibble.print_min = 1)</code></pre>
+<p>So now if there is more than 3 rows, we print only 1 row. Tibbles of length 3 and 4 would now print as so.</p>
+<p><!--  default is 20, 10--></p>
+<pre class="r"><code>tibble(1:3)
+## # A tibble: 3 x 1
+##   `1:3`
+##   &lt;int&gt;
+## 1     1
+## 2     2
+## 3     3</code></pre>
+<pre class="r"><code>tibble(1:4)  
+## # A tibble: 4 x 1
+##   `1:4`
+##   &lt;int&gt;
+## 1     1
+## # ... with 3 more rows</code></pre>
+<p>Yes, OK, you could do this with the traditional data frame. But it would be a lot more work, <em>right</em>?</p>
+<p>As well as the fancy printing, tibbles don’t drop the variable type, don’t partial match and they allow non-syntactic column names when importing data in. We’re going to use the data from before. Again, it is available <a href="https://gist.github.com/theoroe3/8bc989b644adc24117bc66f50c292fc8">here</a>. Notice it has 3 non-syntactic column names and one column of characters. Reading this is as a tibble and a data frame we get</p>
+<pre class="r"><code>tib
+## # A tibble: 4 x 4
+##    `&lt;-`   `8`   `%`  name
+##   &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;
+## 1     1     2  0.25     t
+## 2     2     4  0.25     h
+## 3     3     6  0.25     e
+## 4     4     8  0.25     o</code></pre>
+<hr />
+<pre class="r"><code>df
+##   X.. X8   X. name
+## 1   1  2 0.25    t
+## 2   2  4 0.25    h
+## 3   3  6 0.25    e
+## 4   4  8 0.25    o</code></pre>
+<p>We see already that in the <code>read.csv</code> process we’ve lost the column names.</p>
+<p>Let’s try some partial matching…</p>
+<pre class="r"><code>tib$n
+## Warning: Unknown or uninitialised column: &#39;n&#39;.
+## NULL</code></pre>
+<pre class="r"><code>df$n
+## [1] t h e o
+## Levels: e h o t</code></pre>
+<p>With the tibble we get an error, yet with the data frame it leads us straight to our <code>name</code> variable. To read more about why partial matching is bad, check out <a href="http://r.789695.n4.nabble.com/Deprecating-partial-matching-in-data-frame-td4661898.html">this thread</a>.</p>
+<hr />
+<p>What about subsetting? Let’s try it out using the data from our csv file.</p>
+<pre class="r"><code>tib[,2]
+## # A tibble: 4 x 1
+##     `8`
+##   &lt;int&gt;
+## 1     2
+## 2     4
+## 3     6
+## 4     8
+tib[2]
+## # A tibble: 4 x 1
+##     `8`
+##   &lt;int&gt;
+## 1     2
+## 2     4
+## 3     6
+## 4     8
+df[,2]
+## [1] 2 4 6 8
+df[2]
+##   X8
+## 1  2
+## 2  4
+## 3  6
+## 4  8</code></pre>
+<p>Using the a normal data frame we get a vector and a data frame using single square brackets. Using tibbles, single square brackets, <code>[</code>, will always return another tibble. Much neater. Now for double brackets.</p>
+<hr />
+<pre class="r"><code>tib[[1]]
+## [1] 1 2 3 4
+tib$name
+## [1] &quot;t&quot; &quot;h&quot; &quot;e&quot; &quot;o&quot;
+df[[1]]
+## [1] 1 2 3 4
+df$name
+## [1] t h e o
+## Levels: e h o t</code></pre>
+<p>Double square brackets, <code>[[</code>, and the traditional dollar, <code>$</code> are ways to access individual columns as vectors. Now, with tibbles, we have seperate operations for data frame operations and single column operations. Now we don’t have to use that pesky <code>drop = FALSE</code>. Note, these are actually quicker than the <code>[[</code> and <code>$</code> of the <code>data.frame</code>, as shown in the <a href="https://cran.r-project.org/web/packages/tibble/tibble.pdf">documentation for the tibble package</a>.</p>
+<hr />
+<p>At last, no more strings as factors! Upon reading the data in, tibbles recognise <em>strings as strings</em>, not factors. For example, with the name column in our data set.</p>
+<pre class="r"><code>class(df$name)
+## [1] &quot;factor&quot;
+class(tib$name)
+## [1] &quot;character&quot;</code></pre>
+<p>I quite like this, it’s much easier to turn a vector of characters into factors than vice versa, so why not give me everything as strings? Now I can choose whether or not to convert to factors.</p>
+</div>
+<div id="disadvantages" class="section level2">
+<h2>Disadvantages</h2>
+<p>This won’t be long, there’s only one. Some older functions dont work with tibbles because of their different subsetting method. They expect <code>tib[,1]</code> to return a vector, when infact it will now return another data frame. Until this functionality is added in you must convert your tibble back to a data frame using <code>as_data_frame</code> or <code>as_tibble</code> as discussed previously.</p>
+</div>
+<div id="to-summarise.." class="section level2">
+<h2>To Summarise..</h2>
+<p>So, most of the things youc an accomplish with tibbles, you can accomplish with <code>data.frame</code>, but it’s bit of a pain. Simple things like checking the dimensions of your data or converting strings to factors are small jobs. Small jobs that take time. With tibbles they take no time. Tibbles force you to look at your data earlier; confront the problems earlier. Ultimately leading to cleaner code.</p>
+<p>Thanks for chatting!</p>
+</div>
