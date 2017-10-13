@@ -5,7 +5,7 @@ date: 2017-10-13
 excerpt: "Proud sponsor of StanCon 2018"
 tags: [rstats]
 image: "img/2017/stan.png"
-draft: true
+draft: false
 ---
 
   testing
