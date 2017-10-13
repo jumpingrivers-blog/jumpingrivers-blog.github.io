@@ -14,3 +14,6 @@ LaTeX: pdfLaTeX
 
 AutoAppendNewline: Yes
 StripTrailingWhitespace: Yes
+
+BuildType: Website
+WebsitePath: /data/ncsg3/github/jumpingrivers/jumpingrivers-blog.github.io
