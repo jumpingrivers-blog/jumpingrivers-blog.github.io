@@ -12,7 +12,7 @@ googleAnalytics = "UA-108053698-1"
   # Style options: default (pink), blue, green, pink, red, sea, violet
   # Use custom.css for your custom styling
   style = "default"
-  description = "Describe your website"
+  description = "Insights in data science and machine learning"
   copyright = "&copy;2017 Jumping Rivers Ltd"
   sidebarAbout = [
     "Jumping Rivers is a leading analytics company whose passion is data. We help our clients move from data storage to data insights.",
