@@ -1,0 +1,23 @@
+---
+title: "Official StanCon Sponsor"
+slug: "StanConference2017"
+date: 2017-10-13
+excerpt: "Proud sponsor of StanCon 2018"
+tags: [rstats]
+image: "img/2017/stan_white.png"
+draft: false
+---
+
+```{r echo=FALSE, out.width="400"}
+knitr::include_graphics("/img/2017/stan_jumpingrivers.png") 
+```
+
+> Stan is freedom-respecting, open-source software for facilitating statistical inference at 
+> the frontiers of applied statistics.
+
+Or to put it another way, it makes Bayesian inference fast and (a bit) easier.
+
+[StanCon](http://mc-stan.org/events/stancon2018/) is the premier conference for all things 
+[Stan](http://mc-stan.org/) related and this year it will take place at the [Asilomar Conference Grounds](http://www.visitasilomar.com/), a National Historic Landmark on the Monterey Peninsula right on the beach.
+
+ 
