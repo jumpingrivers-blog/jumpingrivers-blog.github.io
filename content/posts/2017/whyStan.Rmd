@@ -11,7 +11,10 @@ draft: true
 > Stan is freedom-respecting, open-source software for facilitating statistical inference at 
 > the frontiers of applied statistics.
 
-Or at least that's what there [website](http://mc-stan.org/) tells us. 
+Or at least that's what there [website](http://mc-stan.org/) tells us ;)
+
+Over the last year we've been running Stan [training courses](https://www.jumpingrivers.com/courses/13_introductions-to-bayesian-inference-using-rstan), 
+and we often get the question about why would some le
 
 
 ##### I normally use preprogrammed software to perform Bayesian inference for specific classes of models?
