@@ -1,0 +1,37 @@
+---
+title: "Why would you use Stan"
+slug: "whystan"
+date: 2017-10-14
+excerpt: "Reasons why you would want to use stan"
+tags: [stan]
+image: "img/2017/stan_white.png"
+draft: true
+---
+
+
+
+<blockquote>
+<p>Stan is freedom-respecting, open-source software for facilitating statistical inference at the frontiers of applied statistics.</p>
+</blockquote>
+<p>Or at least that’s what there <a href="http://mc-stan.org/">website</a> tells us.</p>
+<div id="i-normally-use-preprogrammed-software-to-perform-bayesian-inference-for-specific-classes-of-models" class="section level5">
+<h5>I normally use preprogrammed software to perform Bayesian inference for specific classes of models?</h5>
+<p>Stan is a general purpose modelling language that allows you to fit a large class of models. By learning one language, you have much greater flexibility in specifying your model, and avoid having to get to grips with different software for different models.</p>
+</div>
+<div id="i-normally-use-bugs-or-jags-to-fit-my-bayesian-model" class="section level5">
+<h5>I normally use BUGS or JAGS to fit my Bayesian model</h5>
+<ul>
+<li>BUGS and JAGS are based on Gibbs sampling, whilst Stan uses Hamiltonian Monte Carlo (HMC) to generate samples from the posterior distribution. HMC is often more efficient which means Stan can be faster for complex models and scales better for large data sets.</li>
+<li>In many ways, the Stan modelling language is more flexible than BUGS or JAGS, allowing you to fit a less restricted class of models.</li>
+</ul>
+</div>
+<div id="i-normally-write-my-own-code-to-fit-my-bayesian-model" class="section level5">
+<h5>I normally write my own code to fit my Bayesian model</h5>
+<ul>
+<li>Writing your own sampler, especially one that is efficient, is laborious. Writing the programme in Stan is generally much faster.</li>
+<li>A huge amount of effort, from a large development team, has been devoted to optimising the performance of Stan. It often runs much faster than handwritten code.</li>
+<li>To provide a point of comparison, to help debug your handwritten code.</li>
+</ul>
+<hr />
+<p>Interesed in learning Stan? We run public and on-site Stan training courses.</p>
+</div>
