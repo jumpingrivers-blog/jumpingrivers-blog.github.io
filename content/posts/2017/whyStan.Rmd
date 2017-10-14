@@ -1,10 +1,10 @@
 ---
-title: "Why would you use Stan"
+title: "Why use Stan"
 slug: "whystan"
 date: 2017-10-14
 excerpt: "Reasons why you would want to use stan"
 tags: [stan]
-image: "img/2017/stan_white.png"
+image: "img/2017/stan-density.png"
 draft: true
 ---
 
@@ -31,4 +31,31 @@ Stan is a general purpose modelling language that allows you to fit a large clas
 
 ---
 
-Interesed in learning Stan? We run public and on-site Stan training courses. 
+Interesed in learning Stan? We run public and on-site Stan [training courses](https://www.jumpingrivers.com/courses/13_introductions-to-bayesian-inference-using-rstan). 
+
+
+```{r density,echo=FALSE, cache=TRUE}
+set.seed(1)
+N = 500
+y = lapply(1:N, function(i) {
+  x = rlnorm(50)
+  density(x, from = -1.5, to = 8, n = 500)$y
+}
+)
+
+x = seq(-3, 8, length.out = 500)
+
+y_mean = colSums(Reduce(rbind, y))
+y_mean = y_mean/length(y)
+
+col  = rgb(85,130,169, alpha=255, maxColorValue=255)
+plot(x, y_mean, type="l", ylim=c(0, 1), 
+     lwd = 4, col=col, axes = FALSE, 
+     ylab = NA, xlab = NA)
+
+col  = rgb(85,130,169, alpha=10, maxColorValue=255)
+for(i in 1:length(y)) {
+  lines(x, y[[i]], col= col)
+}
+```
+ 
