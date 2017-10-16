@@ -1,18 +1,19 @@
 ---
 title: "The Trouble with Tibbles"
 author: "Theo Roe"
-date: 2017-10-13
+date: 2017-10-16
 output: html_document
 image: "img/2017/tibbles.png"
 draft: false
+slug: "trouble-with-tibbles"
+tags: [r,tidyverse, tibbles]
 ---
 
 ```{r setup,include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(collapse = TRUE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
-Let's get something straight, there isn't really any trouble with tibbles. I'm hoping you've noticed this is a play on 1967 Star Trek episode, "The Trouble with Tribbles". I've recently got myself a job as a Data Scientist, here, at [Jumping Rivers](https://www.jumpingrivers.com/). Having never come across tibbles until this point, I now find myself using them in nearly every R script I compose. Be that your timeless standard R script, your friendly Shiny app or an analytical Markdown document. 
+Let's get something straight, there isn't really any trouble with tibbles. I'm hoping you've noticed this is a play on 1967 [Star Trek episode](https://en.wikipedia.org/wiki/The_Trouble_with_Tribbles), "The Trouble with Tribbles". I've recently got myself a job as a Data Scientist, here, at [Jumping Rivers](https://www.jumpingrivers.com/). Having never come across tibbles until this point, I now find myself using them in nearly every R script I compose. Be that your timeless standard R script, your friendly Shiny app or an analytical Markdown document. 
 
 ## What are tibbles?
 
@@ -22,7 +23,7 @@ Tibbles are a modern take on data frames, but crucially they are _still_ data fr
 
  _"keeping what time has proven to be effective, and throwing out what is not"_.   
 
-Basically, some clever people took the classic `data.frame`, shook it til the ineffective parts fell out, then added some new, more appropriate features. 
+Basically, some clever people took the classic `data.frame()`, shook it til the ineffective parts fell out, then added some new, more appropriate features. 
 
 ## Precursors
 
@@ -41,35 +42,28 @@ library(tibble)
 
 ## Tribblemaking
 
-There are 3 ways to form a tibble. It pretty much acts as your friendly old pal `data.frame` does. Just like standard data frames, we can create tibbles, coerce objects into tibbles and import data sets into `R` as a tibble. Below is a table of the traditional `data.frame` commands and their respective `tidyverse` commands.
+There are 3 ways to form a tibble. It pretty much acts as your friendly old pal `data.frame()` does. Just like standard data frames, we can create tibbles, coerce objects into tibbles and import data sets into `R` as a tibble. Below is a table of the traditional `data.frame()` commands and their respective __tidyverse__ commands.
     
-_Formation Type_| _Data Frame Commands_          | *Tibbles Commands*
---------------- | -------------------------------| ---------------------------------------------
-_Creation_      | `data.frame`                   | `data_frame` `tibble` `tribble`
-_Coercion_      | `as.data.frame`                | `as_data_frame` `as_tibble` 
-_Importing_     | `read.*`                       | `read_delim` `read_csv` `read_csv2` `read_tsv`
+ Formation Type |  Data Frame Commands           |  Tibbles Commands 
+--------------- | -------------------------------| ------------------------------------------------------
+_Creation_      | `data.frame()`                 | `data_frame()` `tibble()` `tribble()`
+_Coercion_      | `as.data.frame()`              | `as_data_frame()` `as_tibble()` 
+_Importing_     | `read.*()`                     | `read_delim()` `read_csv()` `read_csv2()` `read_tsv()`
 
 Let's take a closer look...
 
 #### 1) Creation. 
-Just as `data.frame` creates data frames,`tibble`, `data_frame` and `tribble` all create tibbles. 
+Just as `data.frame()` creates data frames,`tibble()`, `data_frame()` and `tribble()` all create tibbles. 
 
 Standard data frame.
 ```{r}
-data.frame(a = 1:5, 
-           b = letters[1:5])  
+data.frame(a = 1:5, b = letters[1:5])  
 ```
-A tibble using `data_frame`.
+A tibble using `tibble()` (identical to using `data_frame`).
 ```{r}
-data_frame(a = 1:5, 
-           b = letters[1:5])
+tibble(a = 1:5, b = letters[1:5])
 ```
-A tibble using `tibble`.
-```{r}
-tibble(a = 1:5, 
-           b = letters[1:5])
-```
-A tibble using `tribble`.
+A tibble using `tribble()`.
 ```{r}
 tribble( ~a, ~b, 
        #---|----
@@ -78,10 +72,10 @@ tribble( ~a, ~b,
 ```
 
 
-Notice the odd one out? `tribble` is different. It's a way of laying out small amounts of data in an easy to read form. I'm not too keen on these, as even writing out that simple 2 x 2 tribble got tedious. 
+Notice the odd one out? `tribble()` is different. It's a way of laying out small amounts of data in an easy to read form. I'm not too keen on these, as even writing out that simple 2 x 2 tribble got tedious. 
 
 #### 2) Coercion. 
-Just as `as.data.frame` coerces objects into data frames, `as_data_frame` and `as_tibble` coerce objects into tibbles. 
+Just as `as.data.frame()` coerces objects into data frames, `as_data_frame()` and `as_tibble()` coerce objects into tibbles. 
 ```{r}
 df = data.frame(a = 1:5, b = letters[1:5])
 ```
@@ -94,20 +88,19 @@ as_tibble(df)
 You can coerce more than just data frames, too. Objects such as lists, matrices, vectors and single instances of class are convertible. 
 
 #### 3) Importing. 
-There's a few options to read in data files within the `tidyverse`, so we'll just compare `read_csv` and its representative `data.frame` pal, `read.csv`. Let's take a look at them. 
-I have here an example data set that I've created in MS Excel. You can download/look at this data [here](https://gist.github.com/theoroe3/8bc989b644adc24117bc66f50c292fc8). To get access to this function you'll need the `readr` package. Again this is part of the `tidyverse` so either will do.
+There's a few options to read in data files within the __tidyverse__, so we'll just compare `read_csv()` and its representative `data.frame()` pal, `read.csv()`. Let's take a look at them. 
+I have here an example data set that I've created in MS Excel. You can download/look at this data [here](https://gist.github.com/theoroe3/8bc989b644adc24117bc66f50c292fc8). To get access to this function you'll need the __readr__ package. Again this is part of the __tidyverse__ so either will do.
 ```{r}
 library(readr)
 ```
 
 ```{r, include=FALSE}
-tib = read_csv("https://gist.githubusercontent.com/theoroe3/8bc989b644adc24117bc66f50c292fc8/raw/f677a2ad811a9854c9d174178b0585a87569af60/tibbles_data.csv")
 options(tibble.print_max = 10, tibble.print_min = 5)
 ```
 ```{r}
 url = "https://gist.githubusercontent.com/theoroe3/8bc989b644adc24117bc66f50c292fc8/raw/f677a2ad811a9854c9d174178b0585a87569af60/tibbles_data.csv"
 ```
-```{r, eval = FALSE}
+```{r}
 tib = read_csv(url)
 ```
 ```{r}
@@ -123,11 +116,11 @@ df = read.csv(url)
 df
 ```
 
-Not only does `read_csv` return a pretty tibble, it is also much faster. For proof, check out [this article](http://yetanothermathprogrammingconsultant.blogspot.co.uk/2016/12/reading-csv-files-in-r-readcsv-vs.html) by Erwin Kalvelagen. The keen eyes amongst you will have noticed something odd about the variable names... we'll get on to that soon.
+Not only does `read_csv()` return a pretty tibble, it is also much faster. For proof, check out [this article](http://yetanothermathprogrammingconsultant.blogspot.co.uk/2016/12/reading-csv-files-in-r-readcsv-vs.html) by Erwin Kalvelagen. The keen eyes amongst you will have noticed something odd about the variable names... we'll get on to that soon.
 
 ## Tibbles vs Data Frames
 
-Did you notice a key difference in the `tibble`s and `data.frame`s above? Take a look again. 
+Did you notice a key difference in the `tibble()`s and `data.frame()`s above? Take a look again. 
 
 ```{r}
 tibble(a = 1:26, b = letters)
@@ -168,7 +161,7 @@ tib
 ```{r}
 df
 ```
-We see already that in the `read.csv` process we've lost the column names.
+We see already that in the `read.csv()` process we've lost the column names.
 
 Let's try some partial matching...
 
@@ -202,7 +195,7 @@ tib$name
 df[[1]]
 df$name
 ```
-Double square brackets, `[[`, and the traditional dollar, `$` are ways to access individual columns as vectors. Now, with tibbles, we have seperate operations for data frame operations and single column operations. Now we don't have to use that pesky `drop = FALSE`. Note, these are actually quicker than the `[[` and `$` of the `data.frame`, as shown in the [documentation for the tibble package](https://cran.r-project.org/web/packages/tibble/tibble.pdf). 
+Double square brackets, `[[`, and the traditional dollar, `$` are ways to access individual columns as vectors. Now, with tibbles, we have seperate operations for data frame operations and single column operations. Now we don't have to use that pesky `drop = FALSE`. Note, these are actually quicker than the `[[` and `$` of the `data.frame()`, as shown in the [documentation for the tibble package](https://cran.r-project.org/web/packages/tibble/tibble.pdf). 
 
 ***
 
@@ -217,11 +210,11 @@ I quite like this, it's much easier to turn a vector of characters into factors 
 
 ## Disadvantages
 
-This won't be long, there's only one. Some older functions dont work with tibbles because of their different subsetting method. They expect `tib[,1]` to return a vector, when infact it will now return another data frame. Until this functionality is added in you must convert your tibble back to a data frame using `as_data_frame` or `as_tibble` as discussed previously.
+This won't be long, there's only one. Some older functions dont work with tibbles because of their alternate subsetting method. They expect `tib[,1]` to return a vector, when infact it will now return another data frame. Until this functionality is added in you must convert your tibble back to a data frame using `as_data_frame()` or `as_tibble()` as discussed previously. Whilst adding this functionality will give users the chance to use packages with tibbles and normal data frames, it of course puts extra work on the shoulders of package writers, who now have to change every package to be compatible with tibbles. For more on this discussion, see [this thread](https://stat.ethz.ch/pipermail/r-package-devel/2017q3/001896.html).
 
 
-## To Summarise..
+## To summarise..
 
-So, most of the things youc an accomplish with tibbles, you can accomplish with `data.frame`, but it's bit of a pain. Simple things like checking the dimensions of your data or converting strings to factors are small jobs. Small jobs that take time. With tibbles they take no time. Tibbles force you to look at your data earlier; confront the problems earlier. Ultimately leading to cleaner code. 
+So, most of the things you can accomplish with tibbles, you can accomplish with `data.frame()`, but it's bit of a pain. Simple things like checking the dimensions of your data or converting strings to factors are small jobs. Small jobs that take time. With tibbles they take no time. Tibbles force you to look at your data earlier; confront the problems earlier. Ultimately leading to cleaner code. 
 
 Thanks for chatting!
