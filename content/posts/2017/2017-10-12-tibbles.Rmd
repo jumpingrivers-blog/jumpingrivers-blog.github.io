@@ -5,7 +5,7 @@ date: 2017-10-16
 output: html_document
 image: "img/2017/tibbles.png"
 draft: false
-slug: "trouble-with-tibbles"
+slug: "trouble_with_tibbles"
 tags: [r,tidyverse, tibbles]
 ---
 
