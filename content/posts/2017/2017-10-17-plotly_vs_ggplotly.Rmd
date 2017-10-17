@@ -1,5 +1,5 @@
 ---
-title: "plotly vs ggplot2"
+title: "plotly vs ggplotly"
 author: "Theo Roe"
 date: 2017-10-17
 output: html_document
@@ -10,11 +10,6 @@ tags: [r,tidyverse, graphics, ggplot2, plotly]
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
-library(mosaicData)
-library(dplyr)
-library(ggplot2)
-library(plotly)
-library(microbenchmark)
 ```
 
 
@@ -25,29 +20,30 @@ The __plotly__ package. A godsend for interactive documents, dashboard and prese
 Throughout we will be using the packages: __dplyr__, __ggplot2__, __plotly__ and __microbenchmark__. The data in use is the `birthdays` dataset in the __mosaicData__ package. Containing the counts of births in USA on each day from 1969 - 1988.
 
 ```{r, eval = FALSE, message=FALSE, warning=FALSE}
-install.packages("mosaicData")
+install.packages(c("mosaicData", "dplyr", "tidyr","ggplot2","plotly", "microbenchmark"))
+```
+``` {r, warning =FALSE, message = FALSE, error = FALSE}
 library(mosaicData)
-install.packages("dplyr")
 library(dplyr)
-install.packages("ggplot2")
+library(tidyr)
 library(ggplot2)
-install.packages("plotly")
 library(plotly)
-install.packages("microbenchmark")
 library(microbenchmark)
 ```
 
 ### Analysis
-Let's take a look at the data.
+Let's loads and take a look at the data.
 ```{r}
-b = mosaicData::Birthdays
-head(b)
+data("Birthdays", package = "mosaicData")
+head(Birthdays)
 ```
 
 Let's start off with a very simple scatter graph of the mean births in every year. 
 
 ```{r}
-meanb = b %>% group_by(year) %>% summarise(mean = mean(births))
+meanb = Birthdays %>% 
+  group_by(year) %>% 
+     summarise(mean = mean(births))
 ```
 
 ```{r, warning = FALSE, error=FALSE, message=FALSE}
@@ -68,7 +64,7 @@ time = microbenchmark::microbenchmark(
         ggplotly = ggplotly(ggplot(meanb) + 
                             geom_point(aes(y = mean, x = year, colour = year))),
           plotly = plot_ly(data = meanb, 
-                           y = ~births, x = ~year, 
+                           y = ~mean, x = ~year, 
                            color = ~year, type = "scatter"),
                            times = 100, unit = "s")
 time
@@ -87,24 +83,23 @@ Now I thought nesting a __ggplot__ object within `ggplotly()` would be slower th
 Let's take it up a notch.  There we were just plotting 20 points, what about if we plot over 20,000? Here we will plot the min, mean and max births on each day. 
 
 ```{r warning = FALSE, error=FALSE, message=FALSE}
-meandate = b %>% group_by(date) %>% summarise(births = mean(births))
-maxdate = b %>% group_by(date) %>% summarise(births = max(births))
-mindate = b %>% group_by(date) %>% summarise(births = min(births))
-all = rbind(meandate, maxdate, mindate)
+date = Birthdays %>% 
+  group_by(date) %>% 
+  summarise(mean = mean(births), min = max(births), max = min(births))
+all = date %>% 
+  gather(birth_stat, value, -date)
 
-all$stat = rep(c("mean","max", "min"), each = 7305)
+ggplotly(ggplot(all) + geom_point(aes(y = value, x = date, colour = birth_stat)))
 
-ggplotly(ggplot(all) + geom_point(aes(y = births, x = date, colour = stat)))
-
-plot_ly(all, x = ~date, y = ~births, color = ~stat, type = "scatter")
+plot_ly(all, x = ~date, y = ~value, color = ~birth_stat, type = "scatter")
 ```
 Again, both plots are identical bar styling.
 ```{r warning = FALSE, error=FALSE, message=FALSE}
 time2 = microbenchmark(ggplotly = 
                                   ggplotly(ggplot(all) +
-                                          geom_point(aes(y = births, x = date, colour = stat))),
-                                 plotly = plot_ly(all, x = ~date, y = ~births, 
-                                           color = ~stat, type = "scatter"),
+                                          geom_point(aes(y = value, x = date, colour = birth_stat))),
+                                 plotly = plot_ly(all, x = ~date, y = ~value, 
+                                                  color = ~birth_stat, type = "scatter"),
                                    times = 100, unit = "s")
 time2
 ```
@@ -114,7 +109,9 @@ autoplot(time2)
 
 ```{r, include=FALSE}
 timetable2 = cbind(expr = time2$expr, time = time2$time)
-mean2 = as.data.frame(timetable2) %>% group_by(expr) %>% summarise(mean = mean(time))
+mean2 = as.data.frame(timetable2) %>% 
+  group_by(expr) %>% 
+  summarise(mean = mean(time))
 average2 = round(mean2[1,2]/mean2[2,2], 0)
 ```
 
