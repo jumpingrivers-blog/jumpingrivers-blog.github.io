@@ -115,3 +115,14 @@ average2 = round(mean2[1,2]/mean2[2,2], 0)
 ```
 
 On average `ggplotly()` is `r average2` times slower than `plot_ly()`, with the max run time being `r round(microbenchmark:::convert_to_unit(max(time2$time), unit = "s"), 3)` seconds! 
+
+***
+
+R version at time of writing- 3.4.1   
+Package versions at time of writing:   
+mosaicData - 0.14.0  
+dplyr - 0.7.3  
+tidyr - 0.7.1  
+ggplot2 - 2.2.1  
+plotly - 4.7.1    
+microbenchmark - 1.4-2.1   
