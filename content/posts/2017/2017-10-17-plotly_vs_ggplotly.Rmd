@@ -32,7 +32,7 @@ library(microbenchmark)
 ```
 
 ### Analysis
-Let's loads and take a look at the data.
+Let's load and take a look at the data.
 ```{r}
 data("Birthdays", package = "mosaicData")
 head(Birthdays)
@@ -55,7 +55,7 @@ plot_ly(data = meanb,
                  type = "scatter")
 ```
 
-Both graphs identical bar styling, yes? 
+Both graphs are, identical, bar styling, yes? 
 
 Now let's use `microbenchmark` to see how their timings compare. 
 
@@ -85,20 +85,19 @@ Let's take it up a notch.  There we were just plotting 20 points, what about if 
 ```{r warning = FALSE, error=FALSE, message=FALSE}
 date = Birthdays %>% 
   group_by(date) %>% 
-  summarise(mean = mean(births), min = max(births), max = min(births))
-all = date %>% 
+  summarise(mean = mean(births), min = max(births), max = min(births)) %>% 
   gather(birth_stat, value, -date)
 
-ggplotly(ggplot(all) + geom_point(aes(y = value, x = date, colour = birth_stat)))
+ggplotly(ggplot(date) + geom_point(aes(y = value, x = date, colour = birth_stat)))
 
-plot_ly(all, x = ~date, y = ~value, color = ~birth_stat, type = "scatter")
+plot_ly(date, x = ~date, y = ~value, color = ~birth_stat, type = "scatter")
 ```
-Again, both plots are identical bar styling.
+Again, both plots are identical, bar styling.
 ```{r warning = FALSE, error=FALSE, message=FALSE}
 time2 = microbenchmark(ggplotly = 
-                                  ggplotly(ggplot(all) +
+                                  ggplotly(ggplot(date) +
                                           geom_point(aes(y = value, x = date, colour = birth_stat))),
-                                 plotly = plot_ly(all, x = ~date, y = ~value, 
+                                 plotly = plot_ly(date, x = ~date, y = ~value, 
                                                   color = ~birth_stat, type = "scatter"),
                                    times = 100, unit = "s")
 time2
@@ -110,8 +109,8 @@ autoplot(time2)
 ```{r, include=FALSE}
 timetable2 = cbind(expr = time2$expr, time = time2$time)
 mean2 = as.data.frame(timetable2) %>% 
-  group_by(expr) %>% 
-  summarise(mean = mean(time))
+                         group_by(expr) %>% 
+                             summarise(mean = mean(time))
 average2 = round(mean2[1,2]/mean2[2,2], 0)
 ```
 
