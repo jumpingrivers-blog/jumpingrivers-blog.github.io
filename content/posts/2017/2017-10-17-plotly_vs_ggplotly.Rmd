@@ -3,7 +3,7 @@ title: "plotly vs ggplot2"
 author: "Theo Roe"
 date: 2017-10-17
 output: html_document
-draft: false
+draft: true
 slug: "plotly_vs_ggplotly"
 tags: [r,tidyverse, graphics, ggplot2, plotly]
 ---
@@ -18,11 +18,11 @@ library(microbenchmark)
 ```
 
 
-The `plotly` package. A godsend for interactive documents, dashboard and presentations. For such documents there is no doubt that anyone would prefer a plot created in `plotly` rather than `ggplot2`. Why? Using `plotly` gives you neat and crucially _interactive_ options at the top, where as `ggplot2` objects are static. In an app we have been devloping here at [Jumping Rivers](https://www.jumpingrivers.com), we found ourselves asking the question would it be quicker to use `plot_ly` or wrapping a `ggplot2` object in `ggplotly`? I found the results staggering.   
+The __plotly__ package. A godsend for interactive documents, dashboard and presentations. For such documents there is no doubt that anyone would prefer a plot created in __plotly__ rather than __ggplot2__. Why? Using __plotly__ gives you neat and crucially _interactive_ options at the top, where as __ggplot2__ objects are static. In an app we have been devloping here at [Jumping Rivers](https://www.jumpingrivers.com), we found ourselves asking the question would it be quicker to use `plot_ly()` or wrapping a __ggplot2__ object in `ggplotly()`? I found the results staggering.   
 
 ### Prerequisites 
 
-Throughout we will be using the packages: `dplyr`, `ggplot2`, `plotly` and `microbenchmark`. The data in use is the `birthdays` dataset in the `mosaicData` package. Containing the counts of births in USA on each day from 1969 - 1988.
+Throughout we will be using the packages: __dplyr__, __ggplot2__, __plotly__ and __microbenchmark__. The data in use is the `birthdays` dataset in the __mosaicData__ package. Containing the counts of births in USA on each day from 1969 - 1988.
 
 ```{r, eval = FALSE, message=FALSE, warning=FALSE}
 install.packages("mosaicData")
