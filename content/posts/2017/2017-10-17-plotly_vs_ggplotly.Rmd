@@ -15,9 +15,11 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 
 The __plotly__ package. A godsend for interactive documents, dashboard and presentations. For such documents there is no doubt that anyone would prefer a plot created in __plotly__ rather than __ggplot2__. Why? Using __plotly__ gives you neat and crucially _interactive_ options at the top, where as __ggplot2__ objects are static. In an app we have been devloping here at [Jumping Rivers](https://www.jumpingrivers.com), we found ourselves asking the question would it be quicker to use `plot_ly()` or wrapping a __ggplot2__ object in `ggplotly()`? I found the results staggering.   
 
+***
+
 ### Prerequisites 
 
-Throughout we will be using the packages: __dplyr__, __ggplot2__, __plotly__ and __microbenchmark__. The data in use is the `birthdays` dataset in the __mosaicData__ package. Containing the counts of births in USA on each day from 1969 - 1988.
+Throughout we will be using the packages: __dplyr__, __tidyr__, __ggplot2__, __plotly__ and __microbenchmark__. The data in use is the `birthdays` dataset in the __mosaicData__ package. Containing the daily birth count in each state of the USA from 1969 - 1988.
 
 ```{r, eval = FALSE, message=FALSE, warning=FALSE}
 install.packages(c("mosaicData", "dplyr", "tidyr","ggplot2","plotly", "microbenchmark"))
@@ -31,7 +33,10 @@ library(plotly)
 library(microbenchmark)
 ```
 
+***
+
 ### Analysis
+
 Let's load and take a look at the data.
 ```{r}
 data("Birthdays", package = "mosaicData")
@@ -45,11 +50,13 @@ meanb = Birthdays %>%
   group_by(year) %>% 
      summarise(mean = mean(births))
 ```
-
+Wrapping this as a __ggplot__ object inside `ggplotly()` we obtain this...
 ```{r, warning = FALSE, error=FALSE, message=FALSE}
 ggplotly(ggplot(meanb) + 
   geom_point(aes(y = mean, x = year, colour = year)))
-
+```
+Whilst using `plot_ly()` give us this...
+```{r, warning = FALSE, error=FALSE, message=FALSE}
 plot_ly(data = meanb, 
                  y = ~mean, x = ~year, color = ~year, 
                  type = "scatter")
@@ -75,22 +82,29 @@ autoplot(time)
 
 ```{r, include=FALSE}
 timetable = cbind(expr = time$expr, time = time$time)
-mean = as.data.frame(timetable) %>% group_by(expr) %>% summarise(mean = mean(time))
+mean = as_tibble(timetable) %>% group_by(expr) %>% summarise(mean = mean(time))
 average = round(mean[1,2]/mean[2,2], 0)
 ```
-Now I thought nesting a __ggplot__ object within `ggplotly()` would be slower than using `plot_ly()`, but I didn't think it would be this slow. On average `ggplotly()` is `r average` times slower than `plot_ly()`. **_`r average`!_** One run even took `r round(microbenchmark:::convert_to_unit(max(time$time), unit = "s"), 3)` seconds! 
+Now I thought nesting a __ggplot__ object within `ggplotly()` would be slower than using `plot_ly()`, but I didn't think it would be this slow. On average `ggplotly()` is approximately `r average` times slower than `plot_ly()`. **_`r average`!_** One run even took `r round(microbenchmark:::convert_to_unit(max(time$time), unit = "s"), 3)` seconds! 
 
-Let's take it up a notch.  There we were just plotting 20 points, what about if we plot over 20,000? Here we will plot the min, mean and max births on each day. 
+Let's take it up a notch.  There we were plotting only 20 points, what about if we plot over 20,000? Here we will plot the min, mean and max births on each day. 
 
 ```{r warning = FALSE, error=FALSE, message=FALSE}
 date = Birthdays %>% 
   group_by(date) %>% 
-  summarise(mean = mean(births), min = max(births), max = min(births)) %>% 
+  summarise(mean = mean(births), min = min(births), max = max(births)) %>% 
   gather(birth_stat, value, -date)
-
-ggplotly(ggplot(date) + geom_point(aes(y = value, x = date, colour = birth_stat)))
-
-plot_ly(date, x = ~date, y = ~value, color = ~birth_stat, type = "scatter")
+```
+Wrapping this a __ggplot2__ object inside `ggplotly()` we obtain this graph...
+```{r warning = FALSE, error=FALSE, message=FALSE}
+ggplotly(ggplot(date) +
+    geom_point(aes(y = value, x = date, colour = birth_stat)))
+```
+Whilst using `plot_ly()` we obtain...
+```{r warning = FALSE, error=FALSE, message=FALSE}
+plot_ly(date, 
+        x = ~date, y = ~value, color = ~birth_stat, 
+        type = "scatter")
 ```
 Again, both plots are identical, bar styling.
 ```{r warning = FALSE, error=FALSE, message=FALSE}
@@ -108,13 +122,21 @@ autoplot(time2)
 
 ```{r, include=FALSE}
 timetable2 = cbind(expr = time2$expr, time = time2$time)
-mean2 = as.data.frame(timetable2) %>% 
+mean2 = as_tibble(timetable2) %>% 
                          group_by(expr) %>% 
                              summarise(mean = mean(time))
 average2 = round(mean2[1,2]/mean2[2,2], 0)
 ```
 
 On average `ggplotly()` is `r average2` times slower than `plot_ly()`, with the max run time being `r round(microbenchmark:::convert_to_unit(max(time2$time), unit = "s"), 3)` seconds! 
+
+***
+
+### Summary
+
+I'm going to level with you. Using `ggplotly()` in interactive mode isn't a problem. Well, it's not a problem until your shiny dashboard or your markdown document has to generate a few plots at the same time. With only one plot, you'll probably go with the method that gives you your style in the easiest way possible and you'll do this with no repercussions. However, let's say you're making a shiny dashboard and it now has over 5 interactive graphs within it. Suddenly, if you're using `ggplotly()`, the lag we noticed in the analysis above starts to build up unnecessarily. That's why I'd use `plot_ly()`.
+
+Thanks for chatting!
 
 ***
 
