@@ -4,8 +4,8 @@ author: "Theo Roe"
 date: 2017-10-24
 output: html_document
 draft: true
-slug: "timing_in_R"
-tags: [r, timing, microbenchmark, tictoc, System.time]
+slug: "timing-in-R"
+tags: [r, timing, microbenchmark, tictoc, system-time]
 ---
 
 ```{r setup, include=FALSE}
@@ -20,15 +20,14 @@ As time goes on, your R scripts are probably getting longer and more complicated
 
 ### 1) `Sys.time()`
 
-`Sys.time()` takes a "screenshot"" of the current time and so it can be used to record start and end times of code.
+`Sys.time()` takes a "snap-shot" of the current time and so it can be used to record start and end times of code.
 
 ```{r}
 start_time = Sys.time()
 Sys.sleep(0.5)
 end_time = Sys.time()
 
-time_dif = end_time - start_time
-time_dif
+end_time - start_time
 ```
 
 Notice it creates a neat little message for the time difference.
@@ -39,12 +38,9 @@ You can install the `CRAN` version of __tictoc__ via
 ```{r, eval = FALSE}
 install.packages("tictoc")
 ```
-whilst the most recent development is available via github
-```{r, eval = FALSE}
-devtools::install_github("collectivemedia/tictoc")
-``` 
+whilst the most recent development is available via [the __tictoc__ GitHub page](https://github.com/collectivemedia/tictoc).
 ```{r}
-library(tictoc)
+library("tictoc")
 ```
 
 Like `Sys.time()`, __tictoc__ also gives us ability to nest timings within code. However, we now have some more options to customise our timing. At it's most basic it acts like `Sys.time()`:
@@ -85,7 +81,7 @@ I think returning the timings as a list is pretty cool. Not to mention how easy 
 
 ### 1) `system.time()`
 
-Why oh WHY did the guys over at R choose to give `system.time()` a lower case `s` and `Sys.time()` and upper case `s`? `r emo::ji("angry")`
+Why oh WHY did the guys over at R choose to give `system.time()` a lower case `s` and `Sys.time()` and upper case `s`?
 
 Anyway...
 
@@ -107,13 +103,9 @@ You can install the `CRAN` version of __microbenchmark__ via
 ```{r, eval = FALSE}
 install.packages("microbenchmark")
 ```
-Alternatively you can install the latest update via github
-```{r, eval = FALSE}
-devtools::install_github("olafmersmann/microbenchmarkCore")
-devtools::install_github("olafmersmann/microbenchmark")
-```
+Alternatively you can install the latest update via [the __microbenchmark__ GitHub page.](https://github.com/olafmersmann/microbenchmark)
 ```{r}
-library(microbenchmark)
+library("microbenchmark")
 ```
 
 At it's most basic, `microbenchmark()` can we used to time single pieces of code.
