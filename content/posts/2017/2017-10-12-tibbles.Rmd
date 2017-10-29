@@ -4,7 +4,7 @@ author: "Theo Roe"
 date: 2017-10-16
 output: html_document
 image: "img/2017/tibbles.png"
-draft: false
+draft: true
 slug: "trouble_with_tibbles"
 tags: [r,tidyverse, tibbles]
 ---
