@@ -3,7 +3,7 @@ title: "Official StanCon Sponsor"
 slug: "StanConference2017"
 date: 2017-10-13
 excerpt: "Proud sponsor of StanCon 2018"
-tags: [r,stan,stancon]
+tags: [rstats,stan,stancon]
 image: "img/2017/stan_white.png"
 draft: false
 ---
@@ -20,4 +20,15 @@ Or to put it another way, it makes Bayesian inference fast and (a bit) easier.
 [StanCon](http://mc-stan.org/events/stancon2018/) is the premier conference for all things 
 [Stan](http://mc-stan.org/) related and this year it will take place at the [Asilomar Conference Grounds](http://www.visitasilomar.com/), a National Historic Landmark on the Monterey Peninsula right on the beach.
 
- 
+#### Training
+
+If you are interested in learning more about Stan, we run a two day [introduction to Rstan](https://www.jumpingrivers.com/courses/13_introductions-to-bayesian-inference-using-rstan)
+course. The course covers
+
+  * Introduction to Bayesian inference: A brief overview of the main ideas behind Bayesian inference.
+  * Markov chain Monte Carlo methods: A brief overview of Markov chain Monte Carlo methods for Bayesian computation and Hamiltonian Monte Carlo.
+  * The Stan language: An outline of the main components of a Stan program.
+  * Using RStan: A guide to the use of the R interface to Stan.
+  * Examples: Including linear regression, Poisson regression and hierarchical models
+
+Space is very limited.
