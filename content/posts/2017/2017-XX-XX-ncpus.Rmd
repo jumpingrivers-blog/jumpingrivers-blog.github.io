@@ -21,7 +21,7 @@ under three versions of R
 
  * R-past, R-release and R-devel
 
-and three different operating systems
+but also three different operating systems
 
  * Windows, Linux and Mac (with multiple flavours of each)
 
@@ -115,14 +115,14 @@ Sys.getenv("HOME")
 ```
 Then simply add `options(Ncpus = XX)` to your file. 
 
-The one remaining question is what value should you set `XXX`. I typically set it to six since 
+The one remaining question is what value should you set `XX`. I typically set it to six since 
 I have eight cores. This allows packages to be installed in parallel, while giving me a little bit
-of wiggle room to check email and listen to music
+of wiggle room to check email and listen to music.
 
 Another added benefit is that when you run `update.packages()`, packages are also updated in parallel!
 
 ### References
 
-If you are interested in how CRAN handles the phenomena number of package submissions, check out this recent talk:
+If you are interested in how CRAN handles the phenomenal number of package submissions, check out this recent talk:
 
   * [Twenty years of CRAN](https://channel9.msdn.com/Events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/KEYNOTE-20-years-of-CRAN) by Uwe Ligges at UseR2017! in Brussels.
