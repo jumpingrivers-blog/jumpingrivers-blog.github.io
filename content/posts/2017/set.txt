@@ -1,0 +1,99 @@
+# Update R
+
+
+sudo mkdir /data/
+sudo mkdir /data/rpackages/
+
+sudo vim /usr/lib/R/etc/Renviron.site
+R_LIBS=/data/rpackages
+sudo chown :ncsg3 rpackages/
+
+Rscript -e 'install.packages(c("shiny", "rmarkdown"))'
+
+
+# In .Rprofile
+options(Ncpus = max(parallel::detectCores() - 1L, 1))
+
+local({
+  r = getOption("repos")
+  r["CRAN"] = "https://cran.rstudio.com/"
+  r["jr-packages"] = "https://jr-packages.github.io/drat/"
+  options(repos = r)
+})
+
+
+## SHiny
+
+## Connect
+
+wget https://s3.amazonaws.com/rstudio-connect/ubuntu-12.04/x86_64/rstudio-connect-1.5.6.2-13-amd64.deb
+sudo gdebi rstudio-connect-1.5.6.2-13-amd64.deb
+
+
+sudo stop rstudio-connect
+sudo start rstudio-connect
+
+-------------------
+
+sudo apt-get install libcurl4-openssl-dev libssl-dev libcairo2-dev
+drat::addRepo("jr-packages")
+pkgs = c("Introduction", "Modelling", "Programming",
+          "Ggplot2", "Automate", "Big")
+pkgs = paste0("jr", pkgs)
+install.packages(pkgs, dependencies = TRUE)
+
+drat::addRepo("rcourses")
+install.packages("nclRpredictive", dependencies = TRUE)
+
+
+
+
+
+sudo adduser user1
+createuser -D -e -E -R -S user1
+
+--------------
+## Shiny config
+
+/etc/shinyServer
+
+# Instruct Shiny Server to run applications as the user "shiny"
+run_as :HOME_USER: shiny;
+#run_as shiny;
+
+# Define a server that listens on port 3838
+server {
+  listen 3838;
+
+  location / {
+    user_dirs;
+  }
+
+  location / {
+    site_dir /srv/shiny-server;
+    log_dir /var/log/shiny-server;
+    directory_index on;
+  }
+}
+~
+
+------------------
+
+Allow ssh passwords
+sudo vim /etc/ssh/sshd_config
+PasswordAuthentication yes
+sudo /etc/init.d/ssh restart
+
+
+
+
+
+
+
+
+
+
+
+
+
+

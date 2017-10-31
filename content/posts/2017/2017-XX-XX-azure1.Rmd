@@ -1,0 +1,37 @@
+---
+title: "Using RStudio with Azure"
+author: "Colin Gillespie"
+date: 2017-10-16
+output: html_document
+#image: "img/2017/tibbles.png"
+draft: true
+slug: "rstudio_azure_cloud_1"
+tags: [rstats,azure,cloud]
+---
+
+```{r setup,include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+### Overview
+
+[Azure](https://azure.microsoft.com/) is cloud computing framework provided by Microsoft, the same idea
+as AWS by Amazon. In the next series, we see how it is possible to use Azure to run 
+RStudio in the cloude.
+
+### Getting started
+
+Unfortunately, we don't start well. Microsoft have made an endurance test of getting started with Azure.
+The first stop is the [Azure](https://azure.microsoft.com/en-gb/) web-page. On the page it 
+
+```{r echo=FALSE, out.width="800"}
+knitr::include_graphics("/img/2017/azure_home.png") 
+```
+After clicking on the __Free Account__, you should sign up for Azure. This is a bit of painful process that will
+require
+
+ * Email confirmation
+ * Text confirmation
+ * Credit Card confirmation
+ 
+ 

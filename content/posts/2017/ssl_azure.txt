@@ -1,0 +1,45 @@
+
+## SSL
+sudo apt-get install apache2-bin apache2
+sudo apt-get install libxml2-dev  
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo a2enmod proxy_wstunnel
+sudo a2enmod rewrite
+sudo service apache2 restart  
+
+sudo a2ensite rstudio.conf
+sudo service apache2 restart  
+
+
+## 
+#https://mgw.dumatics.com/rstudio-server-setup-with-ssl-behind-apache-proxy-server/
+
+
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install python-certbot-apache 
+
+Add ServerName localhost as the last line in /etc/apache2/apache2.conf file.
+
+
+sudo certbot --apache
+
+
+
+
+#openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+#openssl rsa -in key.pem -out key.pem
+
+#sudo mkdir /var/certs/
+#sudo mv key.pem cert.pem /var/certs/
+#sudo chmod 600 /var/certs/key.pem 
+
+#sudo sh -c "echo 'ssl-enabled=1' >> /etc/rstudio/rserver.conf"
+#sudo sh -c "echo 'ssl-certificate=/var/certs/cert.pem' >> /etc/rstudio/rserver.conf"
+#sudo sh -c "echo 'ssl-certificate-key=/var/certs/key.pem'  >> /etc/rstudio/rserver.conf"
+## Check out Let's encrypt
+
+
