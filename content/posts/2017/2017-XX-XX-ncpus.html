@@ -26,7 +26,7 @@ tags: [rstats,tidyverse,packages]
 <ul>
 <li>R-past, R-release and R-devel</li>
 </ul>
-<p>and three different operating systems</p>
+<p>but also three different operating systems</p>
 <ul>
 <li>Windows, Linux and Mac (with multiple flavours of each)</li>
 </ul>
@@ -109,12 +109,12 @@ system.time(install.packages(&quot;tidyverse&quot;))
 <p>If you don’t have an <code>.Rprofile</code> file, create one in your home area</p>
 <pre class="r"><code>Sys.getenv(&quot;HOME&quot;)</code></pre>
 <p>Then simply add <code>options(Ncpus = XX)</code> to your file.</p>
-<p>The one remaining question is what value should you set <code>XXX</code>. I typically set it to six since I have eight cores. This allows packages to be installed in parallel, while giving me a little bit of wiggle room to check email and listen to music</p>
+<p>The one remaining question is what value should you set <code>XX</code>. I typically set it to six since I have eight cores. This allows packages to be installed in parallel, while giving me a little bit of wiggle room to check email and listen to music.</p>
 <p>Another added benefit is that when you run <code>update.packages()</code>, packages are also updated in parallel!</p>
 </div>
 <div id="references" class="section level3">
 <h3>References</h3>
-<p>If you are interested in how CRAN handles the phenomena number of package submissions, check out this recent talk:</p>
+<p>If you are interested in how CRAN handles the phenomenal number of package submissions, check out this recent talk:</p>
 <ul>
 <li><a href="https://channel9.msdn.com/Events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/KEYNOTE-20-years-of-CRAN">Twenty years of CRAN</a> by Uwe Ligges at UseR2017! in Brussels.</li>
 </ul>
