@@ -1,0 +1,101 @@
+---
+title: "Speeding up package installation"
+author: "Colin Gillespie"
+date: 2017-10-16
+output: html_document
+#image: "img/2017/tibbles.png"
+draft: true
+slug: "speed_package_installation"
+tags: [rstats,tidyverse,packages]
+---
+
+```{r setup,include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+One of the best features of R is CRAN and the associated package manager.
+When a package is submitted to CRAN, not only is it checked
+under three versions of R
+
+ * R-past, R-release and R-devel
+
+and three versions of operating system
+
+ * Windows, Linux and Mac (with multiple flavours of each)
+
+CRAN also checks that the updated package doesn't break existing packages. This last part is particularly
+tricky when you consider all the dependencies a package like **ggplot2** or **Rcpp** has.  Furthermore, 
+it performs all these checks within 24 hours, ready for the next set packages.
+
+What many people don't realise is that for CRAN to perform this miracle of package checking, it 
+builds and checks these packages in __parallel__; so rather than installing a single 
+package at a time, we can install multiple packages at once. Now, we can't just install packages at random
+due to the connectiveness between packages, but R takes care of these details.
+
+### The Ncpus options
+
+If you examine the help package of `?install.packages`, there's a sneaky argument called `Ncpus`, that is often
+overlooked. From the help page:
+
+> Ncpus: The number of parallel processes to use for a parallel install of more than one source package.
+
+The default value of this argument is
+
+> Ncpus = getOption("Ncpus", 1L)
+
+The `getOption()` part determines if the value has been set in `options()`. If no value is found, the default number of 
+processes to use is `1`. If you haven't heard of `Ncpus`, it's almost certainly 1.
+
+
+### Does it work?
+
+To test if changing the value of `Ncpus` makes a difference, we install the **tidyverse** package with all it's
+associated dependencies.  On my machine, all packages live in a directory called `/rpackages/`, for each test below
+I deleted `/rpackages/` so all **tidyverse** dependencies were reinstalled.
+
+My machine has eight cores
+```{r, eval=FALSE}
+parallel::detectCores()
+# [1] 8
+```
+So it doesn't make sense to set `Ncpus` above 8.
+
+For this experiment, I used the RStudio CRAN repository, set via
+
+```{r}
+options(repos = c("CRAN" = "https://cran.rstudio.com/"))
+```
+To time the installation procedure, I just use the standard `system.time()` function. 
+
+After removing the `/rpackages` directory, I set `Ncpus` equal to `1` and installed
+`tidyverse`
+```{r, eval=FALSE}
+options(Ncpus = 1)
+system.time(install.packages("tidyverse"))
+## Time in seconds
+#    user  system elapsed 
+#372.252  15.468 409.364 
+```
+So a standard installation takes almost 7 minutes (409/60)! A couple of caveats:
+
+ * This timing also includes the download time of the packages; however for simplicity
+ I'm ignoring this. Downloading the packages takes around 20 seconds
+ * The above number is uses a sample size of 1 to estimate the time; repeating the above 
+ experiment, resulted in a remarkably consistent installation time of 410 seconds.
+ 
+Repeating this experiment with different values of `Ncpus` gives the table below:
+
+
+Ncpus | elapsed | Ratio
+------|---------|------
+1     | 409     |  2.26
+2     | 224     |  1.24
+4     | 196     |  1.08
+8     | 181     |  1.00
+
+
+#### References
+
+If you are interested in how CRAN handles the phenomena number of package submissions, check out this recent talk:
+
+  * [Twenty years of CRAN](https://channel9.msdn.com/Events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/KEYNOTE-20-years-of-CRAN) by Uwe Ligges at UseR2017! in Brussels.
