@@ -12,24 +12,30 @@ tags: [rstats,tidyverse,packages]
 
 <div id="TOC">
 <ul>
-<li><a href="#the-ncpus-options">The Ncpus options</a></li>
+<li><a href="#the-wonder-of-cran">The wonder of CRAN</a></li>
+<li><a href="#parallell-package-installation-ncpus">Parallell package installation: Ncpus</a></li>
 <li><a href="#does-it-work">Does it work?</a></li>
+<li><a href="#a-permanent-change-.rprofile">A permanent change: <code>.Rprofile</code></a></li>
+<li><a href="#references">References</a></li>
 </ul>
 </div>
 
-<p>One of the best features of R is CRAN and the associated package manager. When a package is submitted to CRAN, not only is it checked under three versions of R</p>
+<div id="the-wonder-of-cran" class="section level3">
+<h3>The wonder of CRAN</h3>
+<p>One of the best features of R is CRAN. When a package is submitted to CRAN, not only is it checked under three versions of R</p>
 <ul>
 <li>R-past, R-release and R-devel</li>
 </ul>
-<p>and three versions of operating system</p>
+<p>and three different operating systems</p>
 <ul>
 <li>Windows, Linux and Mac (with multiple flavours of each)</li>
 </ul>
-<p>CRAN also checks that the updated package doesn’t break existing packages. This last part is particularly tricky when you consider all the dependencies a package like <strong>ggplot2</strong> or <strong>Rcpp</strong> has. Furthermore, it performs all these checks within 24 hours, ready for the next set packages.</p>
-<p>What many people don’t realise is that for CRAN to perform this miracle of package checking, it builds and checks these packages in <strong>parallel</strong>; so rather than installing a single package at a time, we can install multiple packages at once. Now, we can’t just install packages at random due to the connectiveness between packages, but R takes care of these details.</p>
-<div id="the-ncpus-options" class="section level3">
-<h3>The Ncpus options</h3>
-<p>If you examine the help package of <code>?install.packages</code>, there’s a sneaky argument called <code>Ncpus</code>, that is often overlooked. From the help page:</p>
+<p>CRAN also checks that the updated package doesn’t break existing packages. This last part is particularly tricky when you consider all the dependencies a package like <strong>ggplot2</strong> or <strong>Rcpp</strong> have. Furthermore, it performs all these checks within 24 hours, ready for the next set packages.</p>
+<p>What many people don’t realise is that for CRAN to perform this miracle of package checking, it builds and checks these packages in <strong>parallel</strong>; so rather than installing a single package at a time, it checks multiple packages at once. Obviously some care has to be taken when checking/installing packages due to the connectiveness between packages, but R takes care of these details.</p>
+</div>
+<div id="parallell-package-installation-ncpus" class="section level3">
+<h3>Parallell package installation: Ncpus</h3>
+<p>If you examine the help package of <code>?install.packages</code>, there’s a sneaky argument called <code>Ncpus</code>. From the help page:</p>
 <blockquote>
 <p>Ncpus: The number of parallel processes to use for a parallel install of more than one source package.</p>
 </blockquote>
@@ -37,28 +43,31 @@ tags: [rstats,tidyverse,packages]
 <blockquote>
 <p>Ncpus = getOption(“Ncpus”, 1L)</p>
 </blockquote>
-<p>The <code>getOption()</code> part determines if the value has been set in <code>options()</code>. If no value is found, the default number of processes to use is <code>1</code>. If you haven’t heard of <code>Ncpus</code>, it’s almost certainly 1.</p>
+<p>The <code>getOption()</code> part determines if the value has been set in <code>options()</code>. If no value is found, the default number of processes to use is <code>1</code>. If you haven’t heard of <code>Ncpus</code>, it’s almost certainly 1, but you can check using</p>
+<pre class="r"><code>getOption(&quot;Ncpus&quot;, 1L)
+## [1] 6</code></pre>
 </div>
 <div id="does-it-work" class="section level3">
 <h3>Does it work?</h3>
-<p>To test if changing the value of <code>Ncpus</code> makes a difference, we install the <strong>tidyverse</strong> package with all it’s associated dependencies. On my machine, all packages live in a directory called <code>/rpackages/</code>, for each test below I deleted <code>/rpackages/</code> so all <strong>tidyverse</strong> dependencies were reinstalled.</p>
+<p>To test if changing the value of <code>Ncpus</code> makes a difference, we’ll install the <strong>tidyverse</strong> package with all it’s associated dependencies. On my machine, all packages live in a directory called <code>/rpackages/</code>, for each test below I deleted <code>/rpackages/</code> so all <strong>tidyverse</strong> dependencies were reinstalled.</p>
 <p>My machine has eight cores</p>
 <pre class="r"><code>parallel::detectCores()
 # [1] 8</code></pre>
-<p>So it doesn’t make sense to set <code>Ncpus</code> above 8.</p>
+<p>So it doesn’t make sense to set <code>Ncpus</code> above 8. Another point is that although R reports that I have 8 cores, I only have 4 physical cores; the other 4 are due to hyper-threading. In practice, this means that I’m only likely to get at most a 6 fold speed-up.</p>
 <p>For this experiment, I used the RStudio CRAN repository, set via</p>
 <pre class="r"><code>options(repos = c(&quot;CRAN&quot; = &quot;https://cran.rstudio.com/&quot;))</code></pre>
 <p>To time the installation procedure, I just use the standard <code>system.time()</code> function.</p>
-<p>After removing the <code>/rpackages</code> directory, I set <code>Ncpus</code> equal to <code>1</code> and installed <code>tidyverse</code></p>
+<p>After removing the <code>/rpackages/</code> directory, I set <code>Ncpus</code> equal to <code>1</code> and installed the <strong>tidyverse</strong> package with dependencies</p>
 <pre class="r"><code>options(Ncpus = 1)
 system.time(install.packages(&quot;tidyverse&quot;))
 ## Time in seconds
 #    user  system elapsed 
 #372.252  15.468 409.364 </code></pre>
-<p>So a standard installation takes almost 7 minutes (409/60)! A couple of caveats:</p>
+<p>So a standard installation takes almost 7 minutes (409/60)!</p>
+<p>Before we go on, it’s worth noting a couple of caveats:</p>
 <ul>
 <li>This timing also includes the download time of the packages; however for simplicity I’m ignoring this. Downloading the packages takes around 20 seconds</li>
-<li>The above number is uses a sample size of 1 to estimate the time; repeating the above experiment, resulted in a remarkably consistent installation time of 410 seconds.</li>
+<li>The above number uses a sample size of 1 to estimate the time; repeating the above experiment, resulted in a remarkably consistent installation time of 410 seconds.</li>
 </ul>
 <p>Repeating this experiment with different values of <code>Ncpus</code> gives the table below:</p>
 <table>
@@ -86,17 +95,27 @@ system.time(install.packages(&quot;tidyverse&quot;))
 <td>1.08</td>
 </tr>
 <tr class="even">
-<td>8</td>
+<td>6</td>
 <td>181</td>
 <td>1.00</td>
 </tr>
 </tbody>
 </table>
-<div id="references" class="section level4">
-<h4>References</h4>
+</div>
+<div id="a-permanent-change-.rprofile" class="section level3">
+<h3>A permanent change: <code>.Rprofile</code></h3>
+<p>Clearly writing <code>options(Ncpus = 6)</code> before you install a package is a pain. However, you can just add it to your <code>.Rprofile</code> file. In a future blog post, we cover the <code>.Rprofile</code> in more detail, but for the purposes of this post, your <code>.Rprofile</code> is a file that contains R code that runs whenever R starts. You can test whether you have an <code>.Rprofile</code> file using the command</p>
+<pre class="r"><code>file.exists(&quot;~/.Rprofile&quot;)</code></pre>
+<p>If you don’t have an <code>.Rprofile</code> file, create one in your home area</p>
+<pre class="r"><code>Sys.getenv(&quot;HOME&quot;)</code></pre>
+<p>Then simply add <code>options(Ncpus = XX)</code> to your file.</p>
+<p>The one remaining question is what value should you set <code>XXX</code>. I typically set it to six since I have eight cores. This allows packages to be installed in parallel, while giving me a little bit of wiggle room to check email and listen to music</p>
+<p>Another added benefit is that when you run <code>update.packages()</code>, packages are also updated in parallel!</p>
+</div>
+<div id="references" class="section level3">
+<h3>References</h3>
 <p>If you are interested in how CRAN handles the phenomena number of package submissions, check out this recent talk:</p>
 <ul>
 <li><a href="https://channel9.msdn.com/Events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/KEYNOTE-20-years-of-CRAN">Twenty years of CRAN</a> by Uwe Ligges at UseR2017! in Brussels.</li>
 </ul>
-</div>
 </div>
