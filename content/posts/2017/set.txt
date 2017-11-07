@@ -1,3 +1,49 @@
+sudo apt-get update
+sudo apt-get upgrade
+
+sudo add-apt-repository ppa:marutter/rrutter
+sudo apt update
+sudo apt-get install r-base
+sudo apt-get install libxml2 libxml2-dev # igraph
+sudo apt-get install libcairo2-dev # Graphics packages
+sudo apt-get install libssl-dev libcurl4-openssl-dev #httr
+sudo apt-get install apache2 # Redirects
+
+
+sudo adduser trainer
+sudo mkdir /rpackages
+sudo chown trainer: rpackages/
+
+sudo sh -c "echo 'R_LIBS=/rpackages/' >> /etc/R/Renviron.site"
+
+sudo sh -c "echo options\(repos = c\(\\'CRAN\\' = \\'https://cran.rstudio.com/\\'\)\) >> /etc/R/Rprofile.site"
+
+sudo su trainer
+## Add to .Rprofile
+options(Ncpus = max(parallel::detectCores() - 1, 1))
+local({
+  r = getOption("repos")
+  r["jr-packages"] = "https://jr-packages.github.io/drat/"
+  options(repos = r)
+})
+
+
+# Run in R
+pkgs = c("Introduction", "Modelling", "Programming", "Ggplot2", "Efficient",
+            "Automate", "Predictive", "Big", "Advanced", "Rstan")
+pkgs = paste0("jr", pkgs)
+
+install.packages(pkgs, dependencies = TRUE)
+install.packages(c("devtools", "testthat"))
+
+
+
+
+
+
+
+
+
 # Update R
 
 

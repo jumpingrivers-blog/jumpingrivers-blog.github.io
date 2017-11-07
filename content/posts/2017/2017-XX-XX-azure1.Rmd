@@ -34,4 +34,37 @@ require
  * Text confirmation
  * Credit Card confirmation
  
+Eventually, you should get to the dashboard page!
+```{r echo=FALSE, out.width="800"}
+knitr::include_graphics("/img/2017/azure_dashboard.png") 
+```
+Clicking on `Create Resources`, this will take you to the marketplace
+```{r echo=FALSE, out.width="800"}
+knitr::include_graphics("/img/2017/azure_marketplace.png") 
+```
+
+Selecting `Ubuntu Server` will launch a dialoge box with four steps:
+
+  * Step 1: Basics: configuration settings
+    - __Name__: A name for the virtual machine, e.g. `rstudio`
+    - __User name__: The master user who will have `sudo` access
+    - __Authentication type__: Either choose ssh or enter a password
+    - __Resource group__: Since this your first instance, create a new one, say `rstudio-group`
+    - __Location__: where will your machine be located
+    
+  * Step 2: Virtual machine size
+    - Select the machine you want. Choose the smallest for the purposes of this exercise
+  * Step 3: Settings
+    - Nothing to change here
+  * Step 4: Summary
+    - Click create and we're good to go!
+    
+After around a minute or so, your virtual machine will be ready.
+
+
+
+
+ 
+ 
+ 
  
