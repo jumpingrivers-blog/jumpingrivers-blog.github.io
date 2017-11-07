@@ -1,9 +1,12 @@
 
 ## SSL
+ * Apache config file in rstudio.conf
 sudo apt-get install apache2-bin apache2
 sudo apt-get install libxml2-dev  
 sudo a2enmod proxy
 sudo a2enmod proxy_http
+sudo a2enmod proxy_html
+
 sudo a2enmod proxy_wstunnel
 sudo a2enmod rewrite
 sudo service apache2 restart  
