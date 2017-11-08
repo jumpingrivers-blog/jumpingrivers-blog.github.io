@@ -1,0 +1,215 @@
+---
+title: "Using RStudio with Azure"
+author: "Colin Gillespie"
+date: 2017-10-16
+output: html_document
+#image: "img/2017/tibbles.png"
+draft: true
+slug: "rstudio_azure_cloud_1"
+tags: [rstats,azure,cloud]
+---
+
+```{r setup,include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+### Can't be bothered reading, tell me now
+
+Host Rstudio server on an azure instance. Configure the instance to access RStudio
+using a _nice_ url
+
+
+### Overview
+
+[Azure](https://azure.microsoft.com/) is cloud computing framework provided by Microsoft, the same idea
+as AWS by Amazon. In the next series, we see how it is possible to use Azure to run 
+RStudio in the cloude.
+
+### Getting started
+
+Unfortunately, we don't start well. Microsoft have made an endurance test of getting started with Azure.
+The first stop is the [Azure](https://azure.microsoft.com/en-gb/) web-page. On the page it 
+
+```{r echo=FALSE, out.width="800"}
+knitr::include_graphics("/img/2017/azure_home.png") 
+```
+After clicking on the __Free Account__, you should sign up for Azure. This is a bit of painful process that will
+require
+
+ * Email confirmation
+ * Text confirmation
+ * Credit Card confirmation
+ 
+Eventually, you should get to the dashboard page!
+```{r echo=FALSE, out.width="800"}
+knitr::include_graphics("/img/2017/azure_dashboard.png") 
+```
+Clicking on `Create Resources`, this will take you to the marketplace
+```{r echo=FALSE, out.width="800"}
+knitr::include_graphics("/img/2017/azure_marketplace.png") 
+```
+
+Selecting `Ubuntu Server` will launch a dialoge box with four steps:
+
+  * Step 1: Basics: configuration settings
+    - __Name__: A name for the virtual machine, e.g. `rstudio`
+    - __User name__: The master user who will have `sudo` access, e.g. `userX`
+    - __Authentication type__: Either choose ssh or enter a password
+    - __Resource group__: Since this your first instance, create a new one, say `rstudio-group`
+    - __Location__: where will your machine be located
+    
+  * Step 2: Virtual machine size
+    - Select the machine you want. Choose the smallest for the purposes of this exercise
+  * Step 3: Settings
+    - Nothing to change here
+  * Step 4: Summary
+    - Click create and we're good to go!
+    
+After around a minute or so, your virtual machine will be ready.
+
+### Setting up R
+
+The next step is to `ssh` into your instance. On the dashboard screen, click on the new box 
+that shows your virtual machine. Select `Networking`. Near the top of the screen will be
+a Public IP address, of the form: XXX.XXX.XXX.XXX. Make a note of this address.
+
+Now `ssh` into your instance via
+```
+ssh userX@XXX.XXX.XXX.XXX
+```
+Next, we want to make user that on the virtual machine, ubuntu is up-to-date. To do this we
+need to invoke super powers as the `sudo` user
+```
+sudo apt-get update
+sudo apt-get upgrade
+```
+Now, we get on with the business of installing R. To use the latest version we need to add
+a new [repository](https://cran.r-project.org/bin/linux/ubuntu/README.html)
+```
+sudo add-apt-repository ppa:marutter/rrutter
+```
+The update and install base R
+```
+sudo apt update
+sudo apt-get install r-base
+```
+Depending on what R packages you want to install it's worth installing a couple of other things at this
+point
+```
+sudo apt-get install libxml2 libxml2-dev # igraph
+sudo apt-get install libcairo2-dev # Graphics packages
+sudo apt-get install libssl-dev libcurl4-openssl-dev #httr
+```
+With an eye to the future, it's also worth installing `apache2` to help with redirects
+```
+sudo apt-get install apache2
+```
+
+
+### Opening ports ready for RStudio
+
+Whenever you access a web-page, the browser specifies a _port_. For standard http pages, 
+we use port 80, for secure https pages, we use port 443. For example, when we type
+```
+https://www.jumpingrivers.com:443
+```
+in the browser, this is converted to 
+```
+https://www.jumpingrivers.com:443
+```
+By default, our azure instance only has port 22 open (the port used for ssh communication). To access RStudio, we'll 
+need to open the following ports
+
+ * 80 (for http)
+ * 443 (for https); only required if we implement SSL
+ * 8787 - the default RStudio port. In the last section, we'll remove this, but just now it's handy to have it open for testing.
+ 
+Under `Networking`, click `Add inbound port rule` and add the three ports (80, 443, 8787):
+```{r echo=FALSE, out.width="800"}
+knitr::include_graphics("/img/2017/azure_dashboard_port.png") 
+```
+
+If everything is working, you should be able to enter `XXX.XXX.XXX.XXX` in your browser and you'll
+see the `Apache2 Ubuntu Default Page` with the title __It works!__
+
+### Installing RStudio
+
+[Installing RStudio](https://www.rstudio.com/products/rstudio/download-server/) server is now relatively easy. Simply run
+```
+# Check the above link for updates to the version
+sudo apt-get install gdebi-core
+wget https://download2.rstudio.org/rstudio-server-1.1.383-amd64.deb
+sudo gdebi rstudio-server-1.1.383-amd64.deb
+```
+If everything works correctly, you should be able to view rstudio server via
+```
+XXX.XXX.XXX.XXX:8787
+```
+If the page _hangs_, double check you have opened port 8787 under the network settings.
+
+### Nicer URLs
+
+Getting users to type the port number isn't idea. What we would like to for users to 
+type
+```
+XXX.XXX.XXX.XXX/rstudio
+```
+
+
+#### DNS label
+
+The first step is to access the page via a standard URL and not an IP address. 
+In the main dashboard screen, under all resources, click on 
+```
+rstudio-ip Public IP address
+```
+Then select configuration. In the text box under DNS Label, enter text, e.g. `rstudio-myname`. So in my case, 
+I have used `rstudio-jumpingrivers`. This means, we can now access rstudio via
+```
+rstudio-jumpingrivers.westeurope.cloudapp.azure.com:8787
+```
+
+
+
+
+Under _Networking_, click on the IP
+
+
+
+This involves configuring apache. First navigate to `/etc/apache2/sites-available`, e.g.
+```
+cd /etc/apache2/sites-available
+```
+Next is to create a file called rstudio.conf. Using your favourite text editor, e.g. vim or nano
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+ 
