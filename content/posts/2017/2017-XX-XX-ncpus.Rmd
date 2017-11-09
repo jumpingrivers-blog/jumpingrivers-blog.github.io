@@ -3,7 +3,7 @@ title: "Speeding up package installation"
 author: "Colin Gillespie"
 date: 2017-10-16
 output: html_document
-#image: "img/2017/tibbles.png"
+image: "img/2017/package.jpg"
 draft: true
 slug: "speed_package_installation"
 tags: [rstats,tidyverse,packages]
