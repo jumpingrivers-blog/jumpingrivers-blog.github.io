@@ -36,17 +36,7 @@ pkgs = paste0("jr", pkgs)
 install.packages(pkgs, dependencies = TRUE)
 install.packages(c("devtools", "testthat"))
 
-
-
-
-
-
-
-
-
 # Update R
-
-
 sudo mkdir /data/
 sudo mkdir /data/rpackages/
 

@@ -19,6 +19,7 @@ tags: [rstats,azure,cloud]
 <li><a href="#opening-ports-ready-for-rstudio">Opening ports ready for RStudio</a></li>
 <li><a href="#installing-rstudio">Installing RStudio</a></li>
 <li><a href="#nicer-urls">Nicer URLs</a></li>
+<li><a href="#adding-ssl">Adding SSL</a></li>
 </ul>
 </div>
 
@@ -113,18 +114,60 @@ sudo gdebi rstudio-server-1.1.383-amd64.deb</code></pre>
 </div>
 <div id="nicer-urls" class="section level3">
 <h3>Nicer URLs</h3>
-<p>Getting users to type the port number isn’t idea. What we would like to for users to type</p>
-<pre><code>XXX.XXX.XXX.XXX/rstudio</code></pre>
-<div id="dns-label" class="section level4">
-<h4>DNS label</h4>
-<p>The first step is to access the page via a standard URL and not an IP address. In the main dashboard screen, under all resources, click on</p>
+<p>The first step is to access the page via a standard URL and not an IP address. In the main dashboard screen under all resources, click on</p>
 <pre><code>rstudio-ip Public IP address</code></pre>
-<p>Then select configuration. In the text box under DNS Label, enter text, e.g. <code>rstudio-myname</code>. So in my case, I have used <code>rstudio-jumpingrivers</code>. This means, we can now access rstudio via</p>
+<p>Then select configuration. In the text box under DNS Label, enter text, e.g. <code>rstudio-myname</code>. So in my case, I have used <code>rstudio-jumpingrivers</code> <img src="/img/2017/azure_dashboard_ip.png" width="800" /> This means, we can now access rstudio via</p>
 <pre><code>rstudio-jumpingrivers.westeurope.cloudapp.azure.com:8787</code></pre>
-<p>Under <em>Networking</em>, click on the IP</p>
+<p>Getting users to type the port number isn’t idea. What we would like to for users to type</p>
+<pre><code>rstudio-jumpingrivers.westeurope.cloudapp.azure.com/rstudio</code></pre>
 <p>This involves configuring apache. First navigate to <code>/etc/apache2/sites-available</code>, e.g.</p>
 <pre><code>cd /etc/apache2/sites-available</code></pre>
 <p>Next is to create a file called rstudio.conf. Using your favourite text editor, e.g. vim or nano</p>
+<pre><code>&lt;VirtualHost *:80&gt;
+  ServerAdmin info@jumpingrivers.com
+  ServerName rstudio-jumpingrivers.westeurope.cloudapp.azure.com
+  ServerAlias www.rstudio-jumpingrivers.westeurope.cloudapp.azure.com
+  &lt;Proxy *&gt;
+    Allow from localhost
+  &lt;/Proxy&gt;
+
+  # Specify path for Logs
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+  RewriteEngine on
+
+  # Following lines should open rstudio directly from the url
+  # Map rstudio to rstudio/
+  RedirectMatch ^/rstudio$ /rstudio/
+
+  RewriteCond %{HTTP:Upgrade} = websocket
+  RewriteRule /rstudio/(.*) ws://localhost:8787/$1 [P,L]
+  RewriteCond %{HTTP:Upgrade}     !=websocket
+  RewriteRule /rstudio/(.*) http://localhost:8787/$1 [P,L]
+  ProxyPass /rstudio/     http://localhost:8787/
+  ProxyPassReverse /rstudio/ http://localhost:8787/
+  ProxyRequests off
+&lt;/VirtualHost&gt;</code></pre>
+<p>Then enable the necesary apache modules</p>
+<pre><code>sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo a2enmod proxy_html
+sudo a2enmod proxy_wstunnel
+sudo a2enmod rewrite</code></pre>
+<p>Finally, restart apache</p>
+<pre><code>sudo a2ensite rstudio.conf
+sudo service apache2 restart  </code></pre>
+<p>You should now be able to access RStudio via</p>
+<pre><code>rstudio-jumpingrivers.westeurope.cloudapp.azure.com/rstudio/</code></pre>
+</div>
+<div id="adding-ssl" class="section level3">
+<h3>Adding SSL</h3>
+<p>In theory it should be straightforward to add SSL support using <a href="https://letsencrypt.org/">Let’s Encrypt</a>. However, we’ve found that you hit rate limiters since the domain is azure.com. However, if we register our own domain, we can easily add SSL support. This will be the subject of our next blog post.</p>
+<div id="references" class="section level5">
+<h5>References</h5>
+<ul>
+<li><a href="https://mgw.dumatics.com/rstudio-server-setup-with-ssl-behind-apache-proxy-server/" class="uri">https://mgw.dumatics.com/rstudio-server-setup-with-ssl-behind-apache-proxy-server/</a></li>
+</ul>
 <p></p>
 </div>
 </div>
