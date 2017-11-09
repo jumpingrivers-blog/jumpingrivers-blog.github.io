@@ -34,7 +34,7 @@ builds and checks these packages in __parallel__; so rather than installing a si
 package at a time, it checks multiple packages at once. Obviously some care has to be taken when checking/installing
 packages due to the connectiveness between packages, but R takes care of these details.
 
-### Parallell package installation: Ncpus
+### Parallel package installation: Ncpus
 
 If you examine the help package of `?install.packages`, there's a sneaky argument called `Ncpus`. From the help page:
 

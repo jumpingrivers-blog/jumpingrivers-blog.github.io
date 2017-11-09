@@ -13,7 +13,7 @@ tags: [rstats,tidyverse,packages]
 <div id="TOC">
 <ul>
 <li><a href="#the-wonder-of-cran">The wonder of CRAN</a></li>
-<li><a href="#parallell-package-installation-ncpus">Parallell package installation: Ncpus</a></li>
+<li><a href="#parallel-package-installation-ncpus">Parallel package installation: Ncpus</a></li>
 <li><a href="#does-it-work">Does it work?</a></li>
 <li><a href="#a-permanent-change-.rprofile">A permanent change: <code>.Rprofile</code></a></li>
 <li><a href="#references">References</a></li>
@@ -33,8 +33,8 @@ tags: [rstats,tidyverse,packages]
 <p>CRAN also checks that the updated package doesn’t break existing packages. This last part is particularly tricky when you consider all the dependencies a package like <strong>ggplot2</strong> or <strong>Rcpp</strong> have. Furthermore, it performs all these checks within 24 hours, ready for the next set packages.</p>
 <p>What many people don’t realise is that for CRAN to perform this miracle of package checking, it builds and checks these packages in <strong>parallel</strong>; so rather than installing a single package at a time, it checks multiple packages at once. Obviously some care has to be taken when checking/installing packages due to the connectiveness between packages, but R takes care of these details.</p>
 </div>
-<div id="parallell-package-installation-ncpus" class="section level3">
-<h3>Parallell package installation: Ncpus</h3>
+<div id="parallel-package-installation-ncpus" class="section level3">
+<h3>Parallel package installation: Ncpus</h3>
 <p>If you examine the help package of <code>?install.packages</code>, there’s a sneaky argument called <code>Ncpus</code>. From the help page:</p>
 <blockquote>
 <p>Ncpus: The number of parallel processes to use for a parallel install of more than one source package.</p>
