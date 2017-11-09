@@ -149,8 +149,9 @@ If the page _hangs_, double check you have opened port 8787 under the network se
 ### Nicer URLs
 
 
+
 The first step is to access the page via a standard URL and not an IP address. 
-In the main dashboard screen under all resources, click on 
+In the main dashboard screen, under all resources, click on 
 ```
 rstudio-ip Public IP address
 ```
@@ -168,7 +169,6 @@ type
 ```
 rstudio-jumpingrivers.westeurope.cloudapp.azure.com/rstudio
 ```
-
 
 This involves configuring apache. First navigate to `/etc/apache2/sites-available`, e.g.
 ```
@@ -227,12 +227,14 @@ In theory it should be straightforward to add SSL support using [Let's Encrypt](
 However, we've found that you hit rate limiters since the domain is azure.com. However, if we register
 our own domain, we can easily add SSL support. This will be the subject of our next blog post.
 
-
-
-
 ##### References
 
   * https://mgw.dumatics.com/rstudio-server-setup-with-ssl-behind-apache-proxy-server/
+=======
+
+
+
+
 
 
 
