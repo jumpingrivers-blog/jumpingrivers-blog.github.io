@@ -3,48 +3,41 @@ title: "Using RStudio with Azure"
 author: "Colin Gillespie"
 date: 2017-10-16
 output: html_document
-#image: "img/2017/tibbles.png"
+image: "img/2017/azure.png"
 draft: true
 slug: "rstudio_azure_cloud_1"
-tags: [rstats,azure,cloud]
+tags: [rstats,azure,cloud,rstudio]
 ---
 
 
 <div id="TOC">
 <ul>
-<li><a href="#cant-be-bothered-reading-tell-me-now">Can’t be bothered reading, tell me now</a></li>
-<li><a href="#overview">Overview</a></li>
+<li><a href="#cant-be-bothered-reading-tell-me-now">Can’t be bothered reading, tell me now</a><ul>
 <li><a href="#getting-started">Getting started</a></li>
 <li><a href="#setting-up-r">Setting up R</a></li>
 <li><a href="#opening-ports-ready-for-rstudio">Opening ports ready for RStudio</a></li>
 <li><a href="#installing-rstudio">Installing RStudio</a></li>
 <li><a href="#nicer-urls">Nicer URLs</a></li>
-<<<<<<< HEAD
 <li><a href="#adding-ssl">Adding SSL</a></li>
-=======
->>>>>>> cdc116a143d1d0c92bde79ac4de44397de7f697f
+</ul></li>
 </ul>
 </div>
 
-<div id="cant-be-bothered-reading-tell-me-now" class="section level3">
-<h3>Can’t be bothered reading, tell me now</h3>
-<p>Host Rstudio server on an azure instance. Configure the instance to access RStudio using a <em>nice</em> url</p>
-</div>
-<div id="overview" class="section level3">
-<h3>Overview</h3>
-<p><a href="https://azure.microsoft.com/">Azure</a> is cloud computing framework provided by Microsoft, the same idea as AWS by Amazon. In the next series, we see how it is possible to use Azure to run RStudio in the cloude.</p>
-</div>
+<div id="cant-be-bothered-reading-tell-me-now" class="section level2">
+<h2>Can’t be bothered reading, tell me now</h2>
+<p>Host RStudio server on an azure instance. Configure the instance to access RStudio with a <em>nice</em> url</p>
 <div id="getting-started" class="section level3">
 <h3>Getting started</h3>
-<p>Unfortunately, we don’t start well. Microsoft have made an endurance test of getting started with Azure. The first stop is the <a href="https://azure.microsoft.com/en-gb/">Azure</a> web-page. On the page it</p>
-<p><img src="/img/2017/azure_home.png" width="800" /> After clicking on the <strong>Free Account</strong>, you should sign up for Azure. This is a bit of painful process that will require</p>
+<p><a href="https://azure.microsoft.com/">Azure</a> is cloud computing framework provided by Microsoft, the same idea as AWS by Amazon. In this post, we’ll describe how to use Azure to run <a href="https://www.rstudio.com/products/rstudio/download-server/">RStudio Server</a> in the cloud.</p>
+<p>Unfortunately, things don’t start well - Microsoft have made an endurance test of getting started with Azure. The first stop is the <a href="https://azure.microsoft.com/en-gb/">Azure</a> web-page. On this page</p>
+<p><img src="/img/2017/azure_home.png" width="800" /> click on <strong>Free Account</strong> and follow the instructions. This is a bit of painful process that will require</p>
 <ul>
 <li>Email confirmation</li>
 <li>Text confirmation</li>
 <li>Credit Card confirmation</li>
 </ul>
-<p>Eventually, you should get to the dashboard page! <img src="/img/2017/azure_dashboard.png" width="800" /> Clicking on <code>Create Resources</code>, this will take you to the marketplace <img src="/img/2017/azure_marketplace.png" width="800" /></p>
-<p>Selecting <code>Ubuntu Server</code> will launch a dialoge box with four steps:</p>
+<p>Eventually you should get to the dashboard page! <img src="/img/2017/azure_dashboard.png" width="800" /> Clicking on <code>Create Resources</code>, this will take you to the marketplace <img src="/img/2017/azure_marketplace.png" width="800" /></p>
+<p>Selecting <code>Ubuntu Server</code> will launch a dialogue box with four steps:</p>
 <ul>
 <li>Step 1: Basics: configuration settings
 <ul>
@@ -117,14 +110,13 @@ sudo gdebi rstudio-server-1.1.383-amd64.deb</code></pre>
 </div>
 <div id="nicer-urls" class="section level3">
 <h3>Nicer URLs</h3>
-<<<<<<< HEAD
-<p>The first step is to access the page via a standard URL and not an IP address. In the main dashboard screen under all resources, click on</p>
+<p>The first step is to access the page via a standard URL and not an IP address. In the main dashboard screen, under all resources, click on</p>
 <pre><code>rstudio-ip Public IP address</code></pre>
 <p>Then select configuration. In the text box under DNS Label, enter text, e.g. <code>rstudio-myname</code>. So in my case, I have used <code>rstudio-jumpingrivers</code> <img src="/img/2017/azure_dashboard_ip.png" width="800" /> This means, we can now access rstudio via</p>
 <pre><code>rstudio-jumpingrivers.westeurope.cloudapp.azure.com:8787</code></pre>
 <p>Getting users to type the port number isn’t idea. What we would like to for users to type</p>
 <pre><code>rstudio-jumpingrivers.westeurope.cloudapp.azure.com/rstudio</code></pre>
-<p>This involves configuring apache. First navigate to <code>/etc/apache2/sites-available</code>, e.g.</p>
+<p>This involves configuring Apache. First navigate to <code>/etc/apache2/sites-available</code>, e.g.</p>
 <pre><code>cd /etc/apache2/sites-available</code></pre>
 <p>Next is to create a file called rstudio.conf. Using your favourite text editor, e.g. vim or nano</p>
 <pre><code>&lt;VirtualHost *:80&gt;
@@ -152,13 +144,13 @@ sudo gdebi rstudio-server-1.1.383-amd64.deb</code></pre>
   ProxyPassReverse /rstudio/ http://localhost:8787/
   ProxyRequests off
 &lt;/VirtualHost&gt;</code></pre>
-<p>Then enable the necesary apache modules</p>
+<p>Then enable the necessary Apache modules</p>
 <pre><code>sudo a2enmod proxy
 sudo a2enmod proxy_http
 sudo a2enmod proxy_html
 sudo a2enmod proxy_wstunnel
 sudo a2enmod rewrite</code></pre>
-<p>Finally, restart apache</p>
+<p>Finally, restart Apache</p>
 <pre><code>sudo a2ensite rstudio.conf
 sudo service apache2 restart  </code></pre>
 <p>You should now be able to access RStudio via</p>
@@ -170,22 +162,9 @@ sudo service apache2 restart  </code></pre>
 <div id="references" class="section level5">
 <h5>References</h5>
 <ul>
-<li><a href="https://mgw.dumatics.com/rstudio-server-setup-with-ssl-behind-apache-proxy-server/" class="uri">https://mgw.dumatics.com/rstudio-server-setup-with-ssl-behind-apache-proxy-server/</a></li>
+<li><h1 id="httpsmgw.dumatics.comrstudio-server-setup-with-ssl-behind-apache-proxy-server"><a href="https://mgw.dumatics.com/rstudio-server-setup-with-ssl-behind-apache-proxy-server/" class="uri">https://mgw.dumatics.com/rstudio-server-setup-with-ssl-behind-apache-proxy-server/</a></h1></li>
 </ul>
-=======
-<p>Getting users to type the port number isn’t idea. What we would like to for users to type</p>
-<pre><code>XXX.XXX.XXX.XXX/rstudio</code></pre>
-<div id="dns-label" class="section level4">
-<h4>DNS label</h4>
-<p>The first step is to access the page via a standard URL and not an IP address. In the main dashboard screen, under all resources, click on</p>
-<pre><code>rstudio-ip Public IP address</code></pre>
-<p>Then select configuration. In the text box under DNS Label, enter text, e.g. <code>rstudio-myname</code>. So in my case, I have used <code>rstudio-jumpingrivers</code>. This means, we can now access rstudio via</p>
-<pre><code>rstudio-jumpingrivers.westeurope.cloudapp.azure.com:8787</code></pre>
-<p>Under <em>Networking</em>, click on the IP</p>
-<p>This involves configuring apache. First navigate to <code>/etc/apache2/sites-available</code>, e.g.</p>
-<pre><code>cd /etc/apache2/sites-available</code></pre>
-<p>Next is to create a file called rstudio.conf. Using your favourite text editor, e.g. vim or nano</p>
->>>>>>> cdc116a143d1d0c92bde79ac4de44397de7f697f
 <p></p>
+</div>
 </div>
 </div>

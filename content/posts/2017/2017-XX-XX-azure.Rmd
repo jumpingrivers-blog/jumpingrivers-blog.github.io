@@ -3,43 +3,41 @@ title: "Using RStudio with Azure"
 author: "Colin Gillespie"
 date: 2017-10-16
 output: html_document
-#image: "img/2017/tibbles.png"
+image: "img/2017/azure.png"
 draft: true
 slug: "rstudio_azure_cloud_1"
-tags: [rstats,azure,cloud]
+tags: [rstats,azure,cloud,rstudio]
 ---
 
 ```{r setup,include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
-### Can't be bothered reading, tell me now
+## Can't be bothered reading, tell me now
 
-Host Rstudio server on an azure instance. Configure the instance to access RStudio
-using a _nice_ url
-
-### Overview
-
-[Azure](https://azure.microsoft.com/) is cloud computing framework provided by Microsoft, the same idea
-as AWS by Amazon. In the next series, we see how it is possible to use Azure to run 
-RStudio in the cloude.
+Host RStudio server on an azure instance. Configure the instance to access RStudio
+with a _nice_ url
 
 ### Getting started
 
-Unfortunately, we don't start well. Microsoft have made an endurance test of getting started with Azure.
-The first stop is the [Azure](https://azure.microsoft.com/en-gb/) web-page. On the page it 
+[Azure](https://azure.microsoft.com/) is cloud computing framework provided by Microsoft, the same idea
+as AWS by Amazon. In this post, we'll describe how to use Azure to run 
+[RStudio Server](https://www.rstudio.com/products/rstudio/download-server/) in the cloud.
+
+Unfortunately, things don't start well - Microsoft have made an endurance test of getting started with Azure.
+The first stop is the [Azure](https://azure.microsoft.com/en-gb/) web-page. On this page
 
 ```{r echo=FALSE, out.width="800"}
 knitr::include_graphics("/img/2017/azure_home.png") 
 ```
-After clicking on the __Free Account__, you should sign up for Azure. This is a bit of painful process that will
+click on __Free Account__ and follow the instructions. This is a bit of painful process that will
 require
 
  * Email confirmation
  * Text confirmation
  * Credit Card confirmation
  
-Eventually, you should get to the dashboard page!
+Eventually you should get to the dashboard page!
 ```{r echo=FALSE, out.width="800"}
 knitr::include_graphics("/img/2017/azure_dashboard.png") 
 ```
@@ -48,7 +46,7 @@ Clicking on `Create Resources`, this will take you to the marketplace
 knitr::include_graphics("/img/2017/azure_marketplace.png") 
 ```
 
-Selecting `Ubuntu Server` will launch a dialoge box with four steps:
+Selecting `Ubuntu Server` will launch a dialogue box with four steps:
 
   * Step 1: Basics: configuration settings
     - __Name__: A name for the virtual machine, e.g. `rstudio`
@@ -170,7 +168,7 @@ type
 rstudio-jumpingrivers.westeurope.cloudapp.azure.com/rstudio
 ```
 
-This involves configuring apache. First navigate to `/etc/apache2/sites-available`, e.g.
+This involves configuring Apache. First navigate to `/etc/apache2/sites-available`, e.g.
 ```
 cd /etc/apache2/sites-available
 ```
@@ -203,7 +201,7 @@ Next is to create a file called rstudio.conf. Using your favourite text editor, 
   ProxyRequests off
 </VirtualHost>
 ```
-Then enable the necesary apache modules
+Then enable the necessary Apache modules
 ```
 sudo a2enmod proxy
 sudo a2enmod proxy_http
@@ -211,7 +209,7 @@ sudo a2enmod proxy_html
 sudo a2enmod proxy_wstunnel
 sudo a2enmod rewrite
 ```
-Finally, restart apache
+Finally, restart Apache
 ```
 sudo a2ensite rstudio.conf
 sudo service apache2 restart  
