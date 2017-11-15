@@ -13,6 +13,10 @@ tags: [rstats,tidyverse,packages]
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
+### Can't be bothered reading, tell me now
+
+A simple one line tweak can significantly speed up package installation and updates.
+
 ### The wonder of CRAN
 
 One of the best features of R is CRAN.
@@ -32,17 +36,17 @@ it performs all these checks within 24 hours, ready for the next set packages.
 What many people don't realise is that for CRAN to perform this miracle of package checking, it 
 builds and checks these packages in __parallel__; so rather than installing a single 
 package at a time, it checks multiple packages at once. Obviously some care has to be taken when checking/installing
-packages due to the connectiveness between packages, but R takes care of these details.
+packages due to the connectivity between packages, but R takes care of these details.
 
 ### Parallel package installation: Ncpus
 
 If you examine the help package of `?install.packages`, there's a sneaky argument called `Ncpus`. From the help page:
 
-> Ncpus: The number of parallel processes to use for a parallel install of more than one source package.
+> `Ncpus`: The number of parallel processes to use for a parallel install of more than one source package.
 
 The default value of this argument is
 
-> Ncpus = getOption("Ncpus", 1L)
+> Ncpus = getOption('Ncpus', 1L)
 
 The `getOption()` part determines if the value has been set in `options()`. If no value is found, the default number of 
 processes to use is `1`. If you haven't heard of `Ncpus`, it's almost certainly 1, but you can check using
@@ -92,12 +96,20 @@ Before we go on, it's worth noting a couple of caveats:
  
 Repeating this experiment with different values of `Ncpus` gives the table below:
 
-Ncpus | elapsed | Ratio
+Ncpus | Elapsed (Secs) | Ratio
 ------|---------|------
 1     | 409     |  2.26
 2     | 224     |  1.24
 4     | 196     |  1.08
 6     | 181     |  1.00
+
+So setting `Ncpus` to 2 allows us to half the installation time from 409 seconds to around
+224 (seconds). Increasing `Ncpus` to 4 gives a further speed boost. Due to the dependencies
+between packages, we'll never achieve a perfect speed-up, e.g. if package X depends on Y, then we have to install
+X first. However, for a simple change we get an easy speed boost.
+
+Furthermore, setting `Ncpus` gives a speed boost when updating packages via `update.packages()`.
+
 
 ### A permanent change: `.Rprofile`
 
@@ -119,11 +131,16 @@ The one remaining question is what value should you set `XX`. I typically set it
 I have eight cores. This allows packages to be installed in parallel, while giving me a little bit
 of wiggle room to check email and listen to music.
 
-Another added benefit is that when you run `update.packages()`, packages are also updated in parallel!
-
 ### References
 
 If you are interested in how CRAN handles the phenomenal number of package submissions, check out this recent talk:
 
   * [Twenty years of CRAN](https://channel9.msdn.com/Events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/KEYNOTE-20-years-of-CRAN) by Uwe Ligges at UseR2017! in Brussels.
   * Image credit: [Simson Petrol](https://unsplash.com/photos/-3wygakaeQc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+---
+
+```{r echo=FALSE}
+knitr::include_graphics("/img/logos/300_125.jpg") 
+```
+
