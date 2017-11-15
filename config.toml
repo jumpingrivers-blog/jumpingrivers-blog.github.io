@@ -59,4 +59,5 @@ enableEmoji = true
 #  stackoverflow = "full profile url in stackoverflow"
 #  instagram     = "full profile url in instagram"
   github        = "https://github.com/jumpingrivers/"
+  rss = "http://blog.jumpingrivers.com/index.xml"
 
