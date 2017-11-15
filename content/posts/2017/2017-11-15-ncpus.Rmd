@@ -140,7 +140,6 @@ If you are interested in how CRAN handles the phenomenal number of package submi
 
 ---
 
-```{r echo=FALSE}
-knitr::include_graphics("/img/logos/300_125.jpg") 
-```
+[![](/img/logos/300_125.jpg)](https://jumpingrivers.com)
+
 
