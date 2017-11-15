@@ -140,6 +140,6 @@ If you are interested in how CRAN handles the phenomenal number of package submi
 
 ---
 
-[![](/img/logos/300_125.jpg)](https://jumpingrivers.com)
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=ncpus)
 
 

@@ -22,7 +22,7 @@ Or to put it another way, it makes Bayesian inference fast and (a bit) easier.
 
 #### Training
 
-If you are interested in learning more about Stan, we run a two day [introduction to Rstan](https://www.jumpingrivers.com/courses/13_introductions-to-bayesian-inference-using-rstan)
+If you are interested in learning more about Stan, we run a two day [introduction to Rstan](https://www.jumpingrivers.com/courses/13_introductions-to-bayesian-inference-using-rstan?utm_source=blog&utm_medium=link&utm_campaign=stancon2018)
 course. The course covers
 
   * Introduction to Bayesian inference: A brief overview of the main ideas behind Bayesian inference.
@@ -32,3 +32,9 @@ course. The course covers
   * Examples: Including linear regression, Poisson regression and hierarchical models
 
 Space is very limited.
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=stancon2018)
+
+
