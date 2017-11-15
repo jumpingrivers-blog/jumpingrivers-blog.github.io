@@ -12,6 +12,12 @@ to improve their data science capabilities.
 
 ![Our data science workflow][1]
 
+### Consultancy
+
+Do you have a data problem? We can help. Over the last few years, 
+we have worked with some of the largest (and smallest!) companies in the world
+helping them use their data. For more info, please [Get in contact](/contact/)
+
 ### Training
 
 We run both on-site and public courses on R, python, SQL, Stan, Scala and
