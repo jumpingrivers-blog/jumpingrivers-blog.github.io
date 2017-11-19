@@ -6,7 +6,7 @@ output: html_document
 image: "img/2017/package.jpg"
 draft: false
 slug: "speed_package_installation"
-tags: [rstats,tidyverse,packages,parallel]
+tags: [r,tidyverse,packages,parallel]
 ---
 
 ```{r setup,include=FALSE}
