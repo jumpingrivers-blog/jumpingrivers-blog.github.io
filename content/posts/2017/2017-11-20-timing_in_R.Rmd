@@ -1,9 +1,10 @@
 ---
 title: "Timing in R"
 author: "Theo Roe"
-date: 2017-10-24
+date: 2017-11-20
 output: html_document
-draft: true
+image: "img/2017/front_timing.png"
+draft: false
 slug: "timing-in-R"
 tags: [r, timing, microbenchmark, tictoc, system-time]
 ---
@@ -12,7 +13,11 @@ tags: [r, timing, microbenchmark, tictoc, system-time]
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
-As time goes on, your R scripts are probably getting longer and more complicated, _right_? Timing parts of your script could save you precious time when re-running code over and over again. Today I'm going ot go through the 4 main functions for doing so. 
+As time goes on, your R scripts are probably getting longer and more complicated, _right_? Timing parts of your script could save you precious time when re-running code over and over again. Today I'm going to go through the 4 main functions for doing so. 
+
+```{r echo=FALSE, out.width="300"}
+knitr::include_graphics("/img/2017/front_timing.png") 
+```
 
 ***
 
@@ -59,14 +64,19 @@ tic("Start time til half way")
 Sys.sleep(2)
 # end timer for the first subsection, log = TRUE tells toc to give us a message
 toc(log = TRUE)
-# start timer for second subsection
+```
+Now to start the timer for the second subsection
+
+```{r}
 tic("Half way til end")
 Sys.sleep(2)
 # end timer for second subsection
 toc(log = TRUE)
 # end timer for entire section
 toc(log = TRUE)
-# log results as a list, format = TRUE returns this list in a nice format, rather than raw code
+```
+We can view the results og results as a list (`format = TRUE` returns this list in a nice format), rather than raw code
+```{r}
 timing = tic.log(format=TRUE)
 timing
 # clear the log, if the log is not cleared then the next log would contain the results of the previous log
@@ -81,7 +91,7 @@ I think returning the timings as a list is pretty cool. Not to mention how easy 
 
 ### 1) `system.time()`
 
-Why oh WHY did the guys over at R choose to give `system.time()` a lower case `s` and `Sys.time()` and upper case `s`?
+Why oh WHY did R choose to give `system.time()` a lower case `s` and `Sys.time()` and upper case `s`?
 
 Anyway...
 
@@ -142,3 +152,10 @@ These provide quick and efficient ways of visualising our timings.
 `Sys.time()` and `system.time()` are long gone! For me, the __tictoc__ and __microbenchmark__ packages are far superior. In both packages, it is very easy to store the timings for later use, and the range of options for both packages stretch far past the options for `Sys.time()` and `system.time()`. I also _think_ that __microbenchmark__ is the only benchmarking package that has visualizations built in. OK, so they might not be the prettiest, but for a quick look at your timings, they provide a perfect service. 
 
 Thanks for chatting!
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=2017timing)
+
+
+

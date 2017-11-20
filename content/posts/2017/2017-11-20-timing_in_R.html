@@ -1,9 +1,10 @@
 ---
 title: "Timing in R"
 author: "Theo Roe"
-date: 2017-10-24
+date: 2017-11-20
 output: html_document
-draft: true
+image: "img/2017/front_timing.png"
+draft: false
 slug: "timing-in-R"
 tags: [r, timing, microbenchmark, tictoc, system-time]
 ---
@@ -23,7 +24,8 @@ tags: [r, timing, microbenchmark, tictoc, system-time]
 </ul>
 </div>
 
-<p>As time goes on, your R scripts are probably getting longer and more complicated, <em>right</em>? Timing parts of your script could save you precious time when re-running code over and over again. Today I’m going ot go through the 4 main functions for doing so.</p>
+<p>As time goes on, your R scripts are probably getting longer and more complicated, <em>right</em>? Timing parts of your script could save you precious time when re-running code over and over again. Today I’m going to go through the 4 main functions for doing so.</p>
+<p><img src="/img/2017/front_timing.png" width="300" /></p>
 <hr />
 <div id="nested-timing" class="section level2">
 <h2>Nested Timing</h2>
@@ -35,7 +37,7 @@ Sys.sleep(0.5)
 end_time = Sys.time()
 
 end_time - start_time
-## Time difference of 0.5029 secs</code></pre>
+## Time difference of 0.5037 secs</code></pre>
 <p>Notice it creates a neat little message for the time difference.</p>
 </div>
 <div id="the-tictoc-package" class="section level3">
@@ -57,27 +59,27 @@ tic(&quot;Start time til half way&quot;)
 Sys.sleep(2)
 # end timer for the first subsection, log = TRUE tells toc to give us a message
 toc(log = TRUE)
-## Start time til half way: 2.028 sec elapsed
-# start timer for second subsection
-tic(&quot;Half way til end&quot;)
+## Start time til half way: 2.016 sec elapsed</code></pre>
+<p>Now to start the timer for the second subsection</p>
+<pre class="r"><code>tic(&quot;Half way til end&quot;)
 Sys.sleep(2)
 # end timer for second subsection
 toc(log = TRUE)
-## Half way til end: 2.005 sec elapsed
+## Half way til end: 2.007 sec elapsed
 # end timer for entire section
 toc(log = TRUE)
-## total time: 4.038 sec elapsed
-# log results as a list, format = TRUE returns this list in a nice format, rather than raw code
-timing = tic.log(format=TRUE)
+## total time: 4.035 sec elapsed</code></pre>
+<p>We can view the results og results as a list (<code>format = TRUE</code> returns this list in a nice format), rather than raw code</p>
+<pre class="r"><code>timing = tic.log(format=TRUE)
 timing
 ## [[1]]
-## [1] &quot;Start time til half way: 2.028 sec elapsed&quot;
+## [1] &quot;Start time til half way: 2.016 sec elapsed&quot;
 ## 
 ## [[2]]
-## [1] &quot;Half way til end: 2.005 sec elapsed&quot;
+## [1] &quot;Half way til end: 2.007 sec elapsed&quot;
 ## 
 ## [[3]]
-## [1] &quot;total time: 4.038 sec elapsed&quot;
+## [1] &quot;total time: 4.035 sec elapsed&quot;
 # clear the log, if the log is not cleared then the next log would contain the results of the previous log
 tic.clearlog()</code></pre>
 <p>I think returning the timings as a list is pretty cool. Not to mention how easy it is to do so.</p>
@@ -88,20 +90,20 @@ tic.clearlog()</code></pre>
 <h2>Timing to Compare</h2>
 <div id="system.time" class="section level3">
 <h3>1) <code>system.time()</code></h3>
-<p>Why oh WHY did the guys over at R choose to give <code>system.time()</code> a lower case <code>s</code> and <code>Sys.time()</code> and upper case <code>s</code>?</p>
+<p>Why oh WHY did R choose to give <code>system.time()</code> a lower case <code>s</code> and <code>Sys.time()</code> and upper case <code>s</code>?</p>
 <p>Anyway…</p>
 <p><code>system.time()</code> can be used to time functions without having to take note of the start and end times.</p>
 <pre class="r"><code>system.time(Sys.sleep(0.5))
 ##    user  system elapsed 
-##     0.0     0.0     0.5
+##   0.000   0.000   0.501
 system.time(Sys.sleep(1))
 ##    user  system elapsed 
-##   0.000   0.000   1.001</code></pre>
+##   0.000   0.000   1.002</code></pre>
 <p>We only want to take notice of the “elapsed” time, for the definition of the “user” and “system” times see <a href="http://r.789695.n4.nabble.com/Meaning-of-proc-time-td2303263.html#a2306691">this thread.</a></p>
 <p>For a repeated timing, we would use the <code>replicate()</code> function.</p>
 <pre class="r"><code>system.time(replicate(10, Sys.sleep(0.1)))
 ##    user  system elapsed 
-##   0.000   0.000   1.003</code></pre>
+##   0.004   0.000   1.005</code></pre>
 </div>
 <div id="the-microbenchmark-package" class="section level3">
 <h3>2) The microbenchmark Package</h3>
@@ -113,7 +115,7 @@ system.time(Sys.sleep(1))
 <pre class="r"><code>microbenchmark(Sys.sleep(0.1), times = 10, unit = &quot;s&quot;)
 ## Unit: seconds
 ##            expr    min     lq   mean median     uq    max neval
-##  Sys.sleep(0.1) 0.1001 0.1002 0.1002 0.1002 0.1002 0.1002    10
+##  Sys.sleep(0.1) 0.1001 0.1001 0.1002 0.1002 0.1002 0.1003    10
 # times = 10 tells microbenchmark to repeat the test 10 times
 # unit = &quot;s&quot; tells microbenchmark to return the output in seconds</code></pre>
 <p>Notice we get a nicely formatted table of summary statistics. We can record our times in anything from seconds to nanoseconds(!!!!). Already this is better than <code>system.time()</code>. Not only that, but we can compare sections of code in an easy-to-do way and name the sections of code for an easy-to-read output.</p>
@@ -122,10 +124,11 @@ system.time(Sys.sleep(1))
                        sleepiest = Sys.sleep(0.3),
                    times = 10, unit = &quot;s&quot;)</code></pre>
 <p>As well as this (more?!) <strong>microbenchmark</strong> comes with a two built-in plotting functions.</p>
-<pre class="r"><code>microbenchmark:::autoplot.microbenchmark(sleep)</code></pre>
-<p><img src="/posts/2017/2017-XX-XX-timing_in_R_files/figure-html/unnamed-chunk-12-1.svg" width="576" /></p>
+<pre class="r"><code>microbenchmark:::autoplot.microbenchmark(sleep)
+## Coordinate system already present. Adding new coordinate system, which will replace the existing one.</code></pre>
+<p><img src="/posts/2017/2017-11-20-timing_in_R_files/figure-html/unnamed-chunk-15-1.svg" width="576" /></p>
 <pre class="r"><code>microbenchmark:::boxplot.microbenchmark(sleep)</code></pre>
-<p><img src="/posts/2017/2017-XX-XX-timing_in_R_files/figure-html/unnamed-chunk-12-2.svg" width="576" /></p>
+<p><img src="/posts/2017/2017-11-20-timing_in_R_files/figure-html/unnamed-chunk-15-2.svg" width="576" /></p>
 <p>These provide quick and efficient ways of visualising our timings.</p>
 <hr />
 </div>
@@ -134,4 +137,6 @@ system.time(Sys.sleep(1))
 <h2>Conclusion</h2>
 <p><code>Sys.time()</code> and <code>system.time()</code> are long gone! For me, the <strong>tictoc</strong> and <strong>microbenchmark</strong> packages are far superior. In both packages, it is very easy to store the timings for later use, and the range of options for both packages stretch far past the options for <code>Sys.time()</code> and <code>system.time()</code>. I also <em>think</em> that <strong>microbenchmark</strong> is the only benchmarking package that has visualizations built in. OK, so they might not be the prettiest, but for a quick look at your timings, they provide a perfect service.</p>
 <p>Thanks for chatting!</p>
+<hr />
+<p><a href="https://www.jumpingrivers.com/?utm_source=blog&amp;utm_medium=image&amp;utm_campaign=2017timing"><img src="/img/logos/300_125.jpg" /></a></p>
 </div>
