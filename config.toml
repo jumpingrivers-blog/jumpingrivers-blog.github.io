@@ -10,6 +10,7 @@ googleAnalytics = "UA-108053698-1"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 enableEmoji = true
 rssLimit = 30
+author = "Jumping Rivers"
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
