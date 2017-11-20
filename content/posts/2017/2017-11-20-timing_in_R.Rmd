@@ -119,9 +119,9 @@ library("microbenchmark")
 At it's most basic, `microbenchmark()` can we used to time single pieces of code.
 
 ```{r}
+# times = 10: repeat the test 10 times
+# unit = "s": output in seconds
 microbenchmark(Sys.sleep(0.1), times = 10, unit = "s")
-# times = 10 tells microbenchmark to repeat the test 10 times
-# unit = "s" tells microbenchmark to return the output in seconds
 ```
 
 Notice we get a nicely formatted table of summary statistics. We can record our times in anything from seconds to nanoseconds(!!!!). Already this is better than `system.time()`. Not only that, but we can compare sections of code in an easy-to-do way and name the sections of code for an easy-to-read output. 
@@ -136,7 +136,7 @@ sleep = microbenchmark(sleepy = Sys.sleep(0.1),
 
 As well as this (more?!) __microbenchmark__ comes with a two built-in plotting functions.
 
-```{r}
+```{r, out.width=400, message=FALSE}
 microbenchmark:::autoplot.microbenchmark(sleep)
 microbenchmark:::boxplot.microbenchmark(sleep)
 ```
