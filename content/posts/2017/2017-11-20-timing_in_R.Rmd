@@ -21,7 +21,7 @@ knitr::include_graphics("/img/2017/front_timing.png")
 
 ***
 
-## Nested Timing
+## Nested timings
 
 ### 1) `Sys.time()`
 
@@ -31,13 +31,15 @@ knitr::include_graphics("/img/2017/front_timing.png")
 start_time = Sys.time()
 Sys.sleep(0.5)
 end_time = Sys.time()
-
+```
+To calculate the difference, we just use a simple subtraction
+```{r}
 end_time - start_time
 ```
 
 Notice it creates a neat little message for the time difference.
 
-### 2) The tictoc Package
+### 2) The tictoc package
 
 You can install the `CRAN` version of __tictoc__ via 
 ```{r, eval = FALSE}
@@ -75,27 +77,23 @@ toc(log = TRUE)
 # end timer for entire section
 toc(log = TRUE)
 ```
-We can view the results og results as a list (`format = TRUE` returns this list in a nice format), rather than raw code
+We can view the results as a list (`format = TRUE` returns this list in a nice format), rather than raw code
 ```{r}
-timing = tic.log(format=TRUE)
-timing
-# clear the log, if the log is not cleared then the next log would contain the results of the previous log
+tic.log(format = TRUE)
+```
+We can also reset the log via
+```{r}
 tic.clearlog()
 ```
 
-I think returning the timings as a list is pretty cool. Not to mention how easy it is to do so. 
-
 ***
 
-## Timing to Compare
+## Comparing functions
 
 ### 1) `system.time()`
 
-Why oh WHY did R choose to give `system.time()` a lower case `s` and `Sys.time()` and upper case `s`?
-
-Anyway...
-
-`system.time()` can be used to time functions without having to take note of the start and end times. 
+Why oh WHY did R choose to give `system.time()` a lower case `s` and `Sys.time()` and upper case `s`? 
+Anyway... `system.time()` can be used to time functions without having to take note of the start and end times. 
 ```{r}
 system.time(Sys.sleep(0.5))
 system.time(Sys.sleep(1))
@@ -107,7 +105,7 @@ For a repeated timing, we would use the `replicate()` function.
 system.time(replicate(10, Sys.sleep(0.1)))
 ```
 
-### 2) The microbenchmark Package
+### 2) The microbenchmark package
 
 You can install the `CRAN` version of __microbenchmark__ via
 ```{r, eval = FALSE}
@@ -132,8 +130,8 @@ Notice we get a nicely formatted table of summary statistics. We can record our 
 sleep = microbenchmark(sleepy = Sys.sleep(0.1), 
                        sleepier = Sys.sleep(0.2),
                        sleepiest = Sys.sleep(0.3),
-                   times = 10, unit = "s")
-
+                       times = 10, 
+                       unit = "s")
 ```
 
 As well as this (more?!) __microbenchmark__ comes with a two built-in plotting functions.
@@ -149,7 +147,9 @@ These provide quick and efficient ways of visualising our timings.
 
 ## Conclusion
 
-`Sys.time()` and `system.time()` are long gone! For me, the __tictoc__ and __microbenchmark__ packages are far superior. In both packages, it is very easy to store the timings for later use, and the range of options for both packages stretch far past the options for `Sys.time()` and `system.time()`. I also _think_ that __microbenchmark__ is the only benchmarking package that has visualizations built in. OK, so they might not be the prettiest, but for a quick look at your timings, they provide a perfect service. 
+`Sys.time()` and `system.time()` have there place, but for most cases we can do better. 
+The __tictoc__ and __microbenchmark__ packages are particularly useful and make it easy to store timings for later use, and the range of options for both packages stretch far past the options for `Sys.time()` and `system.time()`. 
+The built-in plotting functions are handy.
 
 Thanks for chatting!
 
