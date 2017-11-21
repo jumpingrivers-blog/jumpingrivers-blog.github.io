@@ -1,0 +1,14 @@
+sudo apt update
+
+# RSTUDIO PRO
+#wget https://download2.rstudio.org/rstudio-server-pro-1.0.153-amd64.deb
+#sudo gdebi rstudio-server-pro-1.0.153-amd64.deb
+sudo rstudio-server verify-installation
+
+
+# Create users
+#https://itsalocke.com/blog/building-an-r-training-environment/
+sudo useradd user3 -m -p `mkpasswd user3`
+
+
+
