@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 Host RStudio server on an azure instance. Configure the instance to access RStudio
 with a _nice_ url
 
-### Getting started
+## Getting started
 
 [Azure](https://azure.microsoft.com/) is cloud computing framework provided by Microsoft, the same idea
 as AWS by Amazon. In this post, we'll describe how to use Azure to run 
@@ -64,28 +64,37 @@ Selecting `Ubuntu Server` will launch a dialogue box with four steps:
     
 After around a minute or so, your virtual machine will be ready.
 
-### Setting up R
+## Setting up R
 
 The next step is to `ssh` into your instance. On the dashboard screen, click on the new box 
 that shows your virtual machine. Select `Networking`. Near the top of the screen will be
-a Public IP address, of the form: XXX.XXX.XXX.XXX. Make a note of this address.
+a Public IP address, of the form: XXX.XXX.XXX.XXX. In my instance, the IP address is
+52.233.194.195
 
-Now `ssh` into your instance via
+
+```{r echo=FALSE, out.width="800"}
+knitr::include_graphics("/img/2017/azure_networking.png") 
+```
+
+Make a note of your address. Next `ssh` into your instance via
 ```
 ssh userX@XXX.XXX.XXX.XXX
 ```
-Next, we want to make user that on the virtual machine, ubuntu is up-to-date. To do this we
-need to invoke super powers as the `sudo` user
+To ensure that ubuntu is up to date on our virtual machine, ubuntu is up-to-date, we invoke 
+super sudo powers. First we update the list of ubuntu packages
 ```
 sudo apt-get update
+```
+Then we upgrade as necessary
+```
 sudo apt-get upgrade
 ```
-Now, we get on with the business of installing R. To use the latest version we need to add
+Now we get on with the business of installing R. To use the latest version we need to add
 a new [repository](https://cran.r-project.org/bin/linux/ubuntu/README.html)
 ```
 sudo add-apt-repository ppa:marutter/rrutter
 ```
-The update and install base R
+Then update again and install base R
 ```
 sudo apt update
 sudo apt-get install r-base
@@ -97,24 +106,23 @@ sudo apt-get install libxml2 libxml2-dev # igraph
 sudo apt-get install libcairo2-dev # Graphics packages
 sudo apt-get install libssl-dev libcurl4-openssl-dev #httr
 ```
-With an eye to the future, it's also worth installing `apache2` to help with redirects
+With an eye to the future it's also worth installing `apache2` to help with redirects
 ```
 sudo apt-get install apache2
 ```
 
-
-### Opening ports ready for RStudio
+## Opening ports ready for RStudio
 
 Whenever you access a web-page, the browser specifies a _port_. For standard http pages, 
 we use port 80, for secure https pages, we use port 443. For example, when we type
 ```
-https://www.jumpingrivers.com:443
+https://www.jumpingrivers.com
 ```
 in the browser, this is converted to 
 ```
 https://www.jumpingrivers.com:443
 ```
-By default, our azure instance only has port 22 open (the port used for ssh communication). To access RStudio, we'll 
+By default our azure instance only has port 22 open (the port used for ssh communication). To access RStudio, we'll 
 need to open the following ports
 
  * 80 (for http)
@@ -129,9 +137,9 @@ knitr::include_graphics("/img/2017/azure_dashboard_port.png")
 If everything is working, you should be able to enter `XXX.XXX.XXX.XXX` in your browser and you'll
 see the `Apache2 Ubuntu Default Page` with the title __It works!__
 
-### Installing RStudio
+## Installing RStudio
 
-[Installing RStudio](https://www.rstudio.com/products/rstudio/download-server/) server is now relatively easy. Simply run
+[Installing RStudio](https://www.rstudio.com/products/rstudio/download-server/) server is now relatively easy:
 ```
 # Check the above link for updates to the version
 sudo apt-get install gdebi-core
@@ -144,9 +152,7 @@ XXX.XXX.XXX.XXX:8787
 ```
 If the page _hangs_, double check you have opened port 8787 under the network settings.
 
-### Nicer URLs
-
-
+## Nicer URLs
 
 The first step is to access the page via a standard URL and not an IP address. 
 In the main dashboard screen, under all resources, click on 
@@ -158,7 +164,7 @@ I have used `rstudio-jumpingrivers`
 ```{r echo=FALSE, out.width="800"}
 knitr::include_graphics("/img/2017/azure_dashboard_ip.png") 
 ```
-This means, we can now access rstudio via
+This means we can now access RStudio via
 ```
 rstudio-jumpingrivers.westeurope.cloudapp.azure.com:8787
 ```
@@ -172,7 +178,7 @@ This involves configuring Apache. First navigate to `/etc/apache2/sites-availabl
 ```
 cd /etc/apache2/sites-available
 ```
-Next is to create a file called rstudio.conf. Using your favourite text editor, e.g. vim or nano
+Next create a file called `rstudio.conf`. Using your favourite text editor, e.g. vim or nano
 
 ```
 <VirtualHost *:80>
@@ -219,16 +225,15 @@ You should now be able to access RStudio via
 rstudio-jumpingrivers.westeurope.cloudapp.azure.com/rstudio/
 ```
 
-### Adding SSL
+## Adding SSL
 
 In theory it should be straightforward to add SSL support using [Let's Encrypt](https://letsencrypt.org/). 
-However, we've found that you hit rate limiters since the domain is azure.com. However, if we register
+However, I've found that you hit rate limiters since the domain is azure.com. However, if we register
 our own domain, we can easily add SSL support. This will be the subject of our next blog post.
 
-##### References
+#### References
 
   * https://mgw.dumatics.com/rstudio-server-setup-with-ssl-behind-apache-proxy-server/
-=======
 
 
 
