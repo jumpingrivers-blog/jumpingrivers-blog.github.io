@@ -197,7 +197,7 @@ Next create a file called `rstudio.conf`. Using your favourite text editor, e.g.
   # Map rstudio to rstudio/
   RedirectMatch ^/rstudio$ /rstudio/
 
-  RewriteCond %{HTTP:Upgrade} = websocket
+  RewriteCond %{HTTP:Upgrade} =websocket
   RewriteRule /rstudio/(.*) ws://localhost:8787/$1 [P,L]
   RewriteCond %{HTTP:Upgrade}     !=websocket
   RewriteRule /rstudio/(.*) http://localhost:8787/$1 [P,L]
