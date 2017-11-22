@@ -80,8 +80,7 @@ Make a note of your address. Next `ssh` into your instance via
 ```
 ssh userX@XXX.XXX.XXX.XXX
 ```
-To ensure that ubuntu is up to date on our virtual machine, ubuntu is up-to-date, we invoke 
-super sudo powers. First we update the list of ubuntu packages
+To ensure that ubuntu is up-to-date on our virtual machine, we invoke super sudo powers. First we update the list of ubuntu packages
 ```
 sudo apt-get update
 ```
@@ -135,7 +134,7 @@ knitr::include_graphics("/img/2017/azure_dashboard_port.png")
 ```
 
 If everything is working, you should be able to enter `XXX.XXX.XXX.XXX` in your browser and you'll
-see the `Apache2 Ubuntu Default Page` with the title __It works!__
+see the `Apache2 Ubuntu Default Page` with the title. __It works!__
 
 ## Installing RStudio
 
@@ -168,7 +167,7 @@ This means we can now access RStudio via
 ```
 rstudio-jumpingrivers.westeurope.cloudapp.azure.com:8787
 ```
-Getting users to type the port number isn't idea. What we would like to for users to 
+Getting users to type the port number isn't ideal. What we would like to for users to 
 type
 ```
 rstudio-jumpingrivers.westeurope.cloudapp.azure.com/rstudio

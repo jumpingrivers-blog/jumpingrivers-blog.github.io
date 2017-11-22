@@ -1,14 +1,5 @@
----
-title: "Using RStudio with Azure"
-author: "Colin Gillespie"
-date: 2017-10-16
-output: html_document
-image: "img/2017/azure.png"
-draft: true
-slug: "rstudio_azure_cloud_1"
-tags: [rstats,azure,cloud,rstudio]
----
-
+<!-- BLOGDOWN-HEAD -->
+<!-- /BLOGDOWN-HEAD -->
 
 <div id="TOC">
 <ul>
@@ -68,7 +59,7 @@ tags: [rstats,azure,cloud,rstudio]
 <p><img src="/img/2017/azure_networking.png" width="800" /></p>
 <p>Make a note of your address. Next <code>ssh</code> into your instance via</p>
 <pre><code>ssh userX@XXX.XXX.XXX.XXX</code></pre>
-<p>To ensure that ubuntu is up to date on our virtual machine, ubuntu is up-to-date, we invoke super sudo powers. First we update the list of ubuntu packages</p>
+<p>To ensure that ubuntu is up-to-date on our virtual machine, we invoke super sudo powers. First we update the list of ubuntu packages</p>
 <pre><code>sudo apt-get update</code></pre>
 <p>Then we upgrade as necessary</p>
 <pre><code>sudo apt-get upgrade</code></pre>
@@ -97,7 +88,7 @@ sudo apt-get install libssl-dev libcurl4-openssl-dev #httr</code></pre>
 <li>8787 - the default RStudio port. In the last section, we’ll remove this, but just now it’s handy to have it open for testing.</li>
 </ul>
 <p>Under <code>Networking</code>, click <code>Add inbound port rule</code> and add the three ports (80, 443, 8787): <img src="/img/2017/azure_dashboard_port.png" width="800" /></p>
-<p>If everything is working, you should be able to enter <code>XXX.XXX.XXX.XXX</code> in your browser and you’ll see the <code>Apache2 Ubuntu Default Page</code> with the title <strong>It works!</strong></p>
+<p>If everything is working, you should be able to enter <code>XXX.XXX.XXX.XXX</code> in your browser and you’ll see the <code>Apache2 Ubuntu Default Page</code> with the title. <strong>It works!</strong></p>
 </div>
 <div id="installing-rstudio" class="section level2">
 <h2>Installing RStudio</h2>
@@ -116,7 +107,7 @@ sudo gdebi rstudio-server-1.1.383-amd64.deb</code></pre>
 <pre><code>rstudio-ip Public IP address</code></pre>
 <p>Then select configuration. In the text box under DNS Label, enter text, e.g. <code>rstudio-myname</code>. So in my case, I have used <code>rstudio-jumpingrivers</code> <img src="/img/2017/azure_dashboard_ip.png" width="800" /> This means we can now access RStudio via</p>
 <pre><code>rstudio-jumpingrivers.westeurope.cloudapp.azure.com:8787</code></pre>
-<p>Getting users to type the port number isn’t idea. What we would like to for users to type</p>
+<p>Getting users to type the port number isn’t ideal. What we would like to for users to type</p>
 <pre><code>rstudio-jumpingrivers.westeurope.cloudapp.azure.com/rstudio</code></pre>
 <p>This involves configuring Apache. First navigate to <code>/etc/apache2/sites-available</code>, e.g.</p>
 <pre><code>cd /etc/apache2/sites-available</code></pre>
