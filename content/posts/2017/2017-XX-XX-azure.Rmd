@@ -234,23 +234,7 @@ our own domain, we can easily add SSL support. This will be the subject of our n
 
   * https://mgw.dumatics.com/rstudio-server-setup-with-ssl-behind-apache-proxy-server/
 
+---
 
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=2017azure)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
- 
- 
- 
