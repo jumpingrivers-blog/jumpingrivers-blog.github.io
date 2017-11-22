@@ -1,12 +1,12 @@
 ---
 title: "Using RStudio with Azure"
 author: "Colin Gillespie"
-date: 2017-10-16
+date: 2017-11-23
 output: html_document
 image: "img/2017/azure.png"
 draft: true
 slug: "rstudio_azure_cloud_1"
-tags: [rstats,azure,cloud,rstudio]
+tags: [r,azure,cloud,rstudio]
 ---
 
 ```{r setup,include=FALSE}
