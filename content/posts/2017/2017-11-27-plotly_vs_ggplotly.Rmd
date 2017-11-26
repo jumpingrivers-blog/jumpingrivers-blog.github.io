@@ -3,13 +3,13 @@ title: "plotly vs ggplotly"
 author: "Theo Roe"
 date: 2017-11-27
 output: html_document
-draft: true
+draft: false
 slug: "plotly_vs_ggplotly"
 tags: [r,tidyverse, graphics, ggplot2, plotly]
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, cache=TRUE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, cache=F)
 ```
 
 
@@ -79,7 +79,7 @@ time = microbenchmark::microbenchmark(
         plotly = plot_ly(data = meanb, 
                          y = ~mean, x = ~year, 
                          color = ~year, type = "scatter"),
-                         times = 100, unit = "s")
+        times = 100, unit = "s")
 time
 ```
 ```{r, warning = FALSE, error=FALSE, message=FALSE}
@@ -91,7 +91,7 @@ timetable = cbind(expr = time$expr, time = time$time)
 mean = as_tibble(timetable) %>% group_by(expr) %>% summarise(mean = mean(time))
 average = round(mean[1,2]/mean[2,2], 0)
 ```
-Now I thought nesting a __ggplot__ object within `ggplotly()` would be slower than using `plot_ly()`, but I didn't think it would be this slow. On average `ggplotly()` is approximately `r average` times slower than `plot_ly()`. **_`r average`!_** One run even took `r round(microbenchmark:::convert_to_unit(max(time$time), unit = "s"), 3)` seconds! 
+Now I thought nesting a __ggplot__ object within `ggplotly()` would be slower than using `plot_ly()`, but I didn't think it would be this slow. On average `ggplotly()` is approximately `r average` times slower than `plot_ly()`. **_`r average`!_**
 
 Let's take it up a notch.  There we were plotting only 20 points, what about if we plot over 20,000? Here we will plot the min, mean and max births on each day. 
 
@@ -101,8 +101,15 @@ date = Birthdays %>%
   summarise(mean = mean(births), min = min(births), max = max(births)) %>% 
   gather(birth_stat, value, -date)
 ```
+```{r include =FALSE}
+# Reduce data set for web
+set.seed(1) 
+date_sample = date[sample(1:nrow(date), 2000),] 
+org_date = date
+```
 Wrapping this a __ggplot2__ object inside `ggplotly()` we obtain this graph...
-```{r warning = FALSE, error=FALSE, message=FALSE}
+```{r warning = FALSE, error=FALSE, message=FALSE, echo = -1}
+date = date_sample
 ggplotly(ggplot(date) +
     geom_point(aes(y = value, x = date, colour = birth_stat)))
 ```
@@ -113,13 +120,17 @@ plot_ly(date,
         type = "scatter")
 ```
 Again, both plots are identical, bar styling.
-```{r warning = FALSE, error=FALSE, message=FALSE, cache=TRUE}
-time2 = microbenchmark(ggplotly = 
-                                  ggplotly(ggplot(date) +
-                                          geom_point(aes(y = value, x = date, colour = birth_stat))),
-                                 plotly = plot_ly(date, x = ~date, y = ~value, 
-                                                  color = ~birth_stat, type = "scatter"),
-                                   times = 100, unit = "s")
+```{r warning = FALSE, error=FALSE, message=FALSE, cache=TRUE, echo=-1}
+date = org_date
+time2 = microbenchmark(
+  ggplotly = ggplotly(
+    ggplot(date) +
+      geom_point(aes(y = value, x = date, colour = birth_stat))
+    ),
+    plotly = plot_ly(date, x = ~date, y = ~value, 
+                      color = ~birth_stat, 
+                      type = "scatter"),
+  times = 100, unit = "s")
 time2
 ```
 ```{r, warning = FALSE, error=FALSE, message=FALSE}
