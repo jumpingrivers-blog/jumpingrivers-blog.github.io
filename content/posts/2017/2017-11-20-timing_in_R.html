@@ -37,7 +37,7 @@ Sys.sleep(0.5)
 end_time = Sys.time()</code></pre>
 <p>To calculate the difference, we just use a simple subtraction</p>
 <pre class="r"><code>end_time - start_time
-## Time difference of 0.5061 secs</code></pre>
+## Time difference of 0.5028 secs</code></pre>
 <p>Notice it creates a neat little message for the time difference.</p>
 </div>
 <div id="the-tictoc-package" class="section level3">
@@ -50,7 +50,7 @@ end_time = Sys.time()</code></pre>
 <pre class="r"><code>tic()
 Sys.sleep(0.5)
 toc()
-## 0.506 sec elapsed</code></pre>
+## 0.503 sec elapsed</code></pre>
 <p>Now for a more contrived example.</p>
 <pre class="r"><code># start timer for the entire section, notice we can name sections of code
 tic(&quot;total time&quot;) 
@@ -59,26 +59,26 @@ tic(&quot;Start time til half way&quot;)
 Sys.sleep(2)
 # end timer for the first subsection, log = TRUE tells toc to give us a message
 toc(log = TRUE)
-## Start time til half way: 2.037 sec elapsed</code></pre>
+## Start time til half way: 2.016 sec elapsed</code></pre>
 <p>Now to start the timer for the second subsection</p>
 <pre class="r"><code>tic(&quot;Half way til end&quot;)
 Sys.sleep(2)
 # end timer for second subsection
 toc(log = TRUE)
-## Half way til end: 2.012 sec elapsed
+## Half way til end: 2.005 sec elapsed
 # end timer for entire section
 toc(log = TRUE)
-## total time: 4.067 sec elapsed</code></pre>
+## total time: 4.028 sec elapsed</code></pre>
 <p>We can view the results as a list (<code>format = TRUE</code> returns this list in a nice format), rather than raw code</p>
 <pre class="r"><code>tic.log(format = TRUE)
 ## [[1]]
-## [1] &quot;Start time til half way: 2.037 sec elapsed&quot;
+## [1] &quot;Start time til half way: 2.016 sec elapsed&quot;
 ## 
 ## [[2]]
-## [1] &quot;Half way til end: 2.012 sec elapsed&quot;
+## [1] &quot;Half way til end: 2.005 sec elapsed&quot;
 ## 
 ## [[3]]
-## [1] &quot;total time: 4.067 sec elapsed&quot;</code></pre>
+## [1] &quot;total time: 4.028 sec elapsed&quot;</code></pre>
 <p>We can also reset the log via</p>
 <pre class="r"><code>tic.clearlog()</code></pre>
 <hr />
@@ -94,12 +94,12 @@ toc(log = TRUE)
 ##   0.000   0.000   0.501
 system.time(Sys.sleep(1))
 ##    user  system elapsed 
-##   0.000   0.000   1.003</code></pre>
+##   0.000   0.000   1.001</code></pre>
 <p>We only want to take notice of the “elapsed” time, for the definition of the “user” and “system” times see <a href="http://r.789695.n4.nabble.com/Meaning-of-proc-time-td2303263.html#a2306691">this thread.</a></p>
 <p>For a repeated timing, we would use the <code>replicate()</code> function.</p>
 <pre class="r"><code>system.time(replicate(10, Sys.sleep(0.1)))
 ##    user  system elapsed 
-##   0.000   0.000   1.007</code></pre>
+##   0.000   0.000   1.003</code></pre>
 </div>
 <div id="the-microbenchmark-package" class="section level3">
 <h3>2) The microbenchmark package</h3>
@@ -113,7 +113,7 @@ system.time(Sys.sleep(1))
 microbenchmark(Sys.sleep(0.1), times = 10, unit = &quot;s&quot;)
 ## Unit: seconds
 ##            expr    min     lq   mean median     uq    max neval
-##  Sys.sleep(0.1) 0.1001 0.1006 0.1005 0.1006 0.1006 0.1006    10</code></pre>
+##  Sys.sleep(0.1) 0.1001 0.1001 0.1002 0.1002 0.1002 0.1002    10</code></pre>
 <p>Notice we get a nicely formatted table of summary statistics. We can record our times in anything from seconds to nanoseconds(!!!!). Already this is better than <code>system.time()</code>. Not only that, but we can compare sections of code in an easy-to-do way and name the sections of code for an easy-to-read output.</p>
 <pre class="r"><code>sleep = microbenchmark(sleepy = Sys.sleep(0.1), 
                        sleepier = Sys.sleep(0.2),
