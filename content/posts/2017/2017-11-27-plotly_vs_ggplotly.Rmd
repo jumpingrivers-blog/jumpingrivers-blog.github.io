@@ -5,6 +5,7 @@ date: 2017-11-27
 output: html_document
 draft: false
 slug: "plotly_vs_ggplotly"
+image: "img/2017/ggplot2_plotly.png"
 tags: [r,tidyverse, graphics, ggplot2, plotly]
 ---
 
