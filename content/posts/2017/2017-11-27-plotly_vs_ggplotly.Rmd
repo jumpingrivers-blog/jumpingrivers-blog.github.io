@@ -1,5 +1,5 @@
 ---
-title: "plotly vs ggplotly"
+title: "Comparing plotly & ggplotly plot generation times"
 author: "Theo Roe"
 date: 2017-11-27
 output: html_document
