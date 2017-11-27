@@ -1,0 +1,61 @@
+---
+title: "Competition: StanCon 2018 ticket"
+author: "Colin Gillespie"
+date: 2017-11-29
+output: html_document
+draft: true
+slug: "stancon_ticket_annoucement"
+image: "img/2017/stan_jumpingrivers.png"
+tags: [r,stan,stancon]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, cache=F)
+```
+
+```{r echo=FALSE, out.width="400"}
+knitr::include_graphics("/img/2017/stan_jumpingrivers.png") 
+```
+
+Today we am happy to announce our Stan contest. Something we feel very strongly
+at Jumping Rivers is giving back to the community. We have benefited immensely from
+hard work by numerous people, so when possible, we try to give something back.
+
+This year we're sponsoring StanCon 2018. If you don't know, 
+
+> Stan is freedom-respecting, open-source software for facilitating statistical inference at 
+> the frontiers of applied statistics.
+
+Or to put it another way, it makes Bayesian inference fast and (a bit) easier. 
+[StanCon](http://mc-stan.org/events/stancon2018/) is the premier conference for all things 
+[Stan](http://mc-stan.org/) related and this year it will take place at the [Asilomar Conference Grounds](http://www.visitasilomar.com/), a National Historic Landmark on the Monterey Peninsula right on the beach.
+
+Our interaction with Stan is via the excellent R package, __rstan__ and the 
+ [introduction to Rstan](https://www.jumpingrivers.com/courses/13_introductions-to-bayesian-inference-using-rstan?utm_source=blog&utm_medium=link&utm_campaign=stancon_comp) course we run.
+
+### The prize
+
+One of the benefits of sponsoring a conference, is free tickets. Unfortunately, we can't make 
+StanCon this year, so we've decided to give away the ticket via a competition.
+
+### How do I enter?
+
+Entering the contest is straightforward. We want a nice image to use in our [introduction to Rstan](https://www.jumpingrivers.com/courses/13_introductions-to-bayesian-inference-using-rstan?utm_source=blog&utm_medium=link&utm_campaign=stancon_comp) course. This can be a cartoon, some neat looking densities, whatever you think!
+
+Simply email info@jumpingrivers.com with a link to the image. If the image was generated in R (or other language), than the associated code
+would be nice. The deadline is the 6th December.
+
+
+### FAQ
+
+  * Can I submit more than one image? Feel free.
+  * Who owns the copyright? Our intention is to make the image [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/).
+  However, we're happy to change the copyright to suit. The only proviso is that we can use the image for our
+  __rstan__ course.
+  * Another question. Contact us via the [contact page](/contact/).
+
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=stancon_comp)
+
