@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, cache=F)
 knitr::include_graphics("/img/2017/stan_jumpingrivers.png") 
 ```
 
-Today we am happy to announce our Stan contest. Something we feel very strongly
+Today we are happy to announce our Stan contest. Something we feel very strongly
 at Jumping Rivers is giving back to the community. We have benefited immensely from
 hard work by numerous people, so when possible, we try to give something back.
 
@@ -42,15 +42,22 @@ StanCon this year, so we've decided to give away the ticket via a competition.
 
 Entering the contest is straightforward. We want a nice image to use in our [introduction to Rstan](https://www.jumpingrivers.com/courses/13_introductions-to-bayesian-inference-using-rstan?utm_source=blog&utm_medium=link&utm_campaign=stancon_comp) course. This can be a cartoon, some neat looking densities, whatever you think!
 
-Simply email info@jumpingrivers.com with a link to the image. If the image was generated in R (or other language), than the associated code
-would be nice. The deadline is the 6th December.
+For example, my first attempt at a logo resulted in 
+
+```{r, echo=FALSE}
+knitr::include_graphics("/img/2017/stan-density.png")
+```
+
+Pretty enough, but lacking something.
+
+Once you've come up with your awesome image, simply email info@jumpingrivers.com with a link to the image. If the image was generated in R (or other language), than the associated code would be nice. The deadline is the 6th December.
 
 
 ### FAQ
 
   * Can I submit more than one image? Feel free.
   * Who owns the copyright? Our intention is to make the image [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/).
-  However, we're happy to change the copyright to suit. The only proviso is that we can use the image for our
+  However we're happy to change the copyright to suit. The only proviso is that we can use the image for our
   __rstan__ course.
   * Another question. Contact us via the [contact page](/contact/).
 
