@@ -37,15 +37,22 @@ package building the other on sports modelling.
 
   * March 17th: [SatRday](http://capetown2018.satrdays.org/). Cape Town, South Africa.
  
-#### May
+#### Erum2018
+
+The European R Users Meeting, eRum, is an international conference that aims at integrating users of the R language living in Europe. This conference is similar to useR!.
 
   * May: [The European #rstats Users Meeting](http://2018.erum.io/). Budapest, Hungary. [\@erum2018](https://twitter.com/erum2018)
 
-#### June
+#### R/Finance 2018 (Chicago, USA)
 
- *  June 1-2: [R/Finance 2018](http://www.rinfinance.com). Chicago, USA.
+ 
 
-#### July
+From the inaugural conference in 2009, the annual R/Finance conference in Chicago has become the primary meeting for academics and practioners interested in using R in Finance.
+Participants from academia and industry mingle for two days to exchange ideas about current research, best practices and applications. A single-track program permits continued focus on a series of refereed submissions. A lively social program rounds out the event.
+
+*  June 1-2: [R/Finance 2018](http://www.rinfinance.com). Chicago, USA.
+
+#### useR! 2018 (Brisbane, Australia)
   		  
  * July 10-13: [useR! 2018](https://user2018.r-project.org/). Brisbane, Australia.
  * [Noreast'R Conference](http://noreastrconf.com/). USA. [\@noreastrconf](https://twitter.com/noreastrconf/)
