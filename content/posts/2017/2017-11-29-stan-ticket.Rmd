@@ -3,7 +3,7 @@ title: "Competition: StanCon 2018 ticket"
 author: "Colin Gillespie"
 date: 2017-11-29
 output: html_document
-draft: true
+draft: false
 slug: "stancon_ticket_annoucement"
 image: "img/2017/stan_jumpingrivers.png"
 tags: [r,stan,stancon]
