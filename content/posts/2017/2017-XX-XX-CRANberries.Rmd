@@ -1,0 +1,7 @@
+library(d)
+
+iris %>%
+  # scale positional data to (0,1)
+  mutate_if(is.numeric, rescale) %>%
+  # make data available in JavaScript
+  aDataScene()

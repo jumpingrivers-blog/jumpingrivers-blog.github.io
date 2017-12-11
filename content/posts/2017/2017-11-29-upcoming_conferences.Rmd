@@ -45,7 +45,6 @@ The European R Users Meeting, eRum, is an international conference that aims at 
 
 #### R/Finance 2018 (Chicago, USA)
 
- 
 
 From the inaugural conference in 2009, the annual R/Finance conference in Chicago has become the primary meeting for academics and practioners interested in using R in Finance.
 Participants from academia and industry mingle for two days to exchange ideas about current research, best practices and applications. A single-track program permits continued focus on a series of refereed submissions. A lively social program rounds out the event.
@@ -53,8 +52,15 @@ Participants from academia and industry mingle for two days to exchange ideas ab
 *  June 1-2: [R/Finance 2018](http://www.rinfinance.com). Chicago, USA.
 
 #### useR! 2018 (Brisbane, Australia)
+
+With useR! 2017 spanning over 5 days and boasting some of the biggest names in data science, the next installment of the useR! series is sure to be even better. Last year the program was packed with speakers, programmes and tutorials from industry and academia. The day usually containing numerous tutorials and usually ends in a keynote speech followed by dinner(!). Registration is open in January 2018. 
   		  
  * July 10-13: [useR! 2018](https://user2018.r-project.org/). Brisbane, Australia.
+ 
+#### Noreast'R Conference (North East USA)
+
+Born on Twitter, the Noreast'R Conference is a grass roots effort to organize a regional #rstats conference in the Northeastern United States. Work is currently under way and further details will follow on the Noreast'R website and twitter page (linked below).
+
  * [Noreast'R Conference](http://noreastrconf.com/). USA. [\@noreastrconf](https://twitter.com/noreastrconf/)
 
 ---
