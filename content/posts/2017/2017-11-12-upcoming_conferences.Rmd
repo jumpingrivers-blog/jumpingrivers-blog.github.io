@@ -1,10 +1,10 @@
 ---
 title: "Upcoming R conferences (2018)"
 author: "Colin Gillespie"
-date: 2017-11-29
+date: 2017-12-12
 output: html_document
 image: "img/2017/conference_bag.jpg"
-draft: true
+draft: false
 slug: "upcoming_r_conference_2017"
 tags: [r,conferences]
 ---
@@ -14,7 +14,11 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
 It's that time of year when we need to start thinking about what R Conferences we would like
-to (and can!) attend. We've listed conferences that 
+to (and can!) attend. To help plan your (ahem) work trips, we thought it would be useful to 
+list the upcoming main attractions.
+
+We maintain a list of [upcoming rstats](https://jumpingrivers.github.io/meetingsR/) conferences. 
+To keep up to date, just follow our [twitter bot](https://twitter.com/rstats_meetings).
 
 
 ####  rstudio::conf (San Diego, USA)
@@ -45,15 +49,15 @@ The European R Users Meeting, eRum, is an international conference that aims at 
 
 #### R/Finance 2018 (Chicago, USA)
 
-
 From the inaugural conference in 2009, the annual R/Finance conference in Chicago has become the primary meeting for academics and practioners interested in using R in Finance.
-Participants from academia and industry mingle for two days to exchange ideas about current research, best practices and applications. A single-track program permits continued focus on a series of refereed submissions. A lively social program rounds out the event.
+Participants from academia and industry mingle for two days to exchange ideas about current research, best practices and applications. A single-track program permits continued focus on a series of refereed submissions. We hear
+there's a lively social program rounds out the event.
 
 *  June 1-2: [R/Finance 2018](http://www.rinfinance.com). Chicago, USA.
 
 #### useR! 2018 (Brisbane, Australia)
 
-With useR! 2017 spanning over 5 days and boasting some of the biggest names in data science, the next installment of the useR! series is sure to be even better. Last year the program was packed with speakers, programmes and tutorials from industry and academia. The day usually containing numerous tutorials and usually ends in a keynote speech followed by dinner(!). Registration is open in January 2018. 
+With useR! 2017 spanning over 5 days and boasting some of the biggest names in data science, the next installment of the useR! series is sure to be even better. Last year the program was packed with speakers, programmes and tutorials from industry and academia. Each day usually containing numerous tutorials and usually ends in a keynote speech followed by dinner(!). Registration is open in January 2018. 
   		  
  * July 10-13: [useR! 2018](https://user2018.r-project.org/). Brisbane, Australia.
  
@@ -65,7 +69,7 @@ Born on Twitter, the Noreast'R Conference is a grass roots effort to organize a 
 
 ---
 
-[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=ncpus)
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=2017conferences)
 
 
 ##### Image credit
