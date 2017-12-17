@@ -1,0 +1,80 @@
+---
+title: "Conference Cost"
+author: "Colin Gillespie"
+date: 2017-12-18
+output: html_document
+# image: "img/2017/conference_bag.jpg"
+draft: false
+slug: "conference_cost_2017"
+tags: [r,conferences]
+---
+
+```{r setup,include=FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+library(ggplot2)
+library(hrbrthemes)
+
+library(tibble)
+library(dplyr)
+conf = tribble(
+  ~conf,~cost,~days,
+  "rstudio::conf 2018", 995, 3,
+  "New York R", 725, 2,
+  "useR! 2017",770, 4,
+  "Earl London",1191, 3,
+  "R Finance 2017", 600,2,
+  "SatRday 2017", 82, 3,
+  "eRum 2016", 30, 3)
+
+conf = conf %>%
+  mutate(per = as.integer(cost/days)) %>%
+  arrange(per) %>%
+  mutate(conf = factor(conf, levels = conf))
+```
+
+In last weeks [post](posts/2017/upcoming_r_conference_2017/) we tantalised you with upcoming R &
+data science conferences, but from a cost point view, not all R conferences are the same.
+Using the R [conference](https://jumpingrivers.github.io/meetingsR/) site, it's fairly 
+easy to compare the cost of previous R conferences.
+
+I selected the main conferences over the last few years and
+obtained the cost for the full ticket (including any tutorial days, but ignoring
+any discounts). Next, I converted all prices to dollars and calculated the cost per day.
+
+```{r echo=FALSE}
+conf_knitr = conf
+colnames(conf_knitr) = c("Conference", "Cost ($)", "#Days", "$ per day")
+knitr::kable(conf_knitr)
+```
+
+The conferences fall into two camps _business oriented_ and more _general_
+R conferences; useR! is somewhere in the middle. A simple bar plot highlights
+the extreme difference in cost per day
+
+```{r echo=FALSE, warning=FALSE}
+ggplot(conf) + 
+  geom_col(aes(conf, per)) +
+  theme_ipsum_rc(grid="X") +
+  coord_flip() +
+  labs(x="Conference", y="Cost per day ($)",
+       title="Conference cost per day incl tutorials",
+       subtitle="Industry ticket for the full conference",
+       caption="jumpingrivers.com")
+```
+
+I think the organisers of [eRum](http://erum.ue.poznan.pl/) and [SatRdays](http://satrdays.org/capetown2017/) should be proud of themselves
+for keeping the cost down; it would also be really useful if the organisers
+wrote a blog post giving more general tips for keeping the cost down.
+
+I'm going to resist commenting on the conferences since I have only ever
+attended useR! (which is excellent), but in terms of speakers, most conferences
+have the same keynotes, so this year I'll be looking at [eRum](http://2018.erum.io/) 2018 (sadly useR! is a bit too far away from me).
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=2017conferencescost)
+
+
+##### Image credit
+
+  * https://www.splitshire.com/vintage-bag-on-country-roads/
