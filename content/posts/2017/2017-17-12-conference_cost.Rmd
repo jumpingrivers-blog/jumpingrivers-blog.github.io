@@ -51,7 +51,7 @@ The conferences fall into two camps _business oriented_ and more _general_
 R conferences; useR! is somewhere in the middle. A simple bar plot highlights
 the extreme difference in cost per day
 
-```{r echo=FALSE, warning=FALSE}
+```{r conf-cost, echo=FALSE, warning=FALSE}
 ggplot(conf) + 
   geom_col(aes(conf, per)) +
   theme_ipsum_rc(grid="X") +
