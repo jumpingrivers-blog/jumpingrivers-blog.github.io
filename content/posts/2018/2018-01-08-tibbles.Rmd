@@ -1,9 +1,9 @@
 ---
 title: "The Trouble with Tibbles"
 author: "Theo Roe"
-date: 2017-10-16
+date: 2018-01-08
 output: html_document
-image: "img/2017/tibbles.png"
+image: "img/2018/tibbles.png"
 draft: true
 slug: "trouble_with_tibbles"
 tags: [r,tidyverse, tibbles]
@@ -42,7 +42,7 @@ library(tibble)
 
 ## Tribblemaking
 
-There are 3 ways to form a tibble. It pretty much acts as your friendly old pal `data.frame()` does. Just like standard data frames, we can create tibbles, coerce objects into tibbles and import data sets into `R` as a tibble. Below is a table of the traditional `data.frame()` commands and their respective __tidyverse__ commands.
+There are three ways to form a tibble. It pretty much acts as your friendly old pal `data.frame()` does. Just like standard data frames, we can create tibbles, coerce objects into tibbles and import data sets into `R` as a tibble. Below is a table of the traditional `data.frame()` commands and their respective __tidyverse__ commands.
     
  Formation Type |  Data Frame Commands           |  Tibbles Commands 
 --------------- | -------------------------------| ------------------------------------------------------
@@ -91,7 +91,7 @@ You can coerce more than just data frames, too. Objects such as lists, matrices,
 There's a few options to read in data files within the __tidyverse__, so we'll just compare `read_csv()` and its representative `data.frame()` pal, `read.csv()`. Let's take a look at them. 
 I have here an example data set that I've created in MS Excel. You can download/look at this data [here](https://gist.github.com/theoroe3/8bc989b644adc24117bc66f50c292fc8). To get access to this function you'll need the __readr__ package. Again this is part of the __tidyverse__ so either will do.
 ```{r}
-library(readr)
+library("readr")
 ```
 
 ```{r, include=FALSE}
@@ -142,7 +142,6 @@ tibble(1:3)
 ```{r}
 tibble(1:4)  
 ```
-
 
 Yes, OK, you could do this with the traditional data frame. But it would be a lot more work, _right_?  
 
@@ -210,11 +209,14 @@ I quite like this, it's much easier to turn a vector of characters into factors 
 
 ## Disadvantages
 
-This won't be long, there's only one. Some older functions dont work with tibbles because of their alternate subsetting method. They expect `tib[,1]` to return a vector, when infact it will now return another data frame. Until this functionality is added in you must convert your tibble back to a data frame using `as_data_frame()` or `as_tibble()` as discussed previously. Whilst adding this functionality will give users the chance to use packages with tibbles and normal data frames, it of course puts extra work on the shoulders of package writers, who now have to change every package to be compatible with tibbles. For more on this discussion, see [this thread](https://stat.ethz.ch/pipermail/r-package-devel/2017q3/001896.html).
-
+This won't be long, there's only one. Some older packages don't work with tibbles because of their alternative subsetting method. They expect `tib[,1]` to return a vector, when infact it will now return another tibble. Until this functionality is added in you must convert your tibble back to a data frame using `as_data_frame()` or `as_tibble()` as discussed previously. Whilst adding this functionality will give users the chance to use packages with tibbles and normal data frames, it of course puts extra work on the shoulders of package writers, who now have to change every package to be compatible with tibbles. For more on this discussion, see [this thread](https://stat.ethz.ch/pipermail/r-package-devel/2017q3/001896.html).
 
 ## To summarise..
 
 So, most of the things you can accomplish with tibbles, you can accomplish with `data.frame()`, but it's bit of a pain. Simple things like checking the dimensions of your data or converting strings to factors are small jobs. Small jobs that take time. With tibbles they take no time. Tibbles force you to look at your data earlier; confront the problems earlier. Ultimately leading to cleaner code. 
 
 Thanks for chatting!
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=2018tibbles)
