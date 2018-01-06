@@ -1,0 +1,42 @@
+---
+title: "Using RStudio with Azure"
+author: "Colin Gillespie"
+date: 2017-11-23
+output: html_document
+image: "img/2017/azure.png"
+draft: true
+slug: "rstudio_azure_cloud_ssl"
+tags: [r,azure,cloud,rstudio]
+---
+
+```{r setup,include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+## Can't be bothered reading, tell me now
+
+Host RStudio server on an azure instance. Configure the instance to access RStudio
+with a _nice_ url
+
+
+
+## Reserving a domain
+
+Before going any further, you need to reserve an domain name. There are numerous companies around for
+reserving domain names. I've used a few, but my recommendation (following a recommendation from Dirk Eddelbuettel)
+is [Gandi.net](https://www.gandi.net/en). 
+
+There are also a few places that offer "free domains". I've never used one, so can't comment
+
+## Updating apahce: rstudio.conf
+
+
+
+#### References
+
+  * https://mgw.dumatics.com/rstudio-server-setup-with-ssl-behind-apache-proxy-server/
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=2017azure)
+
