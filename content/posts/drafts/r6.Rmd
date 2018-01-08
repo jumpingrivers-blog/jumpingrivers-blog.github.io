@@ -1,0 +1,34 @@
+library(R6)
+
+
+randu  = R6Class("randu", 
+                 public = list(state = "numeric", 
+                               initialize = function(state) {
+                                 self$state <- state
+                                 
+                                 
+                               })
+)
+
+randu$set("public", "r", 
+          function(){
+            self$state = (65539*self$state) %% 2^31
+            return(self$state/2^31)
+          }
+)
+
+rng = randu$new(1)
+rng$r()
+
+
+randu_ref= setRefClass("randu_ref", 
+                    fields = list(state = "numeric"))
+randu_ref$methods(r = function() {
+  state <<- (65539*state) %% 2^31
+  return(state/2^31)
+})
+gen = randu_ref$new(state=1)
+
+system.time(replicate(1e5, gen$r()))
+
+system.time(replicate(1e5, rng$r()))
