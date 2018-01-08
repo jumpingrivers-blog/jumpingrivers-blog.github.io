@@ -32,11 +32,11 @@ Basically, some clever people took the classic `data.frame()`, shook it til the 
 install.packages("tibble")
 
 # Alternatively, tibbles are a part of the tidyverse and hence installing the whole tidyverse will give you access.
-install.packages("tidverse")
+install.packages("tidyverse")
 ```
 ```{r eval = TRUE}
 # I am just going to use tibble.
-library(tibble)
+library("tibble")
 ```
 
 
