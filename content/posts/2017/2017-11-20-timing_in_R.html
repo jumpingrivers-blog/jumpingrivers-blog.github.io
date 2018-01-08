@@ -37,7 +37,7 @@ Sys.sleep(0.5)
 end_time = Sys.time()</code></pre>
 <p>To calculate the difference, we just use a simple subtraction</p>
 <pre class="r"><code>end_time - start_time
-## Time difference of 0.5028 secs</code></pre>
+## Time difference of 0.5031 secs</code></pre>
 <p>Notice it creates a neat little message for the time difference.</p>
 </div>
 <div id="the-tictoc-package" class="section level3">
@@ -65,20 +65,20 @@ toc(log = TRUE)
 Sys.sleep(2)
 # end timer for second subsection
 toc(log = TRUE)
-## Half way til end: 2.005 sec elapsed
+## Half way til end: 2.004 sec elapsed
 # end timer for entire section
 toc(log = TRUE)
-## total time: 4.028 sec elapsed</code></pre>
+## total time: 4.03 sec elapsed</code></pre>
 <p>We can view the results as a list (<code>format = TRUE</code> returns this list in a nice format), rather than raw code</p>
 <pre class="r"><code>tic.log(format = TRUE)
 ## [[1]]
 ## [1] &quot;Start time til half way: 2.016 sec elapsed&quot;
 ## 
 ## [[2]]
-## [1] &quot;Half way til end: 2.005 sec elapsed&quot;
+## [1] &quot;Half way til end: 2.004 sec elapsed&quot;
 ## 
 ## [[3]]
-## [1] &quot;total time: 4.028 sec elapsed&quot;</code></pre>
+## [1] &quot;total time: 4.03 sec elapsed&quot;</code></pre>
 <p>We can also reset the log via</p>
 <pre class="r"><code>tic.clearlog()</code></pre>
 <hr />
@@ -94,12 +94,12 @@ toc(log = TRUE)
 ##   0.000   0.000   0.501
 system.time(Sys.sleep(1))
 ##    user  system elapsed 
-##   0.000   0.000   1.001</code></pre>
+##       0       0       1</code></pre>
 <p>We only want to take notice of the “elapsed” time, for the definition of the “user” and “system” times see <a href="http://r.789695.n4.nabble.com/Meaning-of-proc-time-td2303263.html#a2306691">this thread.</a></p>
 <p>For a repeated timing, we would use the <code>replicate()</code> function.</p>
 <pre class="r"><code>system.time(replicate(10, Sys.sleep(0.1)))
 ##    user  system elapsed 
-##   0.000   0.000   1.003</code></pre>
+##   0.004   0.000   1.003</code></pre>
 </div>
 <div id="the-microbenchmark-package" class="section level3">
 <h3>2) The microbenchmark package</h3>
