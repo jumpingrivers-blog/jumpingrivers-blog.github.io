@@ -1,10 +1,10 @@
 ---
 title: "SatRday in South Africa"
 author: "Jamie Owen"
-date: 2018-01-18
+date: 2018-01-19
 output: html_document
 image: "img/2018/satRdayLogo-square.png"
-draft: true
+draft: false
 tags: [r, satRday]
 ---
 
@@ -13,6 +13,10 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
 Jumping Rivers is proud to be sponsoring the upcoming SatRday conference in Cape Town, South Africa on 17^th^ March 2018.
+
+```{r, echo=FALSE, out.width="300"}
+knitr::include_graphics("/img/2018/satrdays_jr.png")
+```
 
 ## What is SatRday?
 
@@ -28,3 +32,6 @@ In addition to sponsoring the conference this year, Jumping Rivers is also givin
 
 https://twitter.com/DataWookie/status/953867344790609920
 
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=2018satrdays)
