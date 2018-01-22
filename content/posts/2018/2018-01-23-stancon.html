@@ -1,0 +1,51 @@
+---
+title: "StanCon 2018 Highlights"
+author: "Ignacio Martinez"
+date: 2018-01-23
+output: html_document
+image: "img/2017/stan_jumpingrivers.png"
+draft: true
+tags: [r,stan,stancon]
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#my-highlights-from-stancon-2018">My highlights from StanCon 2018</a></li>
+</ul>
+</div>
+
+<p><img src="/img/2017/stan_jumpingrivers.png" width="400" /></p>
+<p>This year, we had the privelage of sponsoring <a href="http://mc-stan.org/events/stancon2018/">StanCon</a>. Unfortunately, we weren’t able to actually attend the conference. Rather than let our ticket go to waste, we ran a small <a href="/posts/2017/stancon_ticket_annoucement/">competition</a>, which <a href="http://home.ignacio.website/">Ignacio Martinez</a> won with his very cool R package</p>
+<div id="my-highlights-from-stancon-2018" class="section level1">
+<h1>My highlights from StanCon 2018</h1>
+<p>During my econ PhD I learned a lot about frequentist statistics. Alas, my training of Bayesian statistics was limited. Three years ago, I joined <a href="https://twitter.com/MathPolResearch">@MathPolResearch</a> and started delving into this whole new world. Two weeks ago, thanks to <a href="https://twitter.com/jumping_uk">@jumping_uk</a>, I was able to attend <a href="http://mc-stan.org/events/stancon2018/">StanCon</a>. This was an amazing experience, which allowed me to meet some great people and learn a lot from them. These are my highlights from the conference:</p>
+<p>You’d better have a very good reason to not use hierarchical models. <a href="http://discourse.mc-stan.org/u/bgoodri/summary">Ben Goodrich</a>’s tutorial on advanced hierarchical models was great. Most social science data has a natural hierarchy and modeling it using Stan is easy! Slides for this three day tutorial are available here: [<a href="http://mc-stan.org/events/stancon2018/AHM/AHM1.pdf">day 1</a>, <a href="http://mc-stan.org/events/stancon2018/AHM/AHM2.pdf">day 2</a>, <a href="http://mc-stan.org/events/stancon2018/AHM/AHM3.pdf">day 3</a>].</p>
+<p>Everyone should take his or her model to the <a href="https://cran.r-project.org/web/packages/loo/">loo</a>. <a href="https://twitter.com/avehtari">@avehtari</a>’s excellent tutorial covered cross-validation, reference predictive and projection predictive approaches for model assessment, selection and inference after model selection. This tutorial is <a href="https://github.com/avehtari/modelselection_tutorial">available online</a>, and everyone using Stan should do it.</p>
+<p><a href="http://discourse.mc-stan.org/u/bob_carpenter/summary">Bob Carpenter</a>‘s tutorial on how to verify fit and diagnose convergence answered many practical and theoretical questions I had. Bob did a great job explaining how the effective sample sizes and potential scale reduction factors (’R hats’) are calculated. He also gives us some practical rules:</p>
+<ul>
+<li>We want R hat to be less than 1.05 and greater than 0.9</li>
+<li>R hat equal to 1 does not guarantee convergence</li>
+<li>An effective sample size between 50 and 100 is enough</li>
+<li>Don’t be afraid to ask questions on the <a href="http://discourse.mc-stan.org/t/how-can-i-solve-bfmi-low-problem/3018/14">Stan forum</a></li>
+</ul>
+<p>The Bayesian Decision Making for Executives and Those who Communicate with Them series by Eric Novik and Jonathan Auerbach had some very good advice:</p>
+<ul>
+<li>Before model building, ask: What decisions are you trying to make? What is the cost of the wrong decision? What is the gain from a good decision?</li>
+<li>During model building: Elicit enough information about the problem so that a generative model can be expressed. This is very hard. A lot depends on the industry (e.g., book publishers are very different from pharma companies).</li>
+<li>After the model has been fit: Communicate the results so stakeholders can make a decision. Some things to keep in mind when doing so include:
+<ul>
+<li>Stakeholders should not care about p-values, Bayes factors or ROC curves (but sometimes do).</li>
+<li>Stakeholders should care about the uncertainty in your estimates, but often they do not.</li>
+<li>Stakeholders should know their loss or utility function, but they often do not.</li>
+</ul></li>
+</ul>
+<p>To sum this up, the Stan developers are an incredibly talented and generous group of people that have created a useful and flexible programing language and a fantastic community around it. I look forward to future StanCons. A few other things that I am looking forward to in the nearer future (and I under<a href="https://www.youtube.com/watch?v=pWow8Qe1snQ"><em>Stan</em></a>d are coming soon…):</p>
+<ul>
+<li>A series of Coursera massive open online courses (MOOCs)</li>
+<li>Support for parallel computing with MPI and GPUs</li>
+<li>loo 2.0</li>
+</ul>
+<hr />
+<p><a href="https://www.jumpingrivers.com/?utm_source=blog&amp;utm_medium=image&amp;utm_campaign=stanconComp2018"><img src="/img/logos/300_125.jpg" /></a></p>
+</div>
