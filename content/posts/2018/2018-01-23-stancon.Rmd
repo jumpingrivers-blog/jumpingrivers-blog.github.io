@@ -1,22 +1,21 @@
 ---
 title: "StanCon 2018 Highlights"
 author: "Ignacio Martinez"
-date: 2018-01-23
+date: 2018-01-24
 output: html_document
 image: "img/2017/stan_jumpingrivers.png"
-draft: true
+draft: false
 tags: [r,stan,stancon]
 ---
 
-```{r echo=FALSE, out.width="400"}
-knitr::include_graphics("/img/2017/stan_jumpingrivers.png") 
+```{r, echo=FALSE, out.width="400"}
+knitr::include_graphics("/img/2018/stancon_comp.gif")
 ```
 
-This year, we had the privelage of sponsoring [StanCon](http://mc-stan.org/events/stancon2018/). Unfortunately, we weren't able to actually attend the conference. Rather than let our ticket go to waste, we ran
-a small [competition](/posts/2017/stancon_ticket_annoucement/), which [Ignacio Martinez](http://home.ignacio.website/) won with his very cool R package
+This year we had the privelage of sponsoring [StanCon](http://mc-stan.org/events/stancon2018/). Unfortunately, we weren't able to actually attend the conference. Rather than let our ticket go to waste, we ran
+a small [competition](/posts/2017/stancon_ticket_annoucement/), which [Ignacio Martinez](http://home.ignacio.website/) won with his very cool (but in alpha stage) [R package](https://github.com/ignacio82/IMposterior) - see gif above.
 
-
-# My highlights from StanCon 2018
+# Highlights from StanCon 2018
 
 During my econ PhD I learned a lot about frequentist statistics. Alas, my training of Bayesian statistics was limited. Three years ago, I joined [\@MathPolResearch](https://twitter.com/MathPolResearch) and started delving into this whole new world. Two weeks ago, thanks to [\@jumping_uk](https://twitter.com/jumping_uk), I was able to attend [StanCon](http://mc-stan.org/events/stancon2018/). This was an amazing experience, which allowed me to meet some great people and learn a lot from them. These are my highlights from the conference:
 
