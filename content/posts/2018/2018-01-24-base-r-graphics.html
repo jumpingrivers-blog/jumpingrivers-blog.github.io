@@ -1,0 +1,90 @@
+---
+title: "Styling Base R Graphics"
+author: "Colin Gillespie"
+date: 2018-01-25
+output: html_document
+image: "img/2018/baseR.gif"
+draft: false
+tags: [r,graphics,base]
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#publication-quality-base-r-graphics">Publication quality base R graphics</a></li>
+<li><a href="#fixing-the-problem">Fixing the problem</a></li>
+<li><a href="#why-not-use-ggplot2-or-something-else">Why not use ggplot2 (or something else)?</a></li>
+</ul>
+</div>
+
+<p><img src="/img/2018/baseR.gif" width="400" style="display: block; margin: auto;" /></p>
+<div id="publication-quality-base-r-graphics" class="section level2">
+<h2>Publication quality base R graphics</h2>
+<p>Base R graphics get a bad press (although to be fair, they could have chosen their default values better). In general, they are viewed as a throw back to the dawn of the R era. I think that most people would agree that, in general, there are better graphics techniques in R (e.g. ggplot2). However it is occasionally worthwhile making a plot using base R graphics. For example, if you have a publication and you want to make sure the graphics are reproducible in five years.</p>
+<p>In this post we’ll discuss methods for dramatically altering the look and feel of a base R plot. With a bit (ok, a lot) of effort, it is possible to change all aspects of the plot to your liking.</p>
+<p>Typically I detest the <code>iris</code> the data set. It’s perhaps the most over used dataset in the entire R world. For this <strong>very</strong> reason, we’ll use it in this post to show what’s possible ;)</p>
+<p>The standard base R scatter plot is</p>
+<pre class="r"><code>plot(iris$Sepal.Length, iris$Sepal.Width, col = iris$Species)
+legend(&quot;topright&quot;, legend = levels(iris$Species), col = 1:3, pch = 21)</code></pre>
+<p><img src="/posts/2018/2018-01-24-base-r-graphics_files/figure-html/unnamed-chunk-2-1.svg" width="576" style="display: block; margin: auto;" /></p>
+<p>This gives a simple scatter plot with associated legend using the default colour scheme. The list of things wrong with the this plot is fairly lengthy, but not limited to</p>
+<ul>
+<li>Colours</li>
+<li>Margins</li>
+<li>Axis labels</li>
+<li>Overlapping points</li>
+<li>Wasted space</li>
+</ul>
+<p>However with base R graphics we can fix all of these faults!</p>
+</div>
+<div id="fixing-the-problem" class="section level2">
+<h2>Fixing the problem</h2>
+<p>What’s not clear in the scatter plot above is that some points lie on top of each other. So the first step is to wiggle the points using the <code>jitter()</code> function to avoid points sitting on top of each other.</p>
+<pre class="r"><code>## Same as geom_jitter
+iris$Sepal.Length = jitter(iris$Sepal.Length)
+iris$Sepal.Width = jitter(iris$Sepal.Width)</code></pre>
+<p>Next we select nicer colours (I’ve taken this palette from the great <a href="http://tools.medialab.sciences-po.fr/iwanthue/">I want hue</a> website). The <code>palette()</code> function allows you to globally change the colour palette used by base R plots</p>
+<pre class="r"><code>alpha = 150 # Transparent points
+palette(c(rgb(200, 79, 178, alpha = alpha, maxColorValue = 255), 
+          rgb(105, 147, 45, alpha = alpha, maxColorValue = 255),
+          rgb(85, 130, 169, alpha = alpha, maxColorValue = 255)))</code></pre>
+<p>Next we alter a few plot characteristics with the <code>par()</code> function</p>
+<pre class="r"><code>par(mar = c(3, 3, 2, 1), # Dist&#39; from plot to side of page
+    mgp = c(2, 0.4, 0), # Dist&#39; plot to label
+    las = 1, # Rotate y-axis text
+    tck = -.01, # Reduce tick length
+    xaxs = &quot;i&quot;, yaxs = &quot;i&quot;) # Remove plot padding</code></pre>
+<p>Then it comes to the <code>plot()</code> function itself. This has now become a <strong>lot</strong> more complicated. We create the plot using the <code>plot()</code> function, with a number of arguments</p>
+<pre class="r"><code>plot(iris$Sepal.Length, iris$Sepal.Width, 
+     bg = iris$Species, # Fill colour
+     pch = 21, # Shape: circles that can filed
+     xlab = &quot;Sepal Length&quot;, ylab = &quot;Sepal Width&quot;, # Labels
+     axes = FALSE, # Don&#39;t plot the axes
+     frame.plot = FALSE, # Remove the frame 
+     xlim = c(4, 8), ylim = c(2, 4.5), # Limits
+     panel.first = abline(h = seq(2, 4.5, 0.5), col = &quot;grey80&quot;))</code></pre>
+<p>then add in the x-axis tick marks</p>
+<pre class="r"><code>at = pretty(iris$Sepal.Length)
+mtext(side = 1, text = at, at = at, 
+      col = &quot;grey20&quot;, line = 1, cex = 0.9)</code></pre>
+<p>and the y-axis</p>
+<pre class="r"><code>at = pretty(iris$Sepal.Width)
+mtext(side = 2, text = at, at = at, col = &quot;grey20&quot;, line = 1, cex = 0.9)</code></pre>
+<p>This just leaves the legend. Instead of using the <code>legend()</code> function, we’ll place the names next to the points via the <code>text()</code> function</p>
+<pre class="r"><code>text(5, 4.2, &quot;setosa&quot;, col = rgb(200, 79, 178, maxColorValue = 255))
+text(5.3, 2.1, &quot;versicolor&quot;, col = rgb(105, 147, 45, maxColorValue = 255))
+text(7, 3.7, &quot;virginica&quot;, col = rgb(85, 130, 169, maxColorValue = 255))</code></pre>
+<p>Finally, we have the plot title</p>
+<pre class="r"><code>title(&quot;The infamous IRIS data&quot;, adj = 1, 
+      cex.main = 0.8, font.main = 2, col.main = &quot;black&quot;)</code></pre>
+<p>Putting it all together gives</p>
+<p><img src="/posts/2018/2018-01-24-base-r-graphics_files/figure-html/unnamed-chunk-11-1.svg" width="576" style="display: block; margin: auto;" /></p>
+<p>A much better job.</p>
+</div>
+<div id="why-not-use-ggplot2-or-something-else" class="section level2">
+<h2>Why not use ggplot2 (or something else)?</h2>
+<p>This seems like a lot of work to create a simple scatter plot. Why not use X, Y, or ggplot2? We even have a course on <a href="https://www.jumpingrivers.com/courses/4_advanced-graphics-with-r">ggplot2</a> so we’re not biased. The purpose of this article isn’t to get into a religious visualisation war on base R vs … However if you want such a war, have a look at the blog posts by <a href="http://flowingdata.com/2016/03/22/comparing-ggplot2-and-r-base-graphics/">Flowing Data</a>, <a href="https://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/">Jeff Leek</a> and <a href="http://varianceexplained.org/r/why-I-use-ggplot2/">David Robinson</a>.</p>
+<p>One point that is worth making is that since we are only using base R functions, our plot will almost certainly be reproducible for all future versions of R! Not something to quickly dismiss.</p>
+<hr />
+<p><a href="https://www.jumpingrivers.com/?utm_source=blog&amp;utm_medium=image&amp;utm_campaign=basegraphics2018"><img src="/img/logos/300_125.jpg" /></a></p>
+</div>
