@@ -1,0 +1,81 @@
+---
+title: "Styling ggplot2 Graphics"
+author: "Colin Gillespie"
+date: 2018-01-25
+output: html_document
+image: "img/2018/baseR.gif"
+draft: true
+tags: [r,graphics,base]
+---
+
+```{r, echo=FALSE, out.width="400", fig.align="center"}
+knitr::include_graphics("/img/2018/baseR.gif")
+```
+
+## Styling ggplot2 graphics
+
+In my [previous post](posts/2018/2018-01-24-base-r-graphics/), we demostrated that contary to popular opinion, it is possible
+to generate attractive looking plots using just base graphics. Although we do confess, that it
+did take a lot of time and effort.
+
+In this post we repeat the same exercise. Using the dreaded `iris` data set, we'll first
+create the default ggplot2 graph, before applying a bit of care and attention.
+
+## The standard ggplot version
+
+The standard scatter plot is straightforward to great. Load the package
+
+```{r, message=FALSE}
+library("ggplot2")
+```
+Then create a scatter plot
+```{r, fig.align="center"}
+## ggplot2 even spells colour correctly ;)
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) + 
+  geom_point(aes(colour = Species))
+```
+
+Unlike the base R offering, the list of things wrong with the this plot is short, basically
+it's 
+
+  * the axis labels (but they come from the column headings)
+  * colours (red & blue aren't the best combination)
+  
+So overall, pretty good. Other aspects that could be improved are 
+
+  * grey background
+  * direct labels on the points
+  * starting the x-axis at $4$ not $4.2$
+
+## Styling the plot
+
+
+```{r, message = FALSE}
+library("hrbrthemes")
+labels = data.frame(x = c(5, 5.3, 7), y = c(4.2, 2.1, 3.7), 
+                    Species = c("setosa", "versicolor", "virginica"))
+
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) + 
+  geom_jitter(aes(colour = Species)) + 
+  theme_ipsum() + 
+  labs(x="Sepal Length", y="Sepal Width",
+       title="The infamous IRIS data set",
+       subtitle="Thanks @hrbrmstr for the theme",
+       caption="jumpingrivers.com") + 
+  scale_colour_ipsum(guide = FALSE) + 
+  geom_text(data = labels, aes(x, y, label = Species, colour = Species)) + 
+  xlim(c(4, 8))
+```
+
+
+```{r, message = FALSE}
+
+```
+
+
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=ggplot22018)
+
+
