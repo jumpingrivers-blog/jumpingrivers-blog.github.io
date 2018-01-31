@@ -1,0 +1,44 @@
+---
+title: "Our Logo In R"
+author: "Theo Roe"
+date: 2018-02-01
+output: html_document
+image: "img/2018/logo.png"
+draft: true
+slug: "logo_in_R"
+tags: [r,tidyverse, ggplot2, ggalt, xspline, geom, scale, theme, void, theme_void]
+---
+
+
+
+<p>Hi all, so given our logo here at Jumping Rivers is a set of lines designed to look like a Gaussian Process, we thought it would be a neat idea to recreate this image in R. To do so we’re going to need a couple packages. We do the usual <code>install.packages()</code> dance (remember this step can be performed in <a href="http://blog.jumpingrivers.com/posts/2017/speed_package_installation/">parallel</a>)</p>
+<pre class="r"><code>install.packages(c(&quot;ggplot2&quot;, &quot;ggalt&quot;, &quot;readr&quot;))</code></pre>
+<p>We’re also going to need the data containing the points for the lines and which set of points belongs to which line. There is a Gist available to download via <a href="https://gist.github.com/jumpingrivers/6e88357ef28697c612bb5553251a473d">Jumping Rivers</a>. To read in the csv file we’re going to use the raw data link.</p>
+<pre class="r"><code>(dd = readr::read_csv(&quot;https://goo.gl/HzNbAp&quot;, col_types = &quot;ddc&quot;))
+## # A tibble: 40 x 3
+##       x     y type 
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;
+## 1  36.9  -311 1    
+## 2  67.9  -332 1    
+## 3 179    -156 1    
+## 4 254    -259 1    
+## # ... with 36 more rows</code></pre>
+<p>The data set contains three columns, <code>x</code>, <code>y</code> and <code>type</code>, where <code>type</code> indicates the line. Let’s start with a standard <code>geom_line()</code></p>
+<pre class="r"><code>library(&quot;ggplot2&quot;)
+g = ggplot(dd, aes(x, y))
+g + geom_line(aes(group = type))</code></pre>
+<p><img src="/posts/2018/2018-02-01-logo_files/figure-html/unnamed-chunk-3-1.svg" width="576" style="display: block; margin: auto;" /> The graph shares similarities with our logo, but is too <em>discrete</em>. To smooth the curve, we’ll use a function from the <strong>ggalt</strong> package</p>
+<pre class="r"><code>library(&quot;ggalt&quot;)
+g + geom_xspline(aes(group = type), spline_shape = -0.3) </code></pre>
+<p><img src="/posts/2018/2018-02-01-logo_files/figure-html/unnamed-chunk-4-1.svg" width="576" style="display: block; margin: auto;" /> The function <code>geom_xspline()</code> is the X-spline version of <code>geom_line()</code>, drawing a curve relative to the observations.<br />
+The parameter<code>spline_shape = -0.3</code> controls the shape of the spline relative to the observations. This can be a number between <code>-1</code> &amp; <code>1</code>. Basically, <code>-1</code> = bumpy lines, <code>1</code> = flat lines.</p>
+<p>Next we’ll change the widths of the lines</p>
+<pre class="r"><code>(g1 = g  + geom_xspline(aes(size = type, group = type), spline_shape = -0.3) + 
+  scale_size_manual(values = (4:1)/2, guide = FALSE))</code></pre>
+<p><img src="/posts/2018/2018-02-01-logo_files/figure-html/unnamed-chunk-5-1.svg" width="576" style="display: block; margin: auto;" /> The <code>scale_size_manual()</code> function enables us to control the line widths. Finally, we remove the background</p>
+<pre class="r"><code>g1 + theme_void()</code></pre>
+<p><img src="/posts/2018/2018-02-01-logo_files/figure-html/unnamed-chunk-6-1.svg" width="576" style="display: block; margin: auto;" /> The function<code>theme_void()</code> does what it says on the tin it gives us a theme completely void of everything. Bar the lines of course.</p>
+<p>That’s all for now.</p>
+<p>Thanks for reading! :)</p>
+<hr />
+<p><a href="https://www.jumpingrivers.com/?utm_source=ggplot2logo&amp;utm_medium=logo&amp;utm_campaign=blog"><img src="/img/logos/300_125.jpg" /></a></p>

@@ -1,0 +1,67 @@
+---
+title: "Our Logo In R"
+author: "Theo Roe"
+date: 2018-02-01
+output: html_document
+image: "img/2018/logo.png"
+draft: true
+slug: "logo_in_R"
+tags: [r,tidyverse, ggplot2, ggalt, xspline, geom, scale, theme, void, theme_void]
+---
+
+```{r setup,include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, fig.align="center", message = FALSE, warning = FALSE)
+options(digits = 3)
+options(dplyr.print_min = 4, dplyr.print_max = 4)
+```
+
+Hi all, so given our logo here at Jumping Rivers is a set of lines designed to look like a Gaussian Process, we thought it would be a neat idea to recreate this image in R. To do so we're going to need a couple packages. We do the usual `install.packages()` dance (remember this step can be performed in [parallel](http://blog.jumpingrivers.com/posts/2017/speed_package_installation/))
+
+```{r,eval=FALSE}
+install.packages(c("ggplot2", "ggalt", "readr"))
+```
+
+We're also going to need the data containing the points for the lines and which set of points belongs to which line. There is a Gist available to download via [Jumping Rivers](https://gist.github.com/jumpingrivers/6e88357ef28697c612bb5553251a473d). To read in the csv file we're going to use the raw data link. 
+
+```{r, message = FALSE, warning = FALSE}
+(dd = readr::read_csv("https://goo.gl/HzNbAp", col_types = "ddc"))
+```
+
+The data set contains three columns, `x`, `y` and `type`, where `type` indicates the line.
+Let's start with a standard `geom_line()` 
+
+```{r, message = FALSE, warning = FALSE}
+library("ggplot2")
+g = ggplot(dd, aes(x, y))
+g + geom_line(aes(group = type))
+```
+The graph shares similarities with our logo, but is too _discrete_.  To smooth the curve, we'll 
+use a function from the **ggalt** package
+```{r}
+library("ggalt")
+g + geom_xspline(aes(group = type), spline_shape = -0.3) 
+```
+The function `geom_xspline()` is the X-spline version of `geom_line()`, drawing a curve relative to the observations.  
+The parameter`spline_shape = -0.3` controls the shape of the spline relative to the observations. This can be a number between `-1` & `1`. Basically, `-1` = bumpy lines, `1` = flat lines. 
+
+Next we'll change the widths of the lines
+
+```{r}
+(g1 = g  + geom_xspline(aes(size = type, group = type), spline_shape = -0.3) + 
+  scale_size_manual(values = (4:1)/2, guide = FALSE))
+```
+The `scale_size_manual()` function enables us to control the line widths. Finally, we
+remove the background
+```{r}
+g1 + theme_void()
+```
+The function`theme_void()` does what it says on the tin it gives us a theme completely void of everything. Bar the lines of course. 
+
+That's all for now. 
+
+Thanks for reading! :) 
+
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=ggplot2logo&utm_medium=logo&utm_campaign=blog)
