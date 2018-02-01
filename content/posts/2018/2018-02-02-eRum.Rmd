@@ -1,9 +1,10 @@
 ---
+title: "Free ticket to eRum"
 author: "Theo Roe"
 date: 2018-02-02
 output: html_document
 image: "img/2018/eRum.jpg"
-draft: TRUE
+draft: false
 slug: "jumping_rivers_eRum"
 tags: [r,eRum, useR, R-Ladies, conferences, groups, competition]
 ---
@@ -12,13 +13,15 @@ tags: [r,eRum, useR, R-Ladies, conferences, groups, competition]
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
+![](/img/2018/eRum_jr.png)
+
 So... big news. 
 
 Jumping Rivers is sponsoring [eRum 2018](http://2018.erum.io/) and in light of this news we are giving away a free place at the conference! 
 
 *(Not to mention our very own lead consultant, Colin Gillespie, is one of the invited speakers.)*
 
-__*The competition*__
+## The Main Competition
 
 Here at [Jumping Rivers](https://jumpingrivers.com), we maintain the site [meetingsR](https://jumpingrivers.github.io/meetingsR/). This comprises of three comprehensive lists:
 
@@ -28,7 +31,7 @@ Here at [Jumping Rivers](https://jumpingrivers.com), we maintain the site [meeti
 
 3. All R-Ladies groups from around the globe.
 
-The github repo can for the website [can be found here](https://github.com/jumpingrivers/meetingsR/). 
+See the [GitHub repo](https://github.com/jumpingrivers/meetingsR/) for the contents.
 
 All we are asking for is a visualisation or dashboard of meetingsR. For example, it could be a visualisation of the useR group locations, or a dashboard based on the conference costs or ...
 
@@ -42,6 +45,14 @@ Solutions should be e-mailed to *theo@jumpingrivers.com* and if possible they sh
 
 Good luck! 
 
+
+## The Secondary Competition
+
+Regardless of the visualisation, we'll need an R script to parse the current `.Rmd` files and extract
+the conference and group urls & locations. Rather than have everyone suffering parsing hell, we'll send a free copy of [Efficient R Programming](http://shop.oreilly.com/product/0636920047995.do) to the first reasonable attempt at a parsing script (if we
+have a few scripts, we can send more than one copy).
+
+Just email *theo@jumpingrivers.com*
 
 ---
 
