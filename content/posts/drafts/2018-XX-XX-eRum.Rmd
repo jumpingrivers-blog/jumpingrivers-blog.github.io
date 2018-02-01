@@ -1,6 +1,6 @@
 ---
 author: "Theo Roe"
-date: 2018-01-08
+date: 2018-02-02
 output: html_document
 image: "img/2018/eRum.jpg"
 draft: TRUE
@@ -20,7 +20,7 @@ Jumping Rivers is sponsoring [eRum 2018](http://2018.erum.io/) and in light of t
 
 __*The competition*__
 
-Here at Jumping Rivers, we maintain the site [meetingsR](https://jumpingrivers.github.io/meetingsR/). This comprises of three comprehensive lists:
+Here at [Jumping Rivers](https://jumpingrivers.com), we maintain the site [meetingsR](https://jumpingrivers.github.io/meetingsR/). This comprises of three comprehensive lists:
 
 1. All upcoming (and foregone) R conferences.
 
@@ -30,14 +30,19 @@ Here at Jumping Rivers, we maintain the site [meetingsR](https://jumpingrivers.g
 
 The github repo can for the website [can be found here](https://github.com/jumpingrivers/meetingsR/). 
 
-All we are asking for is a visualisation/dashboard of meetingsR. For example, it could be a visualtion of the useR group locations, or a dashboard based on the conference costs. 
+All we are asking for is a visualisation or dashboard of meetingsR. For example, it could be a visualisation of the useR group locations, or a dashboard based on the conference costs or ...
 
 **The best one wins a free place at eRum 2018!**
 
 To give the winner apt time to prepare for their trip to Budapest in May, the deadline will be **5pm** on **Monday 2nd April**. 
 
-Not only that, but if we feel like the winners solution fits the meetingsR site, we'll encorporate it in the site! Credit given, of course.
+Not only that, but if we feel like the winners solution fits the meetingsR site, we'll incorporate it in the site! Credit given, of course.
 
 Solutions should be e-mailed to *theo@jumpingrivers.com* and if possible they should be held on a public repository on something such as GitHub. 
 
 Good luck! 
+
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=eRumcomp&utm_medium=logo&utm_campaign=blog)
