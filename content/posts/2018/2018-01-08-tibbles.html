@@ -108,21 +108,21 @@ library(&quot;tibble&quot;)</code></pre>
 <pre class="r"><code>df = data.frame(a = 1:5, b = letters[1:5])</code></pre>
 <pre class="r"><code>as_data_frame(df)
 ## # A tibble: 5 x 2
-##       a b     
-##   &lt;int&gt; &lt;fctr&gt;
-## 1     1 a     
-## 2     2 b     
-## 3     3 c     
-## 4     4 d     
+##       a b    
+##   &lt;int&gt; &lt;fct&gt;
+## 1     1 a    
+## 2     2 b    
+## 3     3 c    
+## 4     4 d    
 ## 5     5 e
 as_tibble(df)
 ## # A tibble: 5 x 2
-##       a b     
-##   &lt;int&gt; &lt;fctr&gt;
-## 1     1 a     
-## 2     2 b     
-## 3     3 c     
-## 4     4 d     
+##       a b    
+##   &lt;int&gt; &lt;fct&gt;
+## 1     1 a    
+## 2     2 b    
+## 3     3 c    
+## 4     4 d    
 ## 5     5 e</code></pre>
 <p>You can coerce more than just data frames, too. Objects such as lists, matrices, vectors and single instances of class are convertible.</p>
 </div>
