@@ -1,0 +1,43 @@
+---
+author: "Theo Roe"
+date: 2018-01-08
+output: html_document
+image: "img/2018/eRum.jpg"
+draft: TRUE
+slug: "jumping_rivers_eRum"
+tags: [r,eRum, useR, R-Ladies, conferences, groups, competition]
+---
+
+```{r setup,include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+So... big news. 
+
+Jumping Rivers is sponsoring [eRum 2018](http://2018.erum.io/) and in light of this news we are giving away a free place at the conference! 
+
+*(Not to mention our very own lead consultant, Colin Gillespie, is one of the invited speakers.)*
+
+__*The competition*__
+
+Here at Jumping Rivers, we maintain the site [meetingsR](https://jumpingrivers.github.io/meetingsR/). This comprises of three comprehensive lists:
+
+1. All upcoming (and foregone) R conferences.
+
+2. All R useR groups from around the globe. 
+
+3. All R-Ladies groups from around the globe.
+
+The github repo can for the website [can be found here](https://github.com/jumpingrivers/meetingsR/). 
+
+All we are asking for is a visualisation/dashboard of meetingsR. For example, it could be a visualtion of the useR group locations, or a dashboard based on the conference costs. 
+
+**The best one wins a free place at eRum 2018!**
+
+To give the winner apt time to prepare for their trip to Budapest in May, the deadline will be **5pm** on **Monday 2nd April**. 
+
+Not only that, but if we feel like the winners solution fits the meetingsR site, we'll encorporate it in the site! Credit given, of course.
+
+Solutions should be e-mailed to *theo@jumpingrivers.com* and if possible they should be held on a public repository on something such as GitHub. 
+
+Good luck! 
