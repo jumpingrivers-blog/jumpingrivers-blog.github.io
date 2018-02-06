@@ -1,27 +1,25 @@
 ---
-title: "Upcoming Courses"
+title: "R & Python Machine Learning Courses"
 author: "Theo Roe"
-date: 2018-02-02
+date: 2018-02-07
 output: html_document
 image: "img/2018/logo.png"
-draft: TRUE
+draft: false
 slug: "upcoming_courses"
 tags: [R, Python, Tensorflow, machine, deep, learning, course, London, Leeds, Birimingham]
 ---
 
 Hi there! 
 
-We're running some courses on R, Python and Tensorflow around the UK that you might be interested in!
-
+We're running some courses on R, Python and Tensorflow around the UK that you might be interested in! 
 All courses are spearheaded with lectures by one of our first-class trainers. The lectures are interspersed with practicals and coffee breaks. Attendees get a set of in depth notes to pair with the lecture. 
+More details and information on prerequisite knowledge are available on our [course description page](https://www.jumpingrivers.com/courses#analytics).
 
 All participants must bring their own laptop. 
 
-More details and information on prerequisite knowledge are available on our [course description page](https://www.jumpingrivers.com/courses#analytics).
+### Leeds (Predictive Analytics in R)
 
-### Leeds 
-
-#### Predictive Analytics in `R` - Feb 13/14
+#### Predictive Analytics in R - Feb 13/14
 
 By the end of the course, participants will have the skills and knowledge to:
 
@@ -37,13 +35,16 @@ Topics include:
 * Model selection
 * Advanced regression techniques
 
-### London
+See the [course page](https://www.jumpingrivers.com/courses/8_predictive-analytics) for
+booking details.
+
+### London (Tensorflow)
 
 #### Introduction to Python - Apr 09/10
 
 By the end of the course participants will be able to:
 
-* understand Python such that they can profficiently write reusable Python code
+* understand Python such that they can proficiently write reusable Python code
 * write more efficient Python code using functions & If and While loops
 * read, write and analyse their own data using Python
 
@@ -56,6 +57,9 @@ Topics include:
 * Writing functions
 * Dealing with files
 * Pandas
+
+See the [course page](https://www.jumpingrivers.com/courses/21_python-intro) for
+booking details.
 
 #### Python & Tensorflow - Apr 11/12
 
@@ -71,9 +75,13 @@ Topics include:
 * Convolutional neural networks
 * Scaling to big data using GPUs
 
-### Birmingham
+See the [course page](https://www.jumpingrivers.com/courses/20_python-tensorflow) for
+booking details.
 
-#### Machine learning with Python - date TBC
+
+### Birmingham (Python & Machine Learning)
+
+#### Machine learning with Python - end of April
 
 This course will provide you with the fundamental tools you'll need to prepare data and then train and test Machine Learning models.
 
@@ -89,3 +97,16 @@ Topics include:
 * Linear regression
 * Logistic regression
 * Decision trees
+
+This course will be led by [Andrew Collier](https://twitter.com/DataWookie), a very
+experienced data scientist from South Africa!
+
+
+See the [course page](https://www.jumpingrivers.com/courses/24_machine-learning-python) for
+booking details.
+
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=ML_courses_2018&utm_medium=logo&utm_campaign=blog)
+
