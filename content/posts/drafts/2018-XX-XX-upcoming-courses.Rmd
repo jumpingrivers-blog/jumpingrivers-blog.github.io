@@ -1,0 +1,91 @@
+---
+title: "Upcoming Courses"
+author: "Theo Roe"
+date: 2018-02-02
+output: html_document
+image: "img/2018/logo.png"
+draft: TRUE
+slug: "upcoming_courses"
+tags: [R, Python, Tensorflow, machine, deep, learning, course, London, Leeds, Birimingham]
+---
+
+Hi there! 
+
+We're running some courses on R, Python and Tensorflow around the UK that you might be interested in!
+
+All courses are spearheaded with lectures by one of our first-class trainers. The lectures are interspersed with practicals and coffee breaks. Attendees get a set of in depth notes to pair with the lecture. 
+
+All participants must bring their own laptop. 
+
+More details and information on prerequisite knowledge are available on our [course description page](https://www.jumpingrivers.com/courses#analytics).
+
+### Leeds 
+
+#### Predictive Analytics in `R` - Feb 13/14
+
+By the end of the course, participants will have the skills and knowledge to:
+
+* Thoroughly understand popular analytical techniques practised in industry today.
+* Understand which technique applies to their own data.
+* Efficiently and effectively analyse their own data using said techniques in R.
+
+Topics include: 
+
+* Introduction to analytics
+* Simple regression problems
+* Classification
+* Model selection
+* Advanced regression techniques
+
+### London
+
+#### Introduction to Python - Apr 09/10
+
+By the end of the course participants will be able to:
+
+* understand Python such that they can profficiently write reusable Python code
+* write more efficient Python code using functions & If and While loops
+* read, write and analyse their own data using Python
+
+Topics include:
+
+* The Python Syntax
+* Data types
+* List, Tuples and Dictionaries
+* Loops, If and While
+* Writing functions
+* Dealing with files
+* Pandas
+
+#### Python & Tensorflow - Apr 11/12
+
+Deep learning is a cutting edge machine learning technique for classification and regression. In the past few years it has produced state-of-the-art results in fields such as image classification, natural language processing, bioinformatics and robotics. This course will cover the main ideas of deep learning, and how to implement it in practice with tensorflow: a software framework for efficient and scalable deep learning.
+
+Topics include: 
+
+* Supervised learning
+* Multilayer perceptrons
+* Training neural networks
+* Deep learning
+* Tuning
+* Convolutional neural networks
+* Scaling to big data using GPUs
+
+### Birmingham
+
+#### Machine learning with Python - date TBC
+
+This course will provide you with the fundamental tools you'll need to prepare data and then train and test Machine Learning models.
+
+Topics include:
+
+* Data frames 
+* Cleaning data
+* Merging/joining data 
+* Grouping/aggregation on data
+* Categorical data
+* What is machine learning?
+* Scikit-Learn
+* Linear regression
+* Logistic regression
+* Decision trees

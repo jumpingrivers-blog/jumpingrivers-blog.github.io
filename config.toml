@@ -1,4 +1,4 @@
-baseurl = "http://blog.jumpingrivers.com/"
+baseurl = "https://blog.jumpingrivers.com/"
 #baseurl = "https://tax-collector-jacinta-81460.netlify.com/"
 title = "The Jumping Rivers Blog"
 theme = "hugo-creative-portfolio-theme"
