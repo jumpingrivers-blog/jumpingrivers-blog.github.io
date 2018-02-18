@@ -1,0 +1,101 @@
+---
+title: Text Mining with R (tidytext)
+editor_options: 
+  chunk_output_type: console
+---
+
+During a very quick tour of Edinburgh (and in particular some distilleries), 
+[Dave Robinson](http://www.twitter.com/drob) (Tidy text fame), was able to 
+drop by the [Edinburgh R](http://edinbr.org) meet-up group to give a very 
+neat talk on tidy text.
+
+The first part of the talk set the scene
+
+  * What does does text mean?
+  * Why make text tidy?
+  * What sort of problems can you solve.
+
+This was a very neat overview of the topic and gave persevere arguments 
+around the idea of using a tidy frame. Most of the details are from his 
+(with Julie Stilge) book on Tidy text.
+
+Personally I found the second part of his talk far more interesting. Where
+he did an "off the cuff" demonstration of a tidy text analysis of the "Scottish play".
+
+After loading a few packages
+
+```{r, message = FALSE}
+library("gutenbergr")
+library("tidyverse")
+library("tidytext")
+library("zoo")
+```
+
+He downloaded the "Scottish Play" via the [Gutenbergr](CRAN) package
+```{r}
+macbeth = gutenberg_works(title == "Macbeth") %>%
+  gutenberg_download()
+```
+Then proceeded to generate a bar chart of the top 10 words (excluding stop words
+such as _and_, _to_), via 
+```{r}
+macbeth %>%
+  unnest_tokens(word, text) %>% # Make text tidy
+  count(word, sort = TRUE) %>% # Count occurances
+  anti_join(stop_words, by = "word") %>% # Remove stop words
+  head(10) %>% # Select top 10
+  ggplot(aes(word, n)) + # Plot
+  geom_col() 
+```
+The two key parts of this code are
+
+ * `unnest_tokens()` that is used to tidy the text
+ * `anti_join()` to remove any `stop_words`.
+
+Since this analysis was "off the cuff", Dave noticed that with the downloaded
+text the act and scene were marked. This is clearly something you would
+want to store. This is achieved via a some `mutate()` magic
+```{r}
+speaker_words = macbeth %>%
+  mutate(is_speaker = str_detect(text, "^[A-Z ]+\\.$"),
+         speaker = ifelse(is_speaker, text, NA),
+         speaker = na.locf(speaker, na.rm = FALSE))
+```
+The `str_detect()` uses a simple regular expression to determine if the text are
+capital letters (they by indicating a scene). Any expression of length zero is replaced,
+by a missing value `NA`. Before, finishing with the __zoo__ `na.locf()` function
+to carry the last observation forward, thereby filling the blanks.
+
+The resulting tibble is then cleaned via
+```{r}
+speaker_words = speaker_words %>%
+  filter(!is_speaker, !is.na(speaker)) %>%
+  select(-is_speaker, -gutenberg_id) %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words, by = "word") 
+```
+A further bit of analysis
+```{r}
+speaker_words %>%
+  count(speaker, word, sort = TRUE) %>%
+  bind_tf_idf(word, speaker, n) %>%
+  arrange(desc(tf_idf)) %>%
+  filter(n >= 5)
+```
+
+In my opinion, the best part of the night was the lively question and answer session. 
+The questions were on numerous topics (I didn't write them down sorry!), that 
+Dave handled with ease, usually with another off-the-cuff demo.
+
+#### Further Links
+
+  * [Edinburgh R user group]()
+  * Dave Robinson: [twitter](), [blog]()
+  
+  
+  
+  
+  
+
+
+
