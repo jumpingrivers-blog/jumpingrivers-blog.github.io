@@ -1,0 +1,88 @@
+---
+title: "Edinbr: Text Mining with R"
+author: "Colin Gillespie"
+date: 2018-02-24
+output: html_document
+image: "img/2018/tidytext_edinbr.jpg"
+draft: false
+slug: "trouble_with_tibbles"
+tags: [r,tidyverse,tidytext,edinbr]
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+<p><img src="img/2018/tidytext_edinbr.jpg" /><!-- --></p>
+<p>During a very quick tour of Edinburgh (and in particular some distilleries), <a href="http://www.twitter.com/drob">Dave Robinson</a> (Tidytext fame), was able to drop by the <a href="http://edinbr.org">Edinburgh R</a> meet-up group to give a very neat talk on tidy text.</p>
+<p>The first part of the talk set the scene</p>
+<ul>
+<li>What does does text mean?</li>
+<li>Why make text tidy?</li>
+<li>What sort of problems can you solve.</li>
+</ul>
+<p>This was a very neat overview of the topic and gave persuasive arguments around the idea of using a data frame for manipulating text. Most of the details are from his (with Julie Silge) book on <a href="https://www.tidytextmining.com/">Text Mining with R</a>.</p>
+<p>Personally I found the second part of his talk far more interesting, where Dave did an “off the cuff” demonstration of a tidy text analysis of the “Scottish play” (see <a href="https://www.youtube.com/watch?v=h--HR7PWfp0">Blackadder</a> for details on the “Scottish play”).</p>
+<p>After loading a few packages</p>
+<pre class="r"><code>library(&quot;gutenbergr&quot;)
+library(&quot;tidyverse&quot;)
+library(&quot;tidytext&quot;)
+library(&quot;zoo&quot;)</code></pre>
+<p>He downloaded the “Scottish Play” via the <a href="CRAN">Gutenbergr</a> package</p>
+<pre class="r"><code>macbeth = gutenberg_works(title == &quot;Macbeth&quot;) %&gt;%
+  gutenberg_download()</code></pre>
+<p>Then proceeded to generate a bar chart of the top <span class="math inline">\(10\)</span> words (excluding stop words such as <em>and</em>, <em>to</em>), via</p>
+<pre class="r"><code>macbeth %&gt;%
+  unnest_tokens(word, text) %&gt;% # Make text tidy
+  count(word, sort = TRUE) %&gt;% # Count occurances
+  anti_join(stop_words, by = &quot;word&quot;) %&gt;% # Remove stop words
+  head(10) %&gt;% # Select top 10
+  ggplot(aes(word, n)) + # Plot
+  geom_col() </code></pre>
+<p><img src="/posts/2018/2018-02-23-edinbr_files/figure-html/unnamed-chunk-4-1.svg" width="576" /></p>
+<p>The two key parts of this code are</p>
+<ul>
+<li><code>unnest_tokens()</code> - used to tidy the text</li>
+<li><code>anti_join()</code> - remove any <code>stop_words</code>.</li>
+</ul>
+<p>Since this analysis was “off the cuff”, Dave noticed that we could easily extract the speaker. This is clearly something you would want to store and can be achieved via a some <code>mutate()</code> magic</p>
+<pre class="r"><code>speaker_words = macbeth %&gt;%
+  mutate(is_speaker = str_detect(text, &quot;^[A-Z ]+\\.$&quot;), # Detect capital letters
+         speaker = ifelse(is_speaker, text, NA),
+         speaker = na.locf(speaker, na.rm = FALSE))</code></pre>
+<p>The <code>str_detect()</code> uses a simple regular expression to determine if the text are capital letters (theyby indicating a scene). Any expression of length zero is replaced, by a missing value <code>NA</code>. Before finishing with the <strong>zoo</strong> <code>na.locf()</code> function to carry the last observation forward, thereby filling the blanks.</p>
+<p>The resulting tibble is then cleaned using</p>
+<pre class="r"><code>speaker_words = speaker_words %&gt;%
+  filter(!is_speaker, !is.na(speaker)) %&gt;%
+  select(-is_speaker, -gutenberg_id) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(stop_words, by = &quot;word&quot;) </code></pre>
+<p>A further bit of analysis</p>
+<pre class="r"><code>speaker_words %&gt;%
+  count(speaker, word, sort = TRUE) %&gt;%
+  bind_tf_idf(word, speaker, n) %&gt;%
+  arrange(desc(tf_idf)) %&gt;%
+  filter(n &gt;= 5)</code></pre>
+<pre><code>## # A tibble: 107 x 6
+##    speaker       word         n      tf   idf tf_idf
+##    &lt;chr&gt;         &lt;chr&gt;    &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 PORTER.       knock       10 0.0847  3.09  0.262 
+##  2 ALL.          double       6 0.0588  2.40  0.141 
+##  3 PORTER.       knocking     6 0.0508  2.40  0.122 
+##  4 APPARITION.   macbeth      5 0.143   0.788 0.113 
+##  5 LADY MACDUFF. thou         5 0.0394  1.30  0.0512
+##  6 PORTER.       sir          5 0.0424  1.15  0.0485
+##  7 DUNCAN.       thee         6 0.0270  1.30  0.0351
+##  8 FIRST WITCH.  macbeth      7 0.0417  0.788 0.0329
+##  9 LADY MACBETH. wouldst      6 0.00825 3.78  0.0312
+## 10 MACDUFF.      scotland     8 0.0154  1.99  0.0306
+## # ... with 97 more rows</code></pre>
+<p>In my opinion, the best part of the night was the lively question and answer session. The questions were on numerous topics (I didn’t write them down sorry!), that Dave handled with ease, usually with another off-the-cuff demo.</p>
+<div id="further-links" class="section level4">
+<h4>Further Links</h4>
+<ul>
+<li><a href="http://edinbr.org/">Edinburgh R user group</a></li>
+<li>Dave Robinson: <a href="https://twitter.com/drob">twitter</a>, <a href="http://varianceexplained.org/about/">blog</a></li>
+<li><a href="https://www.youtube.com/watch?v=h--HR7PWfp0">Blackadder</a> discusses the Scottish play</li>
+</ul>
+</div>
