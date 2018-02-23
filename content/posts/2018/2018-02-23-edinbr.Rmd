@@ -4,7 +4,7 @@ author: "Colin Gillespie"
 date: 2018-02-24
 output: html_document
 image: "img/2018/tidytext_edinbr.jpg"
-draft: true
+draft: false
 slug: "tidytext_edinbr_2018"
 tags: [r,tidyverse,tidytext,edinbr]
 editor_options: 
@@ -12,7 +12,7 @@ editor_options:
 ---
 
 ```{r, echo=FALSE, out.width="400", fig.align="center"}
-knitr::include_graphics("/img/2018/tidytext_edinbr.jpg")
+#knitr::include_graphics("/img/2018/tidytext_edinbr.jpg")
 ```
 
 During a very quick tour of Edinburgh (and in particular some distilleries), 

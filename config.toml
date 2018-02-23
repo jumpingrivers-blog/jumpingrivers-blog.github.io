@@ -7,7 +7,7 @@ languageCode = "en-uk"
 disqusShortname = "blog-jumpingrivers"
 # Enable Google Analytics by entering your tracking code
 googleAnalytics = "UA-108053698-1"
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$"]
 enableEmoji = true
 rssLimit = 30
 author = "Jumping Rivers"
@@ -20,7 +20,7 @@ author = "Jumping Rivers"
   # Use custom.css for your custom styling
   style = "default"
   description = "Insights in data science and machine learning"
-  copyright = "&copy;2017 Jumping Rivers Ltd"
+  copyright = "&copy;2018 Jumping Rivers Ltd"
   sidebarAbout = [
     "Jumping Rivers is a leading analytics company whose passion is data. We help our clients move from data storage to data insights.",
     "We provide both training and consultancy. Please get in contact!"
