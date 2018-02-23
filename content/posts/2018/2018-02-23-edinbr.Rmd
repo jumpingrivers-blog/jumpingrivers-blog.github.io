@@ -12,7 +12,7 @@ editor_options:
 ---
 
 ```{r, echo=FALSE}
-knitr::include_graphics("img/2018/tidytext_edinbr.jpg")
+knitr::include_graphics("/img/2018/tidytext_edinbr.jpg")
 ```
 
 During a very quick tour of Edinburgh (and in particular some distilleries), 
