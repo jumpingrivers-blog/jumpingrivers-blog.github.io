@@ -1,11 +1,22 @@
 ---
-title: Text Mining with R (tidytext)
+title: "Edinbr: Text Mining with R"
+author: "Colin Gillespie"
+date: 2018-02-24
+output: html_document
+image: "img/2018/tidytext_edinbr.jpg"
+draft: false
+slug: "trouble_with_tibbles"
+tags: [r,tidyverse,tidytext,edinbr]
 editor_options: 
   chunk_output_type: console
 ---
 
+```{r, echo=FALSE}
+knitr::include_graphics("img/2018/tidytext_edinbr.jpg")
+```
+
 During a very quick tour of Edinburgh (and in particular some distilleries), 
-[Dave Robinson](http://www.twitter.com/drob) (Tidy text fame), was able to 
+[Dave Robinson](http://www.twitter.com/drob) (Tidytext fame), was able to 
 drop by the [Edinburgh R](http://edinbr.org) meet-up group to give a very 
 neat talk on tidy text.
 
@@ -15,12 +26,12 @@ The first part of the talk set the scene
   * Why make text tidy?
   * What sort of problems can you solve.
 
-This was a very neat overview of the topic and gave persevere arguments 
-around the idea of using a tidy frame. Most of the details are from his 
-(with Julie Stilge) book on Tidy text.
+This was a very neat overview of the topic and gave persuasive arguments 
+around the idea of using a data frame for manipulating text. Most of the details are from his 
+(with Julie Silge) book on [Text Mining with R](https://www.tidytextmining.com/).
 
-Personally I found the second part of his talk far more interesting. Where
-he did an "off the cuff" demonstration of a tidy text analysis of the "Scottish play".
+Personally I found the second part of his talk far more interesting, where
+Dave did an "off the cuff" demonstration of a tidy text analysis of the "Scottish play" (see  [Blackadder](https://www.youtube.com/watch?v=h--HR7PWfp0) for details on the "Scottish play").
 
 After loading a few packages
 
@@ -32,11 +43,11 @@ library("zoo")
 ```
 
 He downloaded the "Scottish Play" via the [Gutenbergr](CRAN) package
-```{r}
+```{r, message = FALSE, cache=TRUE}
 macbeth = gutenberg_works(title == "Macbeth") %>%
   gutenberg_download()
 ```
-Then proceeded to generate a bar chart of the top 10 words (excluding stop words
+Then proceeded to generate a bar chart of the top $10$ words (excluding stop words
 such as _and_, _to_), via 
 ```{r}
 macbeth %>%
@@ -47,26 +58,27 @@ macbeth %>%
   ggplot(aes(word, n)) + # Plot
   geom_col() 
 ```
+
 The two key parts of this code are
 
- * `unnest_tokens()` that is used to tidy the text
- * `anti_join()` to remove any `stop_words`.
+ * `unnest_tokens()` - used to tidy the text
+ * `anti_join()` - remove any `stop_words`.
 
-Since this analysis was "off the cuff", Dave noticed that with the downloaded
-text the act and scene were marked. This is clearly something you would
-want to store. This is achieved via a some `mutate()` magic
+Since this analysis was "off the cuff", Dave noticed that
+we could easily extract the speaker. This is clearly something you would
+want to store and can be achieved via a some `mutate()` magic
 ```{r}
 speaker_words = macbeth %>%
-  mutate(is_speaker = str_detect(text, "^[A-Z ]+\\.$"),
+  mutate(is_speaker = str_detect(text, "^[A-Z ]+\\.$"), # Detect capital letters
          speaker = ifelse(is_speaker, text, NA),
          speaker = na.locf(speaker, na.rm = FALSE))
 ```
 The `str_detect()` uses a simple regular expression to determine if the text are
-capital letters (they by indicating a scene). Any expression of length zero is replaced,
-by a missing value `NA`. Before, finishing with the __zoo__ `na.locf()` function
+capital letters (theyby indicating a scene). Any expression of length zero is replaced,
+by a missing value `NA`. Before finishing with the __zoo__ `na.locf()` function
 to carry the last observation forward, thereby filling the blanks.
 
-The resulting tibble is then cleaned via
+The resulting tibble is then cleaned using
 ```{r}
 speaker_words = speaker_words %>%
   filter(!is_speaker, !is.na(speaker)) %>%
@@ -89,9 +101,10 @@ Dave handled with ease, usually with another off-the-cuff demo.
 
 #### Further Links
 
-  * [Edinburgh R user group]()
-  * Dave Robinson: [twitter](), [blog]()
-  
+  * [Edinburgh R user group](http://edinbr.org/)
+  * Dave Robinson: [twitter](https://twitter.com/drob), [blog](http://varianceexplained.org/about/)
+  * [Blackadder](https://www.youtube.com/watch?v=h--HR7PWfp0) discusses the 
+  Scottish play
   
   
   
