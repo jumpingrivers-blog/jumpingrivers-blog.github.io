@@ -11,26 +11,24 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, out.width="400", fig.align="center"}
 knitr::include_graphics("/img/2018/tidytext_edinbr.jpg")
 ```
 
 During a very quick tour of Edinburgh (and in particular some distilleries), 
 [Dave Robinson](http://www.twitter.com/drob) (Tidytext fame), was able to 
 drop by the [Edinburgh R](http://edinbr.org) meet-up group to give a very 
-neat talk on tidy text.
-
-The first part of the talk set the scene
+neat talk on tidy text. The first part of the talk set the scene
 
   * What does does text mean?
   * Why make text tidy?
   * What sort of problems can you solve.
 
 This was a very neat overview of the topic and gave persuasive arguments 
-around the idea of using a data frame for manipulating text. Most of the details are from his 
-(with Julie Silge) book on [Text Mining with R](https://www.tidytextmining.com/).
+around the idea of using a data frame for manipulating text. Most of the details are in Julie's and his 
+book on [Text Mining with R](https://www.tidytextmining.com/).
 
-Personally I found the second part of his talk far more interesting, where
+Personally I found the second part of his talk the best, where
 Dave did an "off the cuff" demonstration of a tidy text analysis of the "Scottish play" (see  [Blackadder](https://www.youtube.com/watch?v=h--HR7PWfp0) for details on the "Scottish play").
 
 After loading a few packages
