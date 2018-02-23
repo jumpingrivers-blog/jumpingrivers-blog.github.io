@@ -12,7 +12,7 @@ editor_options:
 ---
 
 ```{r, echo=FALSE, out.width="400", fig.align="center"}
-#knitr::include_graphics("/img/2018/tidytext_edinbr.jpg")
+knitr::include_graphics("/img/2018/tidytext_edinbr.jpg")
 ```
 
 During a very quick tour of Edinburgh (and in particular some distilleries), 
@@ -28,7 +28,7 @@ This was a very neat overview of the topic and gave persuasive arguments
 around the idea of using a data frame for manipulating text. Most of the details are in Julie's and his 
 book on [Text Mining with R](https://www.tidytextmining.com/).
 
-Personally I found the second part of his talk the best, where
+Personally I found the second part of his talk the most interesting, where
 Dave did an "off the cuff" demonstration of a tidy text analysis of the "Scottish play" (see  [Blackadder](https://www.youtube.com/watch?v=h--HR7PWfp0) for details on the "Scottish play").
 
 After loading a few packages
@@ -59,7 +59,7 @@ macbeth %>%
 
 The two key parts of this code are
 
- * `unnest_tokens()` - used to tidy the text
+ * `unnest_tokens()` - used to tidy the text;
  * `anti_join()` - remove any `stop_words`.
 
 Since this analysis was "off the cuff", Dave noticed that
@@ -84,7 +84,7 @@ speaker_words = speaker_words %>%
   unnest_tokens(word, text) %>%
   anti_join(stop_words, by = "word") 
 ```
-A further bit of analysis
+A further bit of analysis gives
 ```{r}
 speaker_words %>%
   count(speaker, word, sort = TRUE) %>%
@@ -100,6 +100,7 @@ Dave handled with ease, usually with another off-the-cuff demo.
 #### Further Links
 
   * [Edinburgh R user group](http://edinbr.org/)
+  * Text mining with R: [amazon](http://amzn.to/2CDzvYD)
   * Dave Robinson: [twitter](https://twitter.com/drob), [blog](http://varianceexplained.org/about/)
   * [Blackadder](https://www.youtube.com/watch?v=h--HR7PWfp0) discusses the 
   Scottish play

@@ -13,6 +13,7 @@ editor_options:
 
 
 
+<p><img src="/img/2018/tidytext_edinbr.jpg" width="400" style="display: block; margin: auto;" /></p>
 <p>During a very quick tour of Edinburgh (and in particular some distilleries), <a href="http://www.twitter.com/drob">Dave Robinson</a> (Tidytext fame), was able to drop by the <a href="http://edinbr.org">Edinburgh R</a> meet-up group to give a very neat talk on tidy text. The first part of the talk set the scene</p>
 <ul>
 <li>What does does text mean?</li>
@@ -20,7 +21,7 @@ editor_options:
 <li>What sort of problems can you solve.</li>
 </ul>
 <p>This was a very neat overview of the topic and gave persuasive arguments around the idea of using a data frame for manipulating text. Most of the details are in Julie’s and his book on <a href="https://www.tidytextmining.com/">Text Mining with R</a>.</p>
-<p>Personally I found the second part of his talk the best, where Dave did an “off the cuff” demonstration of a tidy text analysis of the “Scottish play” (see <a href="https://www.youtube.com/watch?v=h--HR7PWfp0">Blackadder</a> for details on the “Scottish play”).</p>
+<p>Personally I found the second part of his talk the most interesting, where Dave did an “off the cuff” demonstration of a tidy text analysis of the “Scottish play” (see <a href="https://www.youtube.com/watch?v=h--HR7PWfp0">Blackadder</a> for details on the “Scottish play”).</p>
 <p>After loading a few packages</p>
 <pre class="r"><code>library(&quot;gutenbergr&quot;)
 library(&quot;tidyverse&quot;)
@@ -40,7 +41,7 @@ library(&quot;zoo&quot;)</code></pre>
 <p><img src="/posts/2018/2018-02-23-edinbr_files/figure-html/unnamed-chunk-4-1.svg" width="576" style="display: block; margin: auto;" /></p>
 <p>The two key parts of this code are</p>
 <ul>
-<li><code>unnest_tokens()</code> - used to tidy the text</li>
+<li><code>unnest_tokens()</code> - used to tidy the text;</li>
 <li><code>anti_join()</code> - remove any <code>stop_words</code>.</li>
 </ul>
 <p>Since this analysis was “off the cuff”, Dave noticed that we could easily extract the speaker. This is clearly something you would want to store and can be achieved via a some <code>mutate()</code> magic</p>
@@ -55,7 +56,7 @@ library(&quot;zoo&quot;)</code></pre>
   select(-is_speaker, -gutenberg_id) %&gt;%
   unnest_tokens(word, text) %&gt;%
   anti_join(stop_words, by = &quot;word&quot;) </code></pre>
-<p>A further bit of analysis</p>
+<p>A further bit of analysis gives</p>
 <pre class="r"><code>speaker_words %&gt;%
   count(speaker, word, sort = TRUE) %&gt;%
   bind_tf_idf(word, speaker, n) %&gt;%
@@ -80,6 +81,7 @@ library(&quot;zoo&quot;)</code></pre>
 <h4>Further Links</h4>
 <ul>
 <li><a href="http://edinbr.org/">Edinburgh R user group</a></li>
+<li>Text mining with R: <a href="http://amzn.to/2CDzvYD">amazon</a></li>
 <li>Dave Robinson: <a href="https://twitter.com/drob">twitter</a>, <a href="http://varianceexplained.org/about/">blog</a></li>
 <li><a href="https://www.youtube.com/watch?v=h--HR7PWfp0">Blackadder</a> discusses the Scottish play</li>
 </ul>
