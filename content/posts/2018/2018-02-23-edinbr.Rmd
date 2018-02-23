@@ -47,7 +47,7 @@ macbeth = gutenberg_works(title == "Macbeth") %>%
 ```
 Then proceeded to generate a bar chart of the top $10$ words (excluding stop words
 such as _and_, _to_), via 
-```{r}
+```{r, fig.align="center"}
 macbeth %>%
   unnest_tokens(word, text) %>% # Make text tidy
   count(word, sort = TRUE) %>% # Count occurances
