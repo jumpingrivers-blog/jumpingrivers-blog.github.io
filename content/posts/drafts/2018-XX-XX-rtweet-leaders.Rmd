@@ -187,7 +187,7 @@ leadR_twit2 = leadR_twit2 %>%
 ```
 
 Now we plot
-```{r, eval = FALSE}
+```{r, eval = FALSE, fig.width=10, warning=FALSE, message = FALSE}
 leadR_twit2 %>% 
   ggplot(aes(x = year_month, y = value, colour = name))  + 
   geom_line() +
@@ -198,22 +198,6 @@ leadR_twit2 %>%
     title = "Mean number of favourites/month for world leaders"
   ) +
   theme_minimal() +
-  scale_color_manual(values = c("#999999", "#E69F00", "#56B4E9", "#009E73", 
-                                "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
-                                "#FF0000", "#000000")) 
-```
-```{r, echo = FALSE, fig.width=10}
-leadR_twit2 %>% 
-  filter(year_month > as.Date("2016-01-01")) %>% 
-  ggplot(aes(x = year_month, y = value, colour = name))  + 
-  geom_line() +
-  facet_wrap(~type, scales = "free", nrow = 2) + 
-labs(
-    x = NULL,
-    y = NULL,
-    title = "Mean number of favourites/month for world leaders"
-  ) +
-  theme_minimal() + 
   scale_color_manual(values = c("#999999", "#E69F00", "#56B4E9", "#009E73", 
                                 "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
                                 "#FF0000", "#000000")) 
