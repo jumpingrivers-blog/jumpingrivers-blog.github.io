@@ -1,0 +1,222 @@
+---
+title: "Analysing World Leaders using rtweet"
+author: "Theo Roe"
+date: 2018-XX-XX
+output: html_document
+image: "img/2018/earth.jpg"
+draft: TRUE
+slug: "rtweet_leaders"
+tags: [R, rtweet, tidyverse, world, leaders, famous, rvest, lubridate]
+---
+
+Given that I do quite like twitter, I thought it would be a good idea to right about R's interface to the twitter API; **rtweet**.
+
+As usual, we can grab the package in the usual way. We're also going to need the **tidyverse** for the analysis, **rvest** for some initial webscraping of twitter names and **lubridate** for some date manipulation
+
+```{r, eval=FALSE}
+install.packages(c("rtweet", "tidyverse", "rvest", "lubridate"))
+```
+```{r, message = FALSE}
+library(rtweet)
+library(tidyverse)
+library(rvest)
+library(lubridate)
+```
+
+So, I could just write the names of twitter's 10 most followed world leaders, but what would be the fun in that? We're going to scrape them from [twiplomacy](https://twiplomacy.com/ranking/the-50-most-followed-world-leaders-in-2017/) using **rvest** and a chrome extension called [selector gadget]():
+
+```{r, message=FALSE, warning = FALSE}
+world_leaders = read_html("https://twiplomacy.com/ranking/the-50-most-followed-world-leaders-in-2017/")
+w_l <- world_leaders %>% 
+  html_nodes(".ranking-entry .ranking-user-name") %>%
+  html_text() %>% 
+  as.character()
+head(w_l)
+```
+
+The string inside `html_nodes()` is gathered using selector gadget. See this [great tutorial](http://blog.rstudio.com/2014/11/24/rvest-easy-web-scraping-with-r/) on **rvest** and for more on selector gadget read `vignette("selectorgadget")`. Obviously we need to tidy it up a bit. I'm going to skip that bit as it's a tad nasty. The finished product end's up looking like so 
+
+```{r, echo = FALSE}
+leadR = tibble(leader = w_l) %>% 
+  separate(leader, c("na", "leader", "na2"), sep = "\t\t\t\t\t\t\t\t\t") %>% 
+  select(leader) %>% 
+  separate(leader, c("na","leader"), sep = "@") %>% 
+  select(leader)
+```
+```{r}
+leadR
+```
+
+Now we can collect the twitter data using **rtweet**. We can use the function `lookup_users()` to grab basic user info such as number of tweets, friends, favourites and followers. Obviously analysing all 50 leaders at once would be a pain. So we're only going to take the top 10 (_**WARNING**_: this could take a while)
+
+```{r, eval = FALSE}
+leadR_info = lookup_users(leadR$leader[1:10])
+leadR_info
+```
+```{r, echo=FALSE}
+leadR_info = readRDS("../data/leadR_info.rds")
+leadR_info
+```
+
+We only want the columns of interest (name, followers_count, friends_count, statuses_count and favourites_count) and then we want the data in long format. To do this we're going to use `select()` and `gather()`
+
+```{r}
+(leadR_info2 = leadR_info %>%  
+  select(name, followers_count, friends_count, statuses_count, favourites_count) %>% 
+  gather(type, value, -name))
+```
+
+Now we can use the fantastic **ggplot** to plot the respective counts for each world leader
+
+```{r, fig.width=10}
+leadR_info2 %>% 
+ggplot(aes(x = name, y = value,fill = type, colour = type)) +
+  geom_col() +
+  facet_wrap(~type, scales = "free") + 
+  theme_minimal() + 
+  theme(
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    title = element_blank(),
+    axis.text.x = element_blank()
+  ) + 
+  coord_flip() +
+  geom_text(aes(y = value, label = value),colour = "black", hjust = "inward")
+```
+
+Notice Donald *trumps* everyone in the followers and status area (from what I here he's quite a prevalent tweeter), however Sushma Swaraj and Narendra Modi trump everyone when it comes to favourites and friends respectively. 
+
+Now, we're going to use the function `get_timelines()` to retrieve the last 2000 tweets by each leader. Again this may take a while!
+
+```{r, eval = FALSE}
+leadR_twit = get_timelines(leadR$leader[1:10], n = 2000)
+```
+```{r, echo = FALSE}
+leadR_twit = readRDS("../data/leadR_twit.rds")
+```
+
+Unfortunately `get_timelines()` only gives us their twitter handle and doesn't return their actual name. So I'm going to use `select()` and `left_join()` to add the column of names to make for easier reading on the upcoming graphs
+
+```{r}
+names = select(leadR_info, name, screen_name)
+leadR_twitt = left_join(leadR_twit, names, by = c("screen_name"))
+```
+
+`get_timelines()` gives us the source of a persons tweet, i.e. iPhone, iPad, Android etc. So, what is the post popular tweet source among world leaders?
+
+```{r, fig.width=10}
+leadR_twitt %>% 
+  count(source) %>% 
+  ggplot(aes(x = source, y = n)) + 
+  geom_col(fill = "cornflowerblue") +
+  theme_minimal() + 
+  theme(
+    strip.background = element_blank(),
+    axis.text.x = element_blank()
+    ) + 
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "Tweet sources for world leaders"
+  ) + 
+  coord_flip() + 
+  geom_text(aes(y = n, label = n), hjust = "inward")
+```
+Either world leaders really love iPhones or their social media / security teams do. Probably the latter. I can hear you all begging the question, using which source is more likely to give a world leader more retweets and favourites? To do this we're going to summarise each source by it's mean number of retweets and favourites and then gather the data into a long format fo plotting
+```{r, fig.width=10}
+leadR_twitt %>% 
+  group_by(source) %>% 
+  summarise(Retweet = mean(retweet_count), Favourite = mean(favorite_count)) %>% 
+  gather(type,value,-source) %>%  
+  ggplot(aes(x = source, y = value, fill = type)) + 
+  geom_col() + 
+  facet_wrap(~type, scales = "free") +
+  theme_minimal() +  
+  labs(
+    x = "Source",
+    y = NULL,
+    title = "Which source is more likely to get more retweets and favourites?", 
+    subtitle = "Values are the mean in each group"
+  ) + 
+  theme(
+    legend.position = "none",
+    axis.text.x = element_blank()
+  ) + 
+  geom_text(aes(y = value, label = round(value,0)), colour = "black", hjust = "inward") + 
+  coord_flip()
+```
+
+Naturally this leads me to the question of which leader, over their previous 2000 tweets, has the most overall retweets and favourites, and who has the highest average number of retweets and favourites? 
+
+```{r, fig.width=10}
+leadR_twitt %>% 
+  group_by(name) %>% 
+  summarise(rt_total = sum(retweet_count), fav_total = sum(favorite_count),
+            rt_mean = mean(retweet_count), fav_mean = mean(favorite_count)) %>% 
+  gather(type, value, -name) %>% 
+  ggplot(aes(x = name, y = value, fill = type)) +
+  geom_col() + 
+  labs(
+    x = NULL,
+    y = NULL,
+    title= "Mean and total retweets/favourites for each world leader"
+  ) + 
+  coord_flip() + 
+  facet_wrap(~type, scales = "free") + 
+  theme_minimal()
+```
+
+What about the mean retweets and favourites per month? `ts_plot()` provides us with a quick way to turn the data into a time series plot. However this wouldn't work for me so I'm doing it the dplyr way. I'm going to a monthly time series so first we need to aggregate our data into months. The function `rollback()`, from **lubridate**, is fantastic for this. It will roll a date back to the first day of that month whilst also getting rid of the time information. 
+```{r,echo = FALSE}
+leadR_twit2 = leadR_twitt %>% 
+  mutate(year_month = rollback(created_at, roll_to_first = TRUE, preserve_hms = FALSE)) %>% 
+  group_by(name, year_month) %>% 
+  mutate(fav_mean = mean(favorite_count), rt_mean  = mean(retweet_count))
+```
+```{r, eval = FALSE}
+leadR_twit2 = leadR_twitt %>% 
+  mutate(year_month = rollback(created_at, roll_to_first = TRUE, preserve_hms = FALSE)) %>% 
+  group_by(name, year_month) %>% 
+  mutate(fav_mean = mean(favorite_count), rt_mean  = mean(retweet_count))
+```
+We now have two columns, fav_mean and rt_mean, that have in them the mean number of retweets and favourites for each leader in each month. We can use `select()` and `gather()` to select the variables we want then turn this into long data for plotting
+```{r}
+leadR_twit2 = leadR_twit2 %>% 
+  select(name, year_month, fav_mean, rt_mean) %>% 
+  gather(type, value, -name, -year_month)
+```
+
+Now we plot
+```{r, eval = FALSE}
+leadR_twit2 %>% 
+  ggplot(aes(x = year_month, y = value, colour = name))  + 
+  geom_line() +
+  facet_wrap(~type, scales = "free", nrow = 2) + 
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "Mean number of favourites/month for world leaders"
+  ) +
+  theme_minimal() +
+  scale_color_manual(values = c("#999999", "#E69F00", "#56B4E9", "#009E73", 
+                                "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
+                                "#FF0000", "#000000")) 
+```
+```{r, echo = FALSE, fig.width=10}
+leadR_twit2 %>% 
+  filter(year_month > as.Date("2016-01-01")) %>% 
+  ggplot(aes(x = year_month, y = value, colour = name))  + 
+  geom_line() +
+  facet_wrap(~type, scales = "free", nrow = 2) + 
+labs(
+    x = NULL,
+    y = NULL,
+    title = "Mean number of favourites/month for world leaders"
+  ) +
+  theme_minimal() + 
+  scale_color_manual(values = c("#999999", "#E69F00", "#56B4E9", "#009E73", 
+                                "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
+                                "#FF0000", "#000000")) 
+```
+
+That's all for this time, thanks for reading!
