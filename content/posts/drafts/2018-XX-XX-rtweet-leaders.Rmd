@@ -7,6 +7,8 @@ image: "img/2018/earth.jpg"
 draft: TRUE
 slug: "rtweet_leaders"
 tags: [R, rtweet, tidyverse, world, leaders, famous, rvest, lubridate]
+editor_options: 
+  chunk_output_type: console
 ---
 
 Given that I do quite like twitter, I thought it would be a good idea to right about R's interface to the twitter API; **rtweet**.
@@ -17,34 +19,29 @@ As usual, we can grab the package in the usual way. We're also going to need the
 install.packages(c("rtweet", "tidyverse", "rvest", "lubridate"))
 ```
 ```{r, message = FALSE}
-library(rtweet)
-library(tidyverse)
-library(rvest)
-library(lubridate)
-library(stringr)
+library("rtweet")
+library("tidyverse")
+library("rvest")
+library("lubridate")
 ```
 
 So, I could just write the names of twitter's 10 most followed world leaders, but what would be the fun in that? We're going to scrape them from [twiplomacy](https://twiplomacy.com/ranking/the-50-most-followed-world-leaders-in-2017/) using **rvest** and a chrome extension called [selector gadget]():
 
 ```{r, message=FALSE, warning = FALSE}
 world_leaders = read_html("https://twiplomacy.com/ranking/the-50-most-followed-world-leaders-in-2017/")
-w_l <- world_leaders %>% 
+lead_r = world_leaders %>% 
   html_nodes(".ranking-entry .ranking-user-name") %>%
-  html_text() %>% 
-  as.character()
-head(w_l)
+  html_text() %>%
+  str_replace_all("\\t|\\n|@", "")
+head(lead_r)
 ```
 
-The string inside `html_nodes()` is gathered using selector gadget. See this [great tutorial](http://blog.rstudio.com/2014/11/24/rvest-easy-web-scraping-with-r/) on **rvest** and for more on selector gadget read `vignette("selectorgadget")`. Obviously we need to tidy it up a bit. For this we'll use `str_replace_all()` from **stringr**.
+The string inside `html_nodes()` is gathered using selector gadget. See this [great tutorial](http://blog.rstudio.com/2014/11/24/rvest-easy-web-scraping-with-r/) on **rvest** and for more on selector gadget read `vignette("selectorgadget")`. Tabs (`\t`) and linebreaks (`\n`) are removed with `str_replace_all()` from the **stringr** package.
 
-```{r}
-leadR = str_replace_all(w_l, "\\t|\\n", "")
-```
-
-Here we are replacing all string of letters that are "\\t" or "\\n" with nothing. Now we can collect the twitter data using **rtweet**. We can use the function `lookup_users()` to grab basic user info such as number of tweets, friends, favourites and followers. Obviously analysing all 50 leaders at once would be a pain. So we're only going to take the top 10 (_**WARNING**_: this could take a while)
+Now we can collect the twitter data using **rtweet**. We can use the function `lookup_users()` to grab basic user info such as number of tweets, friends, favourites and followers. Obviously analysing all 50 leaders at once would be a pain. So we're only going to take the top 10 (_**WARNING**_: this could take a while)
 
 ```{r, eval = FALSE}
-leadR_info = lookup_users(leadR$leader[1:10])
+leadR_info = lookup_users(lead_r[1:10])
 leadR_info
 ```
 ```{r, echo=FALSE}
