@@ -24,7 +24,7 @@ str_extract_all(STRING, REGEX_PATTERN)
 
 So, in no particular order (I feel like I'm on X factor), here comes the Jumping Rivers' 5 most useful regular expressions:
 
-## 1 - .
+## 1 - `.`
 
 The dot. The dot means anything. So match one character or number, it doesn't matter what it is. For instance, say we have an e-mail address stored
 ```{r}
@@ -44,12 +44,12 @@ str_extract_all(email, "..")
 ```
 Now we have two dots in a row. So we are saying give us all strings that match any two characters or numbers in a row.
 
-## 2 - \\
+## 2 - `\`
 
 When typing regular expressions, there are a group of special characters called metacharacters that have other functions. These are:    
 \.\{()\\\^$\|\?\*\+
 
-The backslash is important because if we want to search for any of these characters we must escape the character with a backslash. For example, we've already seen the "." as a metacharacter as it's use. What if we wanted to search for the actual dot? 
+The backslash is super super *SUPER* important because if we want to search for any of these characters we must escape the character with a backslash. For example, we've already seen the "." as a metacharacter as it's use. What if we wanted to search for the actual dot? 
 ```{r, error = TRUE}
 str_extract_all(email, "\.")
 ```
@@ -60,7 +60,7 @@ str_extract_all(email, "\\.?")
 
 Much better.
 
-## 3 - []
+## 3 - `[]`
 
 The square brackets. We can match a group of characters or digits using the square brackets. For instance any lower case letters
 ```{r}
@@ -79,43 +79,60 @@ If we wanted to include the dot or dash we can include them also but this time w
 str_extract_all(email, "[a-zA-Z0-9.-]")
 ```
 
-## 4 - *
+## 4 - `*`
 
-The asterisk. The asterisk is used for grabbing anything our expression of the same form
+The asterisk. This is called a quantifier. We quantify how many of the characters we want to match and the asterisk means we want 0 or more characters of the same form. For instance
 ```{r}
 str_extract(email, "[a-z]*")
 ```
 
-So here we're searching for the first lower case letter (in this case the first character `t`) and then continuing along the string until the character is no longer a lower case letter. If we do 
+Here we're searching for the first lower case letter (in this case the first character `t`) and then continuing along the string until the character is no longer a lower case letter. If we do 
 ```{r}
 str_extract(email, "[a-z:]*")
 ```
-We grab the first character that is either a lower case letter or a colon, and continue along til the character is neither of them.
+We grab the first character that is either a lower case letter or a colon, and continue along til the character is neither of them. 
 
-## 5 
+## 5 - `^`
+
+The hat. The hat has two uses, but here we're only going to look at one. If we use a hat inside square brackets we are asking R to give us back everything but those characters. For instance, if we want all characters but lower case characters
+```{r}
+str_extract_all(email, "[^a-z]")
+```
+
+## 6 - `\w` and `\d`
+
+Words and digits, incredibly useful! `\w` returns all word characters, i.e. `a-z`, `A-Z`, `0-9` & `_` and `\d` returns all digits. Obviously we have to escape the backslash again
+```{r}
+str_extract_all(email, "\\w+")
+```
+Note here I am using a `+` quantifier, which means the same as the asterisk except we want either 1 or more characters. With `\d` 
+```{r}
+str_extract_all(email, "\\d+")
+```
 
 
-.       - Any Character Except New Line
-\d      - Digit (0-9)
-\D      - Not a Digit (0-9)
-\w      - Word Character (a-z, A-Z, 0-9, _)
-\W      - Not a Word Character
-\s      - Whitespace (space, tab, newline)
-\S      - Not Whitespace (space, tab, newline)
 
-\b      - Word Boundary
-\B      - Not a Word Boundary
-^       - Beginning of a String
-$       - End of a String
+<!-- .       - Any Character Except New Line -->
+<!-- \d      - Digit (0-9) -->
+<!-- \D      - Not a Digit (0-9) -->
+<!-- \w      - Word Character (a-z, A-Z, 0-9, _) -->
+<!-- \W      - Not a Word Character -->
+<!-- \s      - Whitespace (space, tab, newline) -->
+<!-- \S      - Not Whitespace (space, tab, newline) -->
 
-[]      - Matches Characters in brackets
-[^ ]    - Matches Characters NOT in brackets
-|       - Either Or
-( )     - Group
+<!-- \b      - Word Boundary -->
+<!-- \B      - Not a Word Boundary -->
+<!-- ^       - Beginning of a String -->
+<!-- $       - End of a String -->
 
-Quantifiers:
-*       - 0 or More
-+       - 1 or More
-?       - 0 or One
-{3}     - Exact Number
-{3,4}   - Range of Numbers (Minimum, Maximum)
+<!-- []      - Matches Characters in brackets -->
+<!-- [^ ]    - Matches Characters NOT in brackets -->
+<!-- |       - Either Or -->
+<!-- ( )     - Group -->
+
+<!-- Quantifiers: -->
+<!-- *       - 0 or More -->
+<!-- +       - 1 or More -->
+<!-- ?       - 0 or One -->
+<!-- {3}     - Exact Number -->
+<!-- {3,4}   - Range of Numbers (Minimum, Maximum) -->
