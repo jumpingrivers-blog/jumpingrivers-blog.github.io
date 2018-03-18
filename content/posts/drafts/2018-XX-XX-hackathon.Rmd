@@ -3,19 +3,13 @@ title: "The Water Hub Hackathon"
 author: "Theo Roe"
 date: 2018-XX-XX
 output: html_document
-image: "img/2018/water.jpg"
+image: "img/2018/hack.jpg"
 draft: TRUE
-slug: "wh_hack"
-tags: [R, Water, Hub, hackathon, API]
+slug: "water_hack"
+tags: [r, waterhub, hackathon, API]
 ---
 
-```{r}
-knitr::include_graphics()
-```
-
-Well well well, we've only gone and won the Water Hub hackathon! Well, joint winners but the main word is *WINNER*. First of all we want to say thank you to all the guys at the Water Hub and the Sunderland Software Centre for organising and inviting. There was some tough competition there and we are thrilled to have ajudged joint top! Here's how we won:
-
-## Day 1
+Well well well, we've only gone and won the Water Hub hackathon! Well, joint winners but the main word is *WINNER*. First of all we want to say thank you to all the guys at the [Water Hub](http://www.thewaterhub.org.uk/) and the Sunderland Software Centre for organising and inviting. There was some tough competition there and we are thrilled to have ajudged joint top! Here's how we won:
 
 The first day started off with presentations from Antonio Scar and Matt Starr from the enviroment agency (who we apologise profusely too for constantly harassing about their current system and data), Martin Colling from the Wear Rivers Trust and Louise Bracken of the Water Hub. Whilst we were listening to some passionate presentations about the enviroment and the problem at hand we were able to tuck into some free bacon and sausage sarnies! 
 
@@ -47,5 +41,5 @@ The three products that made up the app are:
 
 Here's a cheeky picture of us being winners:
 ```{r}
-knitr::include_graphics()
+knitr::include_graphics("hack3.jpg")
 ```
