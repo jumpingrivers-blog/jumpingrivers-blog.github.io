@@ -186,7 +186,7 @@ lead_r_twit2 %>%
   ) +
   theme_minimal() 
 ```
-```{r, echo = FALSE, fig.width=10}
+```{r, echo = FALSE, fig.width=10, warning = FALSE}
 lead_r_twit2 %>% 
   filter(year_month > as.Date("2016-01-01")) %>% 
   ggplot(aes(x = year_month, y = value, colour = name))  + 
@@ -222,7 +222,7 @@ bot = botornot(lead_r_tl) %>%
   arrange(prob_bot)
 ```
 For a clearer look at the probabilities I'm going to plot them with their actual names instead of the screen names
-```{r}
+```{r, warning = FALSE}
 bot %>% 
   rename(screen_name =  user) %>% 
   inner_join(distinct(names), by = "screen_name") %>% 
