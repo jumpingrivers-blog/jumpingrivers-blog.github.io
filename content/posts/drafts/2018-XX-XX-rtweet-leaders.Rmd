@@ -182,10 +182,7 @@ lead_r_twit2 %>%
     y = NULL,
     title = "Mean number of favourites/month for world leaders"
   ) +
-  theme_minimal() +
-  scale_color_manual(values = c("#999999", "#E69F00", "#56B4E9", "#009E73", 
-                                "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
-                                "#FF0000", "#000000")) 
+  theme_minimal() 
 ```
 ```{r, echo = FALSE, fig.width=10}
 lead_r_twit2 %>% 
@@ -243,3 +240,6 @@ So apparently we are almost certain Donald J. Trump isn't a bot and very very ne
 
 That's all for this time, thanks for reading!
 
+---
+
+[![](static/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=basegraphics2018)
