@@ -16,7 +16,7 @@ editor_options:
 <ul>
 <li><a href="#set-up">Set-up</a></li>
 <li><a href="#getting-the-tweets">Getting the tweets</a></li>
-<li><a href="#classify-bots">Classify bots</a></li>
+<li><a href="#are-world-leaders-actually-bots">Are world leaders actually bots?</a></li>
 </ul>
 </div>
 
@@ -180,8 +180,8 @@ lead_r_twitt = left_join(lead_r_tl, names, by = &quot;screen_name&quot;)</code><
   theme_minimal() </code></pre>
 <p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-17-1.svg" width="960" /></p>
 </div>
-<div id="classify-bots" class="section level2">
-<h2>Classify bots</h2>
+<div id="are-world-leaders-actually-bots" class="section level2">
+<h2>Are world leaders actually bots?</h2>
 <p><strong>botrnot</strong> is a fantastic package that uses machine learning to calculate the probability that a twitter user is a bot. So the obvious next question is, are our world leaders a bot or not?</p>
 <p>We need to install the development package from GitHub and we also need to install the GitHub version of <strong>rtweet</strong></p>
 <pre class="r"><code>devtools::install_github(&quot;mkearney/botrnot&quot;)
