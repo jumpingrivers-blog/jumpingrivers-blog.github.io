@@ -141,7 +141,7 @@ lead_r_twitt %>%
 
 Naturally this leads me to the question of which leader, over their previous 2000 tweets, has the most overall retweets and favourites, and who has the highest average number of retweets and favourites? 
 
-```{r, fig.width=10}
+```{r, fig.width=10, dev = "png"}
 lead_r_twitt %>% 
   group_by(name) %>% 
   summarise(rt_total = sum(retweet_count), fav_total = sum(favorite_count),
