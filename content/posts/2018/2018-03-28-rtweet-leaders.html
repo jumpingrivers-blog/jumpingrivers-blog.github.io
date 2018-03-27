@@ -95,7 +95,7 @@ lead_r_info</code></pre>
   ) + 
   coord_flip() +
   geom_text(aes(y = value, label = value), colour = &quot;black&quot;, hjust = &quot;inward&quot;)</code></pre>
-<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-7-1.png" width="960" /></p>
+<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-7-1.svg" width="960" /></p>
 <p>Notice Donald <em>trumps</em> everyone in the followers and status area (from what I here he’s quite a prevalent tweeter), however Sushma Swaraj and Narendra Modi trump everyone when it comes to favourites and friends respectively.</p>
 <p>Now, we’re going to use the function <code>get_timelines()</code> to retrieve the last 2000 tweets by each leader. Again this may take a while!</p>
 <pre class="r"><code>lead_r_tl = get_timelines(lead_r, n = 2000)</code></pre>
@@ -119,7 +119,7 @@ lead_r_twitt = left_join(lead_r_tl, names, by = &quot;screen_name&quot;)</code><
   ) + 
   coord_flip() + 
   geom_text(aes(y = n, label = n), hjust = &quot;inward&quot;)</code></pre>
-<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-11-1.png" width="960" /> Either world leaders really love iPhones or their social media / security teams do. Probably the latter. I can hear you all begging the question, using which source is more likely to give a world leader more retweets and favourites? To do this we’re going to summarise each source by it’s mean number of retweets and favourites and then gather the data into a long format for plotting</p>
+<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-11-1.svg" width="960" /> Either world leaders really love iPhones or their social media / security teams do. Probably the latter. I can hear you all begging the question, using which source is more likely to give a world leader more retweets and favourites? To do this we’re going to summarise each source by it’s mean number of retweets and favourites and then gather the data into a long format for plotting</p>
 <pre class="r"><code>lead_r_twitt %&gt;% 
   group_by(source) %&gt;% 
   summarise(Retweet = mean(retweet_count), Favourite = mean(favorite_count)) %&gt;% 
@@ -140,7 +140,7 @@ lead_r_twitt = left_join(lead_r_tl, names, by = &quot;screen_name&quot;)</code><
   ) + 
   geom_text(aes(y = value, label = round(value, 0)), colour = &quot;black&quot;, hjust = &quot;inward&quot;) + 
   coord_flip()</code></pre>
-<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-12-1.png" width="960" /></p>
+<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-12-1.svg" width="960" /></p>
 <p>Naturally this leads me to the question of which leader, over their previous 2000 tweets, has the most overall retweets and favourites, and who has the highest average number of retweets and favourites?</p>
 <pre class="r"><code>lead_r_twitt %&gt;% 
   group_by(name) %&gt;% 
@@ -157,7 +157,7 @@ lead_r_twitt = left_join(lead_r_tl, names, by = &quot;screen_name&quot;)</code><
   coord_flip() + 
   facet_wrap(~type, scales = &quot;free&quot;) + 
   theme_minimal()</code></pre>
-<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-13-1.png" width="960" /></p>
+<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-13-1.svg" width="960" /></p>
 <p>What about the mean retweets and favourites per month? <code>ts_plot()</code> provides us with a quick way to turn the data into a time series plot. However this wouldn’t work for me so I’m doing it the dplyr way. I’m going to a monthly time series so first we need to aggregate our data into months. The function <code>rollback()</code>, from <strong>lubridate</strong>, is fantastic for this. It will roll a date back to the first day of that month whilst also getting rid of the time information.</p>
 <pre class="r"><code>lead_r_twit2 = lead_r_twitt %&gt;% 
   mutate(year_month = rollback(created_at, roll_to_first = TRUE, preserve_hms = FALSE)) %&gt;% 
