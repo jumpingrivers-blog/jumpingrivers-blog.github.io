@@ -203,7 +203,7 @@ labs(
                                 "#FF0000", "#000000")) 
 ```
 
-## Classify bots
+## Are world leaders actually bots?
 
 **botrnot** is a fantastic package that uses machine learning to calculate the probability that a twitter user is a bot. So the obvious next question is, are our world leaders a bot or not? 
 
