@@ -1,0 +1,212 @@
+---
+title: "Which world leaders are twitter bots?"
+author: "Theo Roe"
+date: 2018-03-28
+output: html_document
+image: "img/2018/earth.jpg"
+draft: false
+slug: "rtweet_leaders"
+tags: [r, rtweet, tidyverse, world-leaders, famous, rvest, lubridate]
+editor_options: 
+  chunk_output_type: console
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#set-up">Set-up</a></li>
+<li><a href="#getting-the-tweets">Getting the tweets</a></li>
+<li><a href="#are-world-leaders-actually-bots">Are world leaders actually bots?</a></li>
+</ul>
+</div>
+
+<div id="set-up" class="section level2">
+<h2>Set-up</h2>
+<p>Given that I do quite like twitter, I thought it would be a good idea to right about R’s interface to the twitter API; <strong>rtweet</strong>. As usual, we can grab the package in the usual way. We’re also going to need the <strong>tidyverse</strong> for the analysis, <strong>rvest</strong> for some initial webscraping of twitter names, <strong>lubridate</strong> for some date manipulation and <strong>stringr</strong> for some minor text mining.</p>
+<pre class="r"><code>install.packages(c(&quot;rtweet&quot;, &quot;tidyverse&quot;, &quot;rvest&quot;, &quot;lubridate&quot;))</code></pre>
+<pre class="r"><code>library(&quot;rtweet&quot;)
+library(&quot;tidyverse&quot;)
+library(&quot;rvest&quot;)
+library(&quot;lubridate&quot;)</code></pre>
+</div>
+<div id="getting-the-tweets" class="section level2">
+<h2>Getting the tweets</h2>
+<p>So, I could just write the names of twitter’s 10 most followed world leaders, but what would be the fun in that? We’re going to scrape them from <a href="https://twiplomacy.com/ranking/the-50-most-followed-world-leaders-in-2017/">twiplomacy</a> using <strong>rvest</strong> and a chrome extension called <a href="">selector gadget</a>:</p>
+<pre class="r"><code>world_leaders = read_html(&quot;https://twiplomacy.com/ranking/the-50-most-followed-world-leaders-in-2017/&quot;)
+lead_r = world_leaders %&gt;% 
+  html_nodes(&quot;.ranking-entry .ranking-user-name&quot;) %&gt;%
+  html_text() %&gt;%
+  str_replace_all(&quot;\\t|\\n|@&quot;, &quot;&quot;)
+head(lead_r)</code></pre>
+<pre><code>## [1] &quot;realdonaldtrump&quot; &quot;pontifex&quot;        &quot;narendramodi&quot;    &quot;pmoindia&quot;       
+## [5] &quot;potus&quot;           &quot;whitehouse&quot;</code></pre>
+<p>The string inside <code>html_nodes()</code> is gathered using selector gadget. See this <a href="http://blog.rstudio.com/2014/11/24/rvest-easy-web-scraping-with-r/">great tutorial</a> on <strong>rvest</strong> and for more on selector gadget read <code>vignette(&quot;selectorgadget&quot;)</code>. Tabs (<code>\t</code>) and linebreaks (<code>\n</code>) are removed with <code>str_replace_all()</code> from the <strong>stringr</strong> package.</p>
+<p>Now we can collect the twitter data using <strong>rtweet</strong>. We can use the function <code>lookup_users()</code> to grab basic user info such as number of tweets, friends, favourites and followers. Obviously analysing all 50 leaders at once would be a pain. So we’re only going to take the top 10 (<em><strong>WARNING</strong></em>: this could take a while)</p>
+<pre class="r"><code>lead_r_info = lookup_users(lead_r[1:10])
+lead_r_info</code></pre>
+<pre><code>## # A tibble: 10 x 20
+##    user_id  name   screen_name  location description       url   protected
+##    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;    &lt;chr&gt;             &lt;chr&gt; &lt;lgl&gt;    
+##  1 25073877 Donal… realDonaldT… Washing… 45th President o… http… FALSE    
+##  2 5007043… Pope … Pontifex     Vatican… Welcome to the o… http… FALSE    
+##  3 18839785 Naren… narendramodi India    Prime Minister o… http… FALSE    
+##  4 4717417… PMO I… PMOIndia     &quot;India &quot; Office of the Pr… http… FALSE    
+##  5 8222156… Presi… POTUS        Washing… 45th President o… http… FALSE    
+##  6 8222156… The W… WhiteHouse   Washing… Welcome to @Whit… http… FALSE    
+##  7 68034431 Recep… RT_Erdogan   Ankara,… Türkiye Cumhurba… &lt;NA&gt;  FALSE    
+##  8 2196174… Sushm… SushmaSwaraj New Del… Minister of Exte… &lt;NA&gt;  FALSE    
+##  9 3669871… Joko … jokowi       Jakarta  Akun resmi Joko … &lt;NA&gt;  FALSE    
+## 10 44335525 HH Sh… HHShkMohd    Dubai, … Official Tweets … http… FALSE    
+## # ... with 13 more variables: followers_count &lt;int&gt;, friends_count &lt;int&gt;,
+## #   listed_count &lt;int&gt;, statuses_count &lt;int&gt;, favourites_count &lt;int&gt;,
+## #   account_created_at &lt;dttm&gt;, verified &lt;lgl&gt;, profile_url &lt;chr&gt;,
+## #   profile_expanded_url &lt;chr&gt;, account_lang &lt;chr&gt;,
+## #   profile_banner_url &lt;chr&gt;, profile_background_url &lt;chr&gt;,
+## #   profile_image_url &lt;chr&gt;</code></pre>
+<p>We only want the columns of interest (name, followers_count, friends_count, statuses_count and favourites_count) and then we want the data in long format. To do this we’re going to use <code>select()</code> and <code>gather()</code></p>
+<pre class="r"><code>(lead_r_info = lead_r_info %&gt;%  
+  select(name, followers_count, friends_count, statuses_count, favourites_count, screen_name) %&gt;% 
+  gather(type, value, -name, -screen_name))</code></pre>
+<pre><code>## # A tibble: 40 x 4
+##    name                 screen_name     type               value
+##    &lt;chr&gt;                &lt;chr&gt;           &lt;chr&gt;              &lt;int&gt;
+##  1 Donald J. Trump      realDonaldTrump followers_count 48426576
+##  2 Pope Francis         Pontifex        followers_count 16858642
+##  3 Narendra Modi        narendramodi    followers_count 40710139
+##  4 PMO India            PMOIndia        followers_count 25156203
+##  5 President Trump      POTUS           followers_count 22324998
+##  6 The White House      WhiteHouse      followers_count 16713369
+##  7 Recep Tayyip Erdoğan RT_Erdogan      followers_count 12513987
+##  8 Sushma Swaraj        SushmaSwaraj    followers_count 11461412
+##  9 Joko Widodo          jokowi          followers_count  9693534
+## 10 HH Sheikh Mohammed   HHShkMohd       followers_count  8764455
+## # ... with 30 more rows</code></pre>
+<p>Now we can use the fantastic <strong>ggplot</strong> to plot the respective counts for each world leader</p>
+<pre class="r"><code>ggplot(data = lead_r_info, 
+       aes(x = reorder(name, value), y = value,fill = type, colour = type)) +
+  geom_col() +
+  facet_wrap(~type, scales = &quot;free&quot;) + 
+  theme_minimal() + 
+  theme(
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    title = element_blank(),
+    axis.text.x = element_blank()
+  ) + 
+  coord_flip() +
+  geom_text(aes(y = value, label = value), colour = &quot;black&quot;, hjust = &quot;inward&quot;)</code></pre>
+<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-7-1.svg" width="960" /></p>
+<p>Notice Donald <em>trumps</em> everyone in the followers and status area (from what I here he’s quite a prevalent tweeter), however Sushma Swaraj and Narendra Modi trump everyone when it comes to favourites and friends respectively.</p>
+<p>Now, we’re going to use the function <code>get_timelines()</code> to retrieve the last 2000 tweets by each leader. Again this may take a while!</p>
+<pre class="r"><code>lead_r_tl = get_timelines(lead_r, n = 2000)</code></pre>
+<p>Unfortunately <code>get_timelines()</code> only gives us their twitter handle and doesn’t return their actual name. So I’m going to use <code>select()</code> and <code>left_join()</code> to add the column of names to make for easier reading on the upcoming graphs</p>
+<pre class="r"><code>names = select(lead_r_info, name, screen_name)
+lead_r_twitt = left_join(lead_r_tl, names, by = &quot;screen_name&quot;)</code></pre>
+<p><code>get_timelines()</code> gives us the source of a persons tweet, i.e. iPhone, iPad, Android etc. So, what is the post popular tweet source among world leaders?</p>
+<pre class="r"><code>lead_r_twitt %&gt;% 
+  count(source) %&gt;% 
+  ggplot(aes(x = reorder(source, n), y = n)) + 
+  geom_col(fill = &quot;cornflowerblue&quot;) +
+  theme_minimal() + 
+  theme(
+    strip.background = element_blank(),
+    axis.text.x = element_blank()
+    ) + 
+  labs(
+    x = NULL,
+    y = NULL,
+    title = &quot;Tweet sources for world leaders&quot;
+  ) + 
+  coord_flip() + 
+  geom_text(aes(y = n, label = n), hjust = &quot;inward&quot;)</code></pre>
+<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-11-1.svg" width="960" /> Either world leaders really love iPhones or their social media / security teams do. Probably the latter. I can hear you all begging the question, using which source is more likely to give a world leader more retweets and favourites? To do this we’re going to summarise each source by it’s mean number of retweets and favourites and then gather the data into a long format for plotting</p>
+<pre class="r"><code>lead_r_twitt %&gt;% 
+  group_by(source) %&gt;% 
+  summarise(Retweet = mean(retweet_count), Favourite = mean(favorite_count)) %&gt;% 
+  gather(type,value,-source) %&gt;%  
+  ggplot(aes(x = reorder(source, value), y = value, fill = type)) + 
+  geom_col() + 
+  facet_wrap(~type, scales = &quot;free&quot;) +
+  theme_minimal() +  
+  labs(
+    x = &quot;Source&quot;,
+    y = NULL,
+    title = &quot;Which source is more likely to get more retweets and favourites?&quot;, 
+    subtitle = &quot;Values are the mean in each group&quot;
+  ) + 
+  theme(
+    legend.position = &quot;none&quot;,
+    axis.text.x = element_blank()
+  ) + 
+  geom_text(aes(y = value, label = round(value, 0)), colour = &quot;black&quot;, hjust = &quot;inward&quot;) + 
+  coord_flip()</code></pre>
+<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-12-1.svg" width="960" /></p>
+<p>Naturally this leads me to the question of which leader, over their previous 2000 tweets, has the most overall retweets and favourites, and who has the highest average number of retweets and favourites?</p>
+<pre class="r"><code>lead_r_twitt %&gt;% 
+  group_by(name) %&gt;% 
+  summarise(rt_total = sum(retweet_count), fav_total = sum(favorite_count),
+            rt_mean = mean(retweet_count), fav_mean = mean(favorite_count)) %&gt;% 
+  gather(type, value, -name) %&gt;% 
+  ggplot(aes(x = reorder(name, value), y = value, fill = type)) +
+  geom_col() + 
+  labs(
+    x = NULL,
+    y = NULL,
+    title= &quot;Mean and total retweets/favourites for each world leader&quot;
+  ) + 
+  coord_flip() + 
+  facet_wrap(~type, scales = &quot;free&quot;) + 
+  theme_minimal()</code></pre>
+<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-13-1.svg" width="960" /></p>
+<p>What about the mean retweets and favourites per month? <code>ts_plot()</code> provides us with a quick way to turn the data into a time series plot. However this wouldn’t work for me so I’m doing it the dplyr way. I’m going to a monthly time series so first we need to aggregate our data into months. The function <code>rollback()</code>, from <strong>lubridate</strong>, is fantastic for this. It will roll a date back to the first day of that month whilst also getting rid of the time information.</p>
+<pre class="r"><code>lead_r_twit2 = lead_r_twitt %&gt;% 
+  mutate(year_month = rollback(created_at, roll_to_first = TRUE, preserve_hms = FALSE)) %&gt;% 
+  group_by(name, year_month) %&gt;% 
+  mutate(fav_mean = mean(favorite_count), rt_mean  = mean(retweet_count))</code></pre>
+<p>We now have two columns, fav_mean and rt_mean, that have in them the mean number of retweets and favourites for each leader in each month. We can use <code>select()</code> and <code>gather()</code> to select the variables we want then turn this into long data for plotting</p>
+<pre class="r"><code>lead_r_twit2 = lead_r_twit2 %&gt;% 
+  select(name, year_month, fav_mean, rt_mean) %&gt;% 
+  gather(type, value, -name, -year_month)</code></pre>
+<p>Now we plot</p>
+<pre class="r"><code>lead_r_twit2 %&gt;% 
+  ggplot(aes(x = year_month, y = value, colour = name))  + 
+  geom_line() +
+  facet_wrap(~type, scales = &quot;free&quot;, nrow = 2) + 
+  labs(
+    x = NULL,
+    y = NULL,
+    title = &quot;Mean number of favourites/month for world leaders&quot;
+  ) +
+  theme_minimal() </code></pre>
+<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-17-1.svg" width="960" /></p>
+</div>
+<div id="are-world-leaders-actually-bots" class="section level2">
+<h2>Are world leaders actually bots?</h2>
+<p><strong>botrnot</strong> is a fantastic package that uses machine learning to calculate the probability that a twitter user is a bot. So the obvious next question is, are our world leaders a bot or not?</p>
+<p>We need to install the development package from GitHub and we also need to install the GitHub version of <strong>rtweet</strong></p>
+<pre class="r"><code>devtools::install_github(&quot;mkearney/botrnot&quot;)
+devtools::install_github(&quot;mkearney/rtweet&quot;)</code></pre>
+<pre class="r"><code>library(&quot;botrnot&quot;)
+library(&quot;rtweet&quot;)</code></pre>
+<p>The only function, <code>botornot()</code>, works on either given user names, or the output of the <code>get_timelines()</code> function from <strong>rtweet</strong>. To keep the inline with the rest of the blog, we’re going to use the output we’ve already created from <code>get_timelines()</code>, stored in <code>lead_r_tl</code></p>
+<pre class="r"><code>bot = botornot(lead_r_tl) %&gt;%
+  arrange(prob_bot)</code></pre>
+<p>For a clearer look at the probabilities I’m going to plot them with their actual names instead of the screen names</p>
+<pre class="r"><code>bot %&gt;% 
+  rename(screen_name =  user) %&gt;% 
+  inner_join(distinct(names), by = &quot;screen_name&quot;) %&gt;% 
+  select(name, prob_bot) %&gt;% 
+  arrange(prob_bot) %&gt;% 
+  ggplot()  + 
+  geom_col(aes(x = reorder(name, -prob_bot), y = prob_bot), fill = &quot;cornflowerblue&quot;) + 
+  coord_flip() + 
+  labs(y = &quot;Probability of being a bot&quot;, 
+       x = &quot;World leader&quot;, 
+       title = &quot;Probability of world leaders being a bot&quot;) + 
+  theme_minimal()</code></pre>
+<p><img src="/posts/2018/2018-03-28-rtweet-leaders_files/figure-html/unnamed-chunk-21-1.svg" width="576" /></p>
+<p>So apparently we are almost certain Donald J. Trump isn’t a bot and very very nearly certain the Pope is a bot!</p>
+<p>That’s all for this time, thanks for reading!</p>
+<hr />
+<p><a href="https://www.jumpingrivers.com/?utm_source=blog&amp;utm_medium=image&amp;utm_campaign=worldleaders2018"><img src="/img/logos/300_125.jpg" /></a></p>
+</div>

@@ -1,19 +1,19 @@
 ---
-title: "Analysing World Leaders using rtweet"
+title: "Which world leaders are twitter bots?"
 author: "Theo Roe"
-date: 2018-XX-XX
+date: 2018-03-28
 output: html_document
 image: "img/2018/earth.jpg"
-draft: TRUE
+draft: false
 slug: "rtweet_leaders"
-tags: [R, rtweet, tidyverse, world, leaders, famous, rvest, lubridate]
+tags: [r, rtweet, tidyverse, world-leaders, famous, rvest, lubridate]
 editor_options: 
   chunk_output_type: console
 ---
 
-Given that I do quite like twitter, I thought it would be a good idea to right about R's interface to the twitter API; **rtweet**.
+## Set-up
 
-As usual, we can grab the package in the usual way. We're also going to need the **tidyverse** for the analysis, **rvest** for some initial webscraping of twitter names, **lubridate** for some date manipulation and **stringr** for some minor text mining.
+Given that I do quite like twitter, I thought it would be a good idea to right about R's interface to the twitter API; **rtweet**. As usual, we can grab the package in the usual way. We're also going to need the **tidyverse** for the analysis, **rvest** for some initial webscraping of twitter names, **lubridate** for some date manipulation and **stringr** for some minor text mining.
 
 ```{r, eval=FALSE}
 install.packages(c("rtweet", "tidyverse", "rvest", "lubridate"))
@@ -24,6 +24,8 @@ library("tidyverse")
 library("rvest")
 library("lubridate")
 ```
+
+## Getting the tweets
 
 So, I could just write the names of twitter's 10 most followed world leaders, but what would be the fun in that? We're going to scrape them from [twiplomacy](https://twiplomacy.com/ranking/the-50-most-followed-world-leaders-in-2017/) using **rvest** and a chrome extension called [selector gadget]():
 
@@ -59,7 +61,7 @@ We only want the columns of interest (name, followers_count, friends_count, stat
 
 Now we can use the fantastic **ggplot** to plot the respective counts for each world leader
 
-```{r, fig.width=10}
+```{r, fig.width=10, warning=FALSE}
 ggplot(data = lead_r_info, 
        aes(x = reorder(name, value), y = value,fill = type, colour = type)) +
   geom_col() +
@@ -90,12 +92,12 @@ Unfortunately `get_timelines()` only gives us their twitter handle and doesn't r
 
 ```{r}
 names = select(lead_r_info, name, screen_name)
-lead_r_twitt = left_join(lead_r_tl, names, by = c("screen_name"))
+lead_r_twitt = left_join(lead_r_tl, names, by = "screen_name")
 ```
 
 `get_timelines()` gives us the source of a persons tweet, i.e. iPhone, iPad, Android etc. So, what is the post popular tweet source among world leaders?
 
-```{r, fig.width=10}
+```{r, fig.width=10, warning = FALSE}
 lead_r_twitt %>% 
   count(source) %>% 
   ggplot(aes(x = reorder(source, n), y = n)) + 
@@ -114,7 +116,7 @@ lead_r_twitt %>%
   geom_text(aes(y = n, label = n), hjust = "inward")
 ```
 Either world leaders really love iPhones or their social media / security teams do. Probably the latter. I can hear you all begging the question, using which source is more likely to give a world leader more retweets and favourites? To do this we're going to summarise each source by it's mean number of retweets and favourites and then gather the data into a long format for plotting
-```{r, fig.width=10}
+```{r, fig.width=10, warning = FALSE}
 lead_r_twitt %>% 
   group_by(source) %>% 
   summarise(Retweet = mean(retweet_count), Favourite = mean(favorite_count)) %>% 
@@ -139,7 +141,7 @@ lead_r_twitt %>%
 
 Naturally this leads me to the question of which leader, over their previous 2000 tweets, has the most overall retweets and favourites, and who has the highest average number of retweets and favourites? 
 
-```{r, fig.width=10}
+```{r, fig.width=10, warning = FALSE}
 lead_r_twitt %>% 
   group_by(name) %>% 
   summarise(rt_total = sum(retweet_count), fav_total = sum(favorite_count),
@@ -158,13 +160,7 @@ lead_r_twitt %>%
 ```
 
 What about the mean retweets and favourites per month? `ts_plot()` provides us with a quick way to turn the data into a time series plot. However this wouldn't work for me so I'm doing it the dplyr way. I'm going to a monthly time series so first we need to aggregate our data into months. The function `rollback()`, from **lubridate**, is fantastic for this. It will roll a date back to the first day of that month whilst also getting rid of the time information. 
-```{r,echo = FALSE}
-lead_r_twit2 = lead_r_twitt %>% 
-  mutate(year_month = rollback(created_at, roll_to_first = TRUE, preserve_hms = FALSE)) %>% 
-  group_by(name, year_month) %>% 
-  mutate(fav_mean = mean(favorite_count), rt_mean  = mean(retweet_count))
-```
-```{r, eval = FALSE}
+```{r}
 lead_r_twit2 = lead_r_twitt %>% 
   mutate(year_month = rollback(created_at, roll_to_first = TRUE, preserve_hms = FALSE)) %>% 
   group_by(name, year_month) %>% 
@@ -178,7 +174,7 @@ lead_r_twit2 = lead_r_twit2 %>%
 ```
 
 Now we plot
-```{r, eval = FALSE}
+```{r, eval = FALSE, warning = FALSE}
 lead_r_twit2 %>% 
   ggplot(aes(x = year_month, y = value, colour = name))  + 
   geom_line() +
@@ -190,7 +186,7 @@ lead_r_twit2 %>%
   ) +
   theme_minimal() 
 ```
-```{r, echo = FALSE, fig.width=10}
+```{r, echo = FALSE, fig.width=10, warning = FALSE}
 lead_r_twit2 %>% 
   filter(year_month > as.Date("2016-01-01")) %>% 
   ggplot(aes(x = year_month, y = value, colour = name))  + 
@@ -207,27 +203,26 @@ labs(
                                 "#FF0000", "#000000")) 
 ```
 
-## Classify bots
+## Are world leaders actually bots?
 
 **botrnot** is a fantastic package that uses machine learning to calculate the probability that a twitter user is a bot. So the obvious next question is, are our world leaders a bot or not? 
 
-We can install the package from GitHub and we also need to install the GitHub version of **rtweet**
+We need to install the development package from GitHub and we also need to install the GitHub version of **rtweet**
 ```{r, eval = FALSE}
 devtools::install_github("mkearney/botrnot")
 devtools::install_github("mkearney/rtweet")
 ```
 ```{r}
-library(botrnot)
-library(rtweet)
+library("botrnot")
+library("rtweet")
 ```
 The only function, `botornot()`, works on either given user names, or the output of the `get_timelines()` function from **rtweet**. To keep the inline with the rest of the blog, we're going to use the output we've already created from `get_timelines()`, stored in `lead_r_tl`
 ```{r}
-bot = botornot(lead_r_tl)
-bot %>% 
+bot = botornot(lead_r_tl) %>%
   arrange(prob_bot)
 ```
 For a clearer look at the probabilities I'm going to plot them with their actual names instead of the screen names
-```{r}
+```{r, warning = FALSE}
 bot %>% 
   rename(screen_name =  user) %>% 
   inner_join(distinct(names), by = "screen_name") %>% 
@@ -248,4 +243,4 @@ That's all for this time, thanks for reading!
 
 ---
 
-[![](static/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=basegraphics2018)
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=worldleaders2018)
