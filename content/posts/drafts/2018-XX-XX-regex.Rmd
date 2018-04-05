@@ -5,7 +5,7 @@ date: 2018-XX-XX
 output: html_document
 image: "img/2018/regex.png"
 draft: TRUE
-slug: "regular_ex"
+slug: "top_6_regular_expressions_r_stringr"
 tags: [R, regex, regular, expression, stringr]
 ---
 
@@ -25,7 +25,8 @@ str_detect(STRING, REGEX_PATTERN)
 
 Before we get started I'm going to define a character string and character vector to test our regular expressions on 
 ```{r}
-email = "theo:jr@jumpingrivers.2017.com"
+# Not a valid email address!
+email = "theo:jr@jumpingrivers.2017.com" 
 files = c(
   "project.csv", "project2.csv", "project.xls",
   "project.xlsx", "project_final.proj", "1project_final.R",
@@ -35,7 +36,7 @@ files = c(
 There we have an email address and a vector a file names.
 So, in no particular order (I feel like I'm on X factor), here comes the Jumping Rivers' 5 most useful regular expressions:
 
-## 1 - `.`
+## 1 The dot: `.`
 
 The dot. The dot means anything. So match one character, it doesn't matter what it is. If we use `str_extract()` on our e-mail address
 ```{r}
@@ -55,7 +56,7 @@ str_extract_all(email, "..")
 ```
 Now we have two dots in a row. So we are saying give us all strings that match any two characters or numbers in a row.
 
-## 2 - `\`
+## 2 The slash: `\`
 
 When typing regular expressions, there are a group of special characters called metacharacters that have other functions. These are:    
 \.\{()\\\^$\|\?\*\+
@@ -70,7 +71,7 @@ str_extract_all(email, "\\.")
 ```
 Much better. 
 
-## 3 - `[]`
+## 3 Square brackets: `[]`
 
 The square brackets. We can match a group of characters or digits using the square brackets. For instance any lower case letters
 ```{r}
@@ -85,7 +86,7 @@ oops! One of our file names starts with a number. To include digits we add "0-9"
 str_extract(files, "[a-zA-Z0-9]")
 ```
 
-## 4 - `*`
+## 4 You're a star: `*`
 
 The asterisk. This is called a quantifier. There are three other quantifiers (`+`, `?` and `{}`) but I won't cover them here. A quantifier quantifies how many of the characters we want to match and the asterisk means we want 0 or more characters of the same form. For instance
 ```{r}
@@ -101,7 +102,7 @@ str_extract(files, "[a-zA-Z0-9_]*")
 ```
 Notice if we are searching for metacharacters inside square brackets, we don't have to escape them.
 
-## 5 - `^`
+## 5 The top hat: `^`
 
 The hat. The hat has two uses. 
 
@@ -146,7 +147,7 @@ That's all for now. Thanks for reading!
 
 ---
 
-[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=basegraphics2018)
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=regex2018)
 
 
 
