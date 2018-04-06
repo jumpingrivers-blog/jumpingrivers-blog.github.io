@@ -1,0 +1,191 @@
+---
+title: "The Top 6 Regular Expressions for R"
+author: "Theo Roe"
+date: 2018-XX-XX
+output: html_document
+image: "img/2018/regex.png"
+draft: TRUE
+slug: "top_6_regular_expressions_r_stringr"
+tags: [R, regex, regular, expression, stringr]
+---
+
+Regular expressions. How they can be cruel! Well we're here to make them a tad easier. To do so we're going to make use of the **stringr** package
+```{r, eval = FALSE}
+install.packages("stringr")
+```
+```{r}
+library("stringr")
+```
+In particular the `str_extract()`, `str_extract_all()` and `str_detect()` functions which take the form 
+```{r, eval = FALSE}
+str_extract(STRING, REGEX_PATTERN)
+str_extract_all(STRING, REGEX_PATTERN)
+str_detect(STRING, REGEX_PATTERN)
+```
+
+Before we get started I'm going to define a character string and character vector to test our regular expressions on 
+```{r}
+# Not a valid email address!
+email = "theo:jr@jumpingrivers.2017.com" 
+files = c(
+  "project.csv", "project2.csv", "project.xls",
+  "project.xlsx", "project_final.proj", "1project_final.R",
+  "project_final2.xls", "Project_FINAL3.xlsx"
+  )
+```
+There we have an email address and a vector a file names.
+So, in no particular order (I feel like I'm on X factor), here comes the Jumping Rivers' 5 most useful regular expressions:
+
+## 1 The dot: `.`
+
+The dot. The dot means anything. So match one character, it doesn't matter what it is. If we use `str_extract()` on our e-mail address
+```{r}
+str_extract(email, ".")
+```
+we get the first character that matches the regular expression, `.`, which is the letter `t`, as the dot matches everything. If we do the same on our vector of file names,
+```{r}
+str_extract(files, ".")
+```
+We return the first character in each element of the vector that matches the regular expression. If we use `str_extract_all()`
+```{r}
+str_extract_all(email, ".")
+```
+we get every string that matches our regular expression. So every individual character. What about 
+```{r}
+str_extract_all(email, "..")
+```
+Now we have two dots in a row. So we are saying give us all strings that match any two characters or numbers in a row.
+
+## 2 The slash: `\`
+
+When typing regular expressions, there are a group of special characters called metacharacters that have other functions. These are:    
+\.\{()\\\^$\|\?\*\+
+
+The backslash is super super *SUPER* important because if we want to search for any of these characters we must escape the character with a backslash. For example, we've already seen the "." being used as a metacharacter. What if we wanted to search for the actual dot? 
+```{r, error = TRUE}
+str_extract_all(email, "\.")
+```
+Hang on a second, what? Ah yes. The backslash is a metacharacter too! So to create a backslash for the function to search with, we need to escape the backslash! 
+```{r}
+str_extract_all(email, "\\.")
+```
+Much better. 
+
+## 3 Square brackets: `[]`
+
+The square brackets. We can match a group of characters or digits using the square brackets. For instance any lower case letters
+```{r}
+str_extract(files, "[a-z]")
+```
+Here we are matching the first letters that are lowercase. You'll notice that one of the files starts with an upper case letter. To include this we add "A-Z"
+```{r}
+str_extract(files, "[a-zA-Z]")
+```
+oops! One of our file names starts with a number. To include digits we add "0-9"
+```{r}
+str_extract(files, "[a-zA-Z0-9]")
+```
+
+## 4 You're a star: `*`
+
+The asterisk. This is called a quantifier. There are three other quantifiers (`+`, `?` and `{}`) but I won't cover them here. A quantifier quantifies how many of the characters we want to match and the asterisk means we want 0 or more characters of the same form. For instance
+```{r}
+str_extract(files, "[a-z]*")
+```
+Here we're searching for the first lower case letter and then continuing along the string until the character is no longer a lower case letter. So what if we wanted to grab all the names of the files before their extension? Well, from the previous example we know how to include lower case, upper case and digits 
+```{r}
+str_extract(files, "[a-zA-Z0-9]*")
+```
+*But*, some of our files also contain underscores. Well, to add this we simply put an underscore inside the square brackets
+```{r}
+str_extract(files, "[a-zA-Z0-9_]*")
+```
+Notice if we are searching for metacharacters inside square brackets, we don't have to escape them.
+
+## 5 The top hat: `^`
+
+The hat. The hat has two uses. 
+
+### Use 1
+
+If we use a hat inside square brackets we are asking R to give us back everything but those characters. For instance, if we want the first character that is not a lower case character
+```{r}
+str_extract(files, "[^a-z]")
+```
+
+### Use 2
+
+The hat also is used for grabbing the start of a line. In regular expression world, `\n` is used to denote a line break. For instance, text that appears as 
+```{r, eval = FALSE}
+You are reading the number
+1 blog on the web, the 
+jumping rivers blog
+```
+will appear as 
+```{r, eval = FALSE}
+You are reading the number\n1 blog on the web, the\njumping rivers blog
+```
+in regex form. If we had this stored as a charatcer string, we can deal with this multiline structure using the hat and the `regex()` function
+```{r}
+blog = "You are reading the number\n1 blog on the web, the\njumping rivers blog"
+str_extract_all(blog, regex("^", multiline = TRUE))
+```
+Something is wrong, we're not getting anything back? We must remember that the hat only specifies the start of a new line, and not what comes after it. So if we wanted the first character we would have to add a dot
+```{r}
+str_extract_all(blog, regex("^.", multiline = TRUE))
+```
+or if we wanted every character on each line 
+```{r}
+str_extract_all(blog, regex("^.*", multiline = TRUE))
+```
+
+
+If this has really got you going, keep an eye out for the Jumping Rivers **tidyverse** 2 course, in which we extensively go over regular expressions in R and **stringr**.
+
+That's all for now. Thanks for reading!
+
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=regex2018)
+
+
+
+
+<!-- ## 6 - `\w`, `\d` and `\s` -->
+
+<!-- Words, digits and whitespace, incredibly useful! `\w` returns all word characters, i.e. `a-z`, `A-Z`, `0-9` & `_`. `\d` returns all digits and `\s` returns all whitespace. Obviously we have to escape the backslash again -->
+<!-- ```{r} -->
+<!-- str_extract_all(blog, "\\w+") -->
+<!-- ``` -->
+<!-- Note here I am using a `+` quantifier, which means the same as the asterisk except we want either 1 or more characters. With `\d`  -->
+<!-- ```{r} -->
+<!-- str_extract_all(email, "\\d+") -->
+<!-- ``` -->
+
+
+
+<!-- .       - Any Character Except New Line -->
+<!-- \d      - Digit (0-9) -->
+<!-- \D      - Not a Digit (0-9) -->
+<!-- \w      - Word Character (a-z, A-Z, 0-9, _) -->
+<!-- \W      - Not a Word Character -->
+<!-- \s      - Whitespace (space, tab, newline) -->
+<!-- \S      - Not Whitespace (space, tab, newline) -->
+
+<!-- \b      - Word Boundary -->
+<!-- \B      - Not a Word Boundary -->
+<!-- ^       - Beginning of a String -->
+<!-- $       - End of a String -->
+
+<!-- []      - Matches Characters in brackets -->
+<!-- [^ ]    - Matches Characters NOT in brackets -->
+<!-- |       - Either Or -->
+<!-- ( )     - Group -->
+
+<!-- Quantifiers: -->
+<!-- *       - 0 or More -->
+<!-- +       - 1 or More -->
+<!-- ?       - 0 or One -->
+<!-- {3}     - Exact Number -->
+<!-- {3,4}   - Range of Numbers (Minimum, Maximum) -->

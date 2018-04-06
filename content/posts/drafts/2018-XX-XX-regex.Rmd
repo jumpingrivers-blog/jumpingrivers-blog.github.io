@@ -16,176 +16,108 @@ install.packages("stringr")
 ```{r}
 library("stringr")
 ```
-In particular the `str_extract()`, `str_extract_all()` and `str_detect()` functions which take the form 
+We're going to use the `str_detect()` and `str_subset()` functions. In particular the latter. These have the syntax 
 ```{r, eval = FALSE}
-str_extract(STRING, REGEX_PATTERN)
-str_extract_all(STRING, REGEX_PATTERN)
-str_detect(STRING, REGEX_PATTERN)
+function_name(STRING, REGEX_PATTERN)
+```
+`str_detect()` is used to detect whether a string contains a certain pattern. At the most basic use of these functions, we can match strings of text. For instance 
+```{r}
+jr = c("Theo is first", "Frank is second", "Steph - third")
+str_detect(jr, "Theo")
+str_detect(jr, "is")
+```
+So `str_detect()` will return `TRUE` when the element contains the pattern we searched for. If we want to return the actual strings that contain these patterns, we use `str_subset()`
+```{r}
+str_subset(jr, "Theo")
+str_subset(jr, "is")
 ```
 
-Before we get started I'm going to define a character string and character vector to test our regular expressions on 
+To practise our regex, we'll need some text to practise on. Here we have a vector of filenames called `files`
 ```{r}
-# Not a valid email address!
-email = "theo:jr@jumpingrivers.2017.com" 
 files = c(
-  "project.csv", "project2.csv", "project.xls",
-  "project.xlsx", "project_final.proj", "1project_final.R",
-  "project_final2.xls", "Project_FINAL3.xlsx"
-  )
+  "tmp-project.csv", "project.csv", 
+  "project2-csv-specs.csv", "project2.csv2.specs.xlsx", 
+  "project_cars.ods", "project-houses.csv", 
+  "Project_Trees.csv","project-cars.R",
+  "project-houses.r", "project-final.xls", 
+  "Project-final2.xlsx"
+)
 ```
-There we have an email address and a vector a file names.
-So, in no particular order (I feel like I'm on X factor), here comes the Jumping Rivers' 5 most useful regular expressions:
+I'm also going to give us a task. The task is to be able to grab the files that have a format "project-objects" or "project_objects". Let's say of those files we want the csv and ods files. i.e. we want to grab the files "project_cars.ods", "project-houses.csv" and "project_Trees.csv". As we introduce more regex we'll gradually tackle our task. 
 
-## 1 The dot: `.`
+## Regex: The backslash, `\`
 
-The dot. The dot means anything. So match one character, it doesn't matter what it is. If we use `str_extract()` on our e-mail address
-```{r}
-str_extract(email, ".")
+Here we go! Our first regular expression. When typing regular expressions, there are a group of special characters called metacharacters that have other functions. These are:
+```{r, echo = FALSE, comment=NA}
+cat(noquote(".{()\\^$|?*+"))
 ```
-we get the first character that matches the regular expression, `.`, which is the letter `t`, as the dot matches everything. If we do the same on our vector of file names,
-```{r}
-str_extract(files, ".")
-```
-We return the first character in each element of the vector that matches the regular expression. If we use `str_extract_all()`
-```{r}
-str_extract_all(email, ".")
-```
-we get every string that matches our regular expression. So every individual character. What about 
-```{r}
-str_extract_all(email, "..")
-```
-Now we have two dots in a row. So we are saying give us all strings that match any two characters or numbers in a row.
-
-## 2 The slash: `\`
-
-When typing regular expressions, there are a group of special characters called metacharacters that have other functions. These are:    
-\.\{()\\\^$\|\?\*\+
-
-The backslash is super super *SUPER* important because if we want to search for any of these characters we must escape the character with a backslash. For example, we've already seen the "." being used as a metacharacter. What if we wanted to search for the actual dot? 
-```{r, error = TRUE}
-str_extract_all(email, "\.")
+The backslash is *SUPER* important because if we want to search for any of these characters without using their built in function we must escape the character with a backslash. For example, if we wanted to extract the names of the name of all csv files then perhaps we would think to search for the string ".csv"? Then we would do
+```{r, eval = FALSE}
+str_subset(files, "\.csv") # xXx error = TRUE isn't working
 ```
 Hang on a second, what? Ah yes. The backslash is a metacharacter too! So to create a backslash for the function to search with, we need to escape the backslash! 
 ```{r}
-str_extract_all(email, "\\.")
+str_subset(files, "\\.csv")
 ```
-Much better. 
+Much better. With regards to our task, this is already useful, as we want csv and ods files. However, you'll notice when we searched for files contained the string ".csv", we got files of type ".xlsx" as well, just because they had ".csv" somewhere in their name or extension. Up step the hat and dollar... 
 
-## 3 Square brackets: `[]`
+## Regex: The hat ,`^`, and dollar, `$`
 
-The square brackets. We can match a group of characters or digits using the square brackets. For instance any lower case letters
+The hat and dollar are used to specify the start and end of a line respectively. For instance, all file names that start with "Proj" (take note of the capital "P"!)
 ```{r}
-str_extract(files, "[a-z]")
+str_subset(files, "^Proj")
 ```
-Here we are matching the first letters that are lowercase. You'll notice that one of the files starts with an upper case letter. To include this we add "A-Z"
+So what if we wanted specifically just ".csv" or ".ods" files, just like in our task? We could use the dollar to search for files ending in a specific extension
 ```{r}
-str_extract(files, "[a-zA-Z]")
+str_subset(files, "\\.csv$")
+str_subset(files, "\\.ods$")
 ```
-oops! One of our file names starts with a number. To include digits we add "0-9"
+Now we can search for files that end in certain patterns. That's all well and good, but we still can't search for both together. Up step round parentheses and the pipe...
+
+## Regex: Round parentheses,`()`, and the pipe, `|`
+
+Round parentheses and the pipe are best used in conjuction with either other. The parentheses specify a group and the pipe means "or". Now, we could search for files ending in a certain extension or another extension. For our task we need ".csv" and ".ods" files. Using the pipe
 ```{r}
-str_extract(files, "[a-zA-Z0-9]")
+str_subset(files, "\\.csv$|\\.ods$")
 ```
-
-## 4 You're a star: `*`
-
-The asterisk. This is called a quantifier. There are three other quantifiers (`+`, `?` and `{}`) but I won't cover them here. A quantifier quantifies how many of the characters we want to match and the asterisk means we want 0 or more characters of the same form. For instance
+Alternatively we can use a group and pipe
 ```{r}
-str_extract(files, "[a-z]*")
+str_subset(files, "\\.(csv|ods)$")
 ```
-Here we're searching for the first lower case letter and then continuing along the string until the character is no longer a lower case letter. So what if we wanted to grab all the names of the files before their extension? Well, from the previous example we know how to include lower case, upper case and digits 
+Now we don't have to write surrounding expressions more than once. Of course there are other csv and ods files that we don't want to collect. Now we need a way of specifiying a block of letters. Up step the square parentheses and the asterisk...
+
+## Regex: Square parentheses,`[]`, and the asterisk, `*`
+
+The square parentheses and asterisk. We can match a group of characters or digits using the square parentheses. Here I'm going to use a new function, `str_extract()`. This does as it says on the tin, it _**extracts**_ the parts of the text that match our pattern. For instance the last lower case letter in each element of the vector, if such a thing exists
 ```{r}
-str_extract(files, "[a-zA-Z0-9]*")
+str_extract(files, "[a-z]$")
 ```
-*But*, some of our files also contain underscores. Well, to add this we simply put an underscore inside the square brackets
+Notice that one of the files ends with an upper case letter, so we get an `NA`. To include this we add "A-Z" (to add numbers we add 0-9 and to add metacharacters we write them without escaping them)
 ```{r}
-str_extract(files, "[a-zA-Z0-9_]*")
+str_extract(files, "[a-zA-Z]$")
 ```
-Notice if we are searching for metacharacters inside square brackets, we don't have to escape them.
-
-## 5 The top hat: `^`
-
-The hat. The hat has two uses. 
-
-### Use 1
-
-If we use a hat inside square brackets we are asking R to give us back everything but those characters. For instance, if we want the first character that is not a lower case character
+Now, this is obviously useless at the moment. This is where does the asterisk comes into it. The asterisk is what is called a quantifier. There are three other quantifiers (`+`, `?` and `{}`), but won't cover them here. A quantifier _**quantifies**_ how many of the characters we want to match and the asterisk means we want 0 or more characters of the same form. For instance, we could now extract all of the file extensions if we wished to
 ```{r}
-str_extract(files, "[^a-z]")
+str_extract(files, "[a-zA-Z]*$")
 ```
-
-### Use 2
-
-The hat also is used for grabbing the start of a line. In regular expression world, `\n` is used to denote a line break. For instance, text that appears as 
-```{r, eval = FALSE}
-You are reading the number
-1 blog on the web, the 
-jumping rivers blog
-```
-will appear as 
-```{r, eval = FALSE}
-You are reading the number\n1 blog on the web, the\njumping rivers blog
-```
-in regex form. If we had this stored as a charatcer string, we can deal with this multiline structure using the hat and the `regex()` function
+So we go backwards from the end of the line collecting all the characters until we hit a character that isn't a lower or upper case letter. We can now use this to grab the group letters preceeding the file extensions for our task
 ```{r}
-blog = "You are reading the number\n1 blog on the web, the\njumping rivers blog"
-str_extract_all(blog, regex("^", multiline = TRUE))
+str_subset(files, "[a-zA-Z]*\\.(csv|ods)$")
 ```
-Something is wrong, we're not getting anything back? We must remember that the hat only specifies the start of a new line, and not what comes after it. So if we wanted the first character we would have to add a dot
+Obviously we still have some pesky files in there that we don't want. Up step the... only joking! We now actually have all the tools to complete the task. The filenames we want take the form project-objects or project_objects, so we know that preceeding that block of letters for "objects" we want either a dash or an underscore. We can use a group and pipe for this
 ```{r}
-str_extract_all(blog, regex("^.", multiline = TRUE))
+str_subset(files, "(\\_|\\-)[a-zA-Z]*\\.(csv|ods)$")
 ```
-or if we wanted every character on each line 
+We still have two pesky files sneaking in there. How do those two files and the three files we want differ? Well the files we want all start with "project-" or "project_" where as the other two don't. We must also take note that the project could have a capital "P". We can combat that using a group!
 ```{r}
-str_extract_all(blog, regex("^.*", multiline = TRUE))
+str_subset(files, "(P|p)roject(\\_|\\-)[a-zA-Z]*\\.(csv|ods)$")
 ```
 
+If we had a huge file list, we'd want to stop files such as "2Project_Trees.csv" filtering in as well. So we can just use the hat to specify the start of a line
+```{r}
+str_subset(files, "^(P|p)roject(\\_|\\-)[a-zA-Z]*\\.(csv|ods)$")
+```
 
-If this has really got you going, keep an eye out for the Jumping Rivers **tidyverse** 2 course, in which we extensively go over regular expressions in R and **stringr**.
+Regular expressions are definitely a trade worth learning. They play a big role in modern data analytics. For a good table of metacharacters, quantifiers and useful regular expressions, see [this microsoft page](https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference). Remember, in R you have to double escape metacharacters! 
 
-That's all for now. Thanks for reading!
-
-
----
-
-[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=regex2018)
-
-
-
-
-<!-- ## 6 - `\w`, `\d` and `\s` -->
-
-<!-- Words, digits and whitespace, incredibly useful! `\w` returns all word characters, i.e. `a-z`, `A-Z`, `0-9` & `_`. `\d` returns all digits and `\s` returns all whitespace. Obviously we have to escape the backslash again -->
-<!-- ```{r} -->
-<!-- str_extract_all(blog, "\\w+") -->
-<!-- ``` -->
-<!-- Note here I am using a `+` quantifier, which means the same as the asterisk except we want either 1 or more characters. With `\d`  -->
-<!-- ```{r} -->
-<!-- str_extract_all(email, "\\d+") -->
-<!-- ``` -->
-
-
-
-<!-- .       - Any Character Except New Line -->
-<!-- \d      - Digit (0-9) -->
-<!-- \D      - Not a Digit (0-9) -->
-<!-- \w      - Word Character (a-z, A-Z, 0-9, _) -->
-<!-- \W      - Not a Word Character -->
-<!-- \s      - Whitespace (space, tab, newline) -->
-<!-- \S      - Not Whitespace (space, tab, newline) -->
-
-<!-- \b      - Word Boundary -->
-<!-- \B      - Not a Word Boundary -->
-<!-- ^       - Beginning of a String -->
-<!-- $       - End of a String -->
-
-<!-- []      - Matches Characters in brackets -->
-<!-- [^ ]    - Matches Characters NOT in brackets -->
-<!-- |       - Either Or -->
-<!-- ( )     - Group -->
-
-<!-- Quantifiers: -->
-<!-- *       - 0 or More -->
-<!-- +       - 1 or More -->
-<!-- ?       - 0 or One -->
-<!-- {3}     - Exact Number -->
-<!-- {3,4}   - Range of Numbers (Minimum, Maximum) -->
+That's all for now. Cheers for reading! 
