@@ -1,7 +1,7 @@
 ---
 title: "The Top 6 Regular Expressions for R"
 author: "Theo Roe"
-date: 2018-XX-XX
+date: 2018-01-01
 output: html_document
 image: "img/2018/regex.png"
 draft: TRUE
