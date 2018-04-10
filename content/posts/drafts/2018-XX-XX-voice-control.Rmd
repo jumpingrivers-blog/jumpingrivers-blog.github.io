@@ -1,9 +1,9 @@
 ---
 title: "Voice control your shiny apps"
 author: "Jamie Owen"
-date: 2018-XX-XX
+date: 2018-01-01
 output: html_document
-# image: "img/2018/hack.jpg"
+image: "img/2018/voice.png"
 draft: TRUE
 slug: "voice_control"
 tags: [r, annyang, shiny, voice]
@@ -15,7 +15,7 @@ I love R and I love shiny. One of the things I really like about shiny is the ea
 
 > "annyang is a tiny javascript library that lets your visitors control your site with voice commands. annyang supports multiple languages, has no dependenciespweighs just 2kb and is free to use."
 
-Annyang works with all browsers that implement the Speech Recognition interface of the Web Speech API and makes it extremely easy to get started. Here is some JavaScript that you can include inside raw HTML to add a voice command that listens for the word "Google" and takes you to the Google home page.
+Annyang works with all browsers that implement the Speech Recognition interface of the Web Speech API and makes it extremely easy to get started. Here is some JavaScript that you can include inside raw HTML to add a voice command that listens for the pharse __Jumping Rivers__ and takes you to our home page.
 
 ```
 <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
@@ -25,8 +25,8 @@ if(annyang){
   // define some commands 
   var commands = {
     // on hearing "google", call this function
-    'google' : function(){
-      window.open('https://www.google.com','_blank');
+    'Jumping Rivers' : function(){
+      window.open('https://www.jumpingrivers.com','_blank');
     } 
   };
   // register the defined commands
@@ -48,7 +48,8 @@ In addition to explicit phrases like the above, annyang can also understand name
 Shiny makes it easy to include snippets of Javascript code in your apps through the html `tags`. We could include the above command into a shiny app with the following code
 
 ```{r, eval = FALSE}
-library(shiny)
+## Simple Shiny App - just say "Jumping Rivers"
+library("shiny")
 ui = fluidPage(
   singleton(
     tags$head(
@@ -57,8 +58,8 @@ ui = fluidPage(
 "
 if(annyang){
   var commands = {
-    'google' : function(){
-      window.open('https://www.google.com','_blank');
+    'Jumping Rivers' : function(){
+      window.open('https://www.jumpingrivers.com','_blank');
     } 
   };
   annyang.addCommands(commands);
@@ -78,50 +79,47 @@ shinyApp(ui,server)
 
 It's potentially easier to keep your JavaScript file separate and include it using `includeScript()` in your ui. So we have two files:
 
-* voice.js
+  * __voice.js__
     
-    ```
-    if(annyang){
-      var commands = {
-        'google' : function(){
-          window.open('https://www.google.com','_blank');
-        } 
-      };
-      annyang.addCommands(commands);
-      annyang.start();
-    }
-    ```
+```{javascript}
+if(annyang){
+  var commands = {
+    'Jumping Rivers' : function(){
+      window.open('https://www.jumpingrivers.com','_blank');
+    } 
+  };
+  annyang.addCommands(commands);
+  annyang.start();
+}
+```
 
-* app.R
+  * __app.R__
 
-    ```{r,eval = FALSE}
-    library(shiny)
-    ui = fluidPage(
-      tags$head(
-        singleton(
-          tags$script(src = "//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"),
-          includeScript("voice.js")
-        )
-      )
+```{r,eval = FALSE}
+library("shiny")
+ui = fluidPage(
+  singleton(
+    tags$head(
+      tags$script(src = "//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"),
+      includeScript("voice.js")
     )
-    server = function(input,output,session){}
-    shinyApp(ui,server)
-    ```
-
+  )
+)
+server = function(input, output, session) {}
+shinyApp(ui, server)
+```
 
 ### What about changing R variables?
 
 Now I think that by itself is kind of cool. But it would be much more useful if we could use this to interact with R objects. Fortunately shiny makes this possible too. The Javascript `Shiny.onInputChange('var',value)` function can be used to set a `value` on a reactive under `input$var`.
 
-As a simple example lets create a counter that increments when I say "go".
-
-Our voice.js file would be
+As a simple example lets create a counter that increments when I say __"Count"__. Our `voice.js` file would be
 
 ```
 if(annyang){
   var value = 0;
   var commands = {
-    'go': function(){
+    'count': function(){
       value += 1;
       Shiny.onInputChange('counter',value);
     }
@@ -134,19 +132,18 @@ if(annyang){
 and a shiny app that displays the counter might be
 
 ```{r, eval = FALSE}
-library(shiny)
+library("shiny")
 ui = fluidPage(
-  tags$head(
-    singleton(
+  singleton(
+    tags$head(
       tags$script(src = "//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"),
       includeScript("voice.js")
     )
   ),
   textOutput("out")
 )
-server = function(input,output,session){
-  output$out = renderText(input$counter)
-}
+server = function(input, output, session) output$out = renderText(input$counter)
+shinyApp(ui, server)
 ```
 
 ## But I dont know any Javascript and don't want to know
@@ -196,7 +193,7 @@ server = function(input,output,session){
 }
 ```
 
-Test it with "jarvis" followed by some other speech.
+Test it with __jarvis__ followed by some other speech.
 
 Multiple voice inputs with different keywords is also fine. Personally I think this particular design pattern is a bit of a pain since it requires stating a keyword then processing text in R. But as a single R function that allows voice capture with flexibility in what we do with the output I think it's OK and the plus side is outside of this function definition we don't need any Javascript.
 
@@ -215,3 +212,6 @@ I have been playing around with annyang quite a lot and have started making a R 
 I do think there is a lot of scope for wider utility of voice controlled applications. They do a phenomenal job of making certain aspects of the digital world more accessible to those that don't consider themselves tech savvy. I have been toying around with Alexa skills too, although primarily in python and am yet to discover whether there can be a pure R solution to getting Alexa to do things. But perhaps that's for another post.
 
 
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=voice_control_2018&utm_medium=logo&utm_campaign=blog)
