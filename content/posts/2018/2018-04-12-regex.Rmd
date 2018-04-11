@@ -1,19 +1,27 @@
 ---
-title: "The Top 6 Regular Expressions for R"
+title: "Regular Expressions Every R programmer Should Know"
 author: "Theo Roe"
-date: 2018-01-01
+date: 2018-04-12
 output: html_document
 image: "img/2018/regex.png"
-draft: TRUE
-slug: "top_6_regular_expressions_r_stringr"
-tags: [R, regex, regular, expression, stringr]
+draft: false
+slug: "top_regular_expressions_r_stringr"
+tags: [r, regex, regular, expression, stringr]
 ---
-
+```{r echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  cache = TRUE, 
+  fig.align="center",
+  fig.pos="t"
+)
+```
 Regular expressions. How they can be cruel! Well we're here to make them a tad easier. To do so we're going to make use of the **stringr** package
 ```{r, eval = FALSE}
 install.packages("stringr")
+library("stringr")
 ```
-```{r}
+```{r, echo=FALSE, message = FALSE}
 library("stringr")
 ```
 We're going to use the `str_detect()` and `str_subset()` functions. In particular the latter. These have the syntax 
@@ -22,7 +30,7 @@ function_name(STRING, REGEX_PATTERN)
 ```
 `str_detect()` is used to detect whether a string contains a certain pattern. At the most basic use of these functions, we can match strings of text. For instance 
 ```{r}
-jr = c("Theo is first", "Frank is second", "Steph - third")
+jr = c("Theo is first", "Esther is second", "Colin - third")
 str_detect(jr, "Theo")
 str_detect(jr, "is")
 ```
@@ -121,3 +129,8 @@ str_subset(files, "^(P|p)roject(\\_|\\-)[a-zA-Z]*\\.(csv|ods)$")
 Regular expressions are definitely a trade worth learning. They play a big role in modern data analytics. For a good table of metacharacters, quantifiers and useful regular expressions, see [this microsoft page](https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference). Remember, in R you have to double escape metacharacters! 
 
 That's all for now. Cheers for reading! 
+
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=regularexpressions&utm_medium=logo&utm_campaign=blog)

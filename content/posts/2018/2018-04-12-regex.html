@@ -1,0 +1,121 @@
+---
+title: "Regular Expressions Every R programmer Should Know"
+author: "Theo Roe"
+date: 2018-04-12
+output: html_document
+image: "img/2018/regex.png"
+draft: false
+slug: "top_regular_expressions_r_stringr"
+tags: [r, regex, regular, expression, stringr]
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#regex-the-backslash">Regex: The backslash, <code>\</code></a></li>
+<li><a href="#regex-the-hat-and-dollar">Regex: The hat ,<code>^</code>, and dollar, <code>$</code></a></li>
+<li><a href="#regex-round-parentheses-and-the-pipe">Regex: Round parentheses,<code>()</code>, and the pipe, <code>|</code></a></li>
+<li><a href="#regex-square-parentheses-and-the-asterisk">Regex: Square parentheses,<code>[]</code>, and the asterisk, <code>*</code></a></li>
+</ul>
+</div>
+
+<p>Regular expressions. How they can be cruel! Well we’re here to make them a tad easier. To do so we’re going to make use of the <strong>stringr</strong> package</p>
+<pre class="r"><code>install.packages(&quot;stringr&quot;)
+library(&quot;stringr&quot;)</code></pre>
+<p>We’re going to use the <code>str_detect()</code> and <code>str_subset()</code> functions. In particular the latter. These have the syntax</p>
+<pre class="r"><code>function_name(STRING, REGEX_PATTERN)</code></pre>
+<p><code>str_detect()</code> is used to detect whether a string contains a certain pattern. At the most basic use of these functions, we can match strings of text. For instance</p>
+<pre class="r"><code>jr = c(&quot;Theo is first&quot;, &quot;Esther is second&quot;, &quot;Colin - third&quot;)
+str_detect(jr, &quot;Theo&quot;)
+## [1]  TRUE FALSE FALSE
+str_detect(jr, &quot;is&quot;)
+## [1]  TRUE  TRUE FALSE</code></pre>
+<p>So <code>str_detect()</code> will return <code>TRUE</code> when the element contains the pattern we searched for. If we want to return the actual strings that contain these patterns, we use <code>str_subset()</code></p>
+<pre class="r"><code>str_subset(jr, &quot;Theo&quot;)
+## [1] &quot;Theo is first&quot;
+str_subset(jr, &quot;is&quot;)
+## [1] &quot;Theo is first&quot;    &quot;Esther is second&quot;</code></pre>
+<p>To practise our regex, we’ll need some text to practise on. Here we have a vector of filenames called <code>files</code></p>
+<pre class="r"><code>files = c(
+  &quot;tmp-project.csv&quot;, &quot;project.csv&quot;, 
+  &quot;project2-csv-specs.csv&quot;, &quot;project2.csv2.specs.xlsx&quot;, 
+  &quot;project_cars.ods&quot;, &quot;project-houses.csv&quot;, 
+  &quot;Project_Trees.csv&quot;,&quot;project-cars.R&quot;,
+  &quot;project-houses.r&quot;, &quot;project-final.xls&quot;, 
+  &quot;Project-final2.xlsx&quot;
+)</code></pre>
+<p>I’m also going to give us a task. The task is to be able to grab the files that have a format “project-objects” or “project_objects”. Let’s say of those files we want the csv and ods files. i.e. we want to grab the files “project_cars.ods”, “project-houses.csv” and “project_Trees.csv”. As we introduce more regex we’ll gradually tackle our task.</p>
+<div id="regex-the-backslash" class="section level2">
+<h2>Regex: The backslash, <code>\</code></h2>
+<p>Here we go! Our first regular expression. When typing regular expressions, there are a group of special characters called metacharacters that have other functions. These are:</p>
+<pre><code>.{()\^$|?*+</code></pre>
+<p>The backslash is <em>SUPER</em> important because if we want to search for any of these characters without using their built in function we must escape the character with a backslash. For example, if we wanted to extract the names of the name of all csv files then perhaps we would think to search for the string “.csv”? Then we would do</p>
+<pre class="r"><code>str_subset(files, &quot;\.csv&quot;) # xXx error = TRUE isn&#39;t working</code></pre>
+<p>Hang on a second, what? Ah yes. The backslash is a metacharacter too! So to create a backslash for the function to search with, we need to escape the backslash!</p>
+<pre class="r"><code>str_subset(files, &quot;\\.csv&quot;)
+## [1] &quot;tmp-project.csv&quot;          &quot;project.csv&quot;             
+## [3] &quot;project2-csv-specs.csv&quot;   &quot;project2.csv2.specs.xlsx&quot;
+## [5] &quot;project-houses.csv&quot;       &quot;Project_Trees.csv&quot;</code></pre>
+<p>Much better. With regards to our task, this is already useful, as we want csv and ods files. However, you’ll notice when we searched for files contained the string “.csv”, we got files of type “.xlsx” as well, just because they had “.csv” somewhere in their name or extension. Up step the hat and dollar…</p>
+</div>
+<div id="regex-the-hat-and-dollar" class="section level2">
+<h2>Regex: The hat ,<code>^</code>, and dollar, <code>$</code></h2>
+<p>The hat and dollar are used to specify the start and end of a line respectively. For instance, all file names that start with “Proj” (take note of the capital “P”!)</p>
+<pre class="r"><code>str_subset(files, &quot;^Proj&quot;)
+## [1] &quot;Project_Trees.csv&quot;   &quot;Project-final2.xlsx&quot;</code></pre>
+<p>So what if we wanted specifically just “.csv” or “.ods” files, just like in our task? We could use the dollar to search for files ending in a specific extension</p>
+<pre class="r"><code>str_subset(files, &quot;\\.csv$&quot;)
+## [1] &quot;tmp-project.csv&quot;        &quot;project.csv&quot;           
+## [3] &quot;project2-csv-specs.csv&quot; &quot;project-houses.csv&quot;    
+## [5] &quot;Project_Trees.csv&quot;
+str_subset(files, &quot;\\.ods$&quot;)
+## [1] &quot;project_cars.ods&quot;</code></pre>
+<p>Now we can search for files that end in certain patterns. That’s all well and good, but we still can’t search for both together. Up step round parentheses and the pipe…</p>
+</div>
+<div id="regex-round-parentheses-and-the-pipe" class="section level2">
+<h2>Regex: Round parentheses,<code>()</code>, and the pipe, <code>|</code></h2>
+<p>Round parentheses and the pipe are best used in conjuction with either other. The parentheses specify a group and the pipe means “or”. Now, we could search for files ending in a certain extension or another extension. For our task we need “.csv” and “.ods” files. Using the pipe</p>
+<pre class="r"><code>str_subset(files, &quot;\\.csv$|\\.ods$&quot;)
+## [1] &quot;tmp-project.csv&quot;        &quot;project.csv&quot;           
+## [3] &quot;project2-csv-specs.csv&quot; &quot;project_cars.ods&quot;      
+## [5] &quot;project-houses.csv&quot;     &quot;Project_Trees.csv&quot;</code></pre>
+<p>Alternatively we can use a group and pipe</p>
+<pre class="r"><code>str_subset(files, &quot;\\.(csv|ods)$&quot;)
+## [1] &quot;tmp-project.csv&quot;        &quot;project.csv&quot;           
+## [3] &quot;project2-csv-specs.csv&quot; &quot;project_cars.ods&quot;      
+## [5] &quot;project-houses.csv&quot;     &quot;Project_Trees.csv&quot;</code></pre>
+<p>Now we don’t have to write surrounding expressions more than once. Of course there are other csv and ods files that we don’t want to collect. Now we need a way of specifiying a block of letters. Up step the square parentheses and the asterisk…</p>
+</div>
+<div id="regex-square-parentheses-and-the-asterisk" class="section level2">
+<h2>Regex: Square parentheses,<code>[]</code>, and the asterisk, <code>*</code></h2>
+<p>The square parentheses and asterisk. We can match a group of characters or digits using the square parentheses. Here I’m going to use a new function, <code>str_extract()</code>. This does as it says on the tin, it <em><strong>extracts</strong></em> the parts of the text that match our pattern. For instance the last lower case letter in each element of the vector, if such a thing exists</p>
+<pre class="r"><code>str_extract(files, &quot;[a-z]$&quot;)
+##  [1] &quot;v&quot; &quot;v&quot; &quot;v&quot; &quot;x&quot; &quot;s&quot; &quot;v&quot; &quot;v&quot; NA  &quot;r&quot; &quot;s&quot; &quot;x&quot;</code></pre>
+<p>Notice that one of the files ends with an upper case letter, so we get an <code>NA</code>. To include this we add “A-Z” (to add numbers we add 0-9 and to add metacharacters we write them without escaping them)</p>
+<pre class="r"><code>str_extract(files, &quot;[a-zA-Z]$&quot;)
+##  [1] &quot;v&quot; &quot;v&quot; &quot;v&quot; &quot;x&quot; &quot;s&quot; &quot;v&quot; &quot;v&quot; &quot;R&quot; &quot;r&quot; &quot;s&quot; &quot;x&quot;</code></pre>
+<p>Now, this is obviously useless at the moment. This is where does the asterisk comes into it. The asterisk is what is called a quantifier. There are three other quantifiers (<code>+</code>, <code>?</code> and <code>{}</code>), but won’t cover them here. A quantifier <em><strong>quantifies</strong></em> how many of the characters we want to match and the asterisk means we want 0 or more characters of the same form. For instance, we could now extract all of the file extensions if we wished to</p>
+<pre class="r"><code>str_extract(files, &quot;[a-zA-Z]*$&quot;)
+##  [1] &quot;csv&quot;  &quot;csv&quot;  &quot;csv&quot;  &quot;xlsx&quot; &quot;ods&quot;  &quot;csv&quot;  &quot;csv&quot;  &quot;R&quot;    &quot;r&quot;    &quot;xls&quot; 
+## [11] &quot;xlsx&quot;</code></pre>
+<p>So we go backwards from the end of the line collecting all the characters until we hit a character that isn’t a lower or upper case letter. We can now use this to grab the group letters preceeding the file extensions for our task</p>
+<pre class="r"><code>str_subset(files, &quot;[a-zA-Z]*\\.(csv|ods)$&quot;)
+## [1] &quot;tmp-project.csv&quot;        &quot;project.csv&quot;           
+## [3] &quot;project2-csv-specs.csv&quot; &quot;project_cars.ods&quot;      
+## [5] &quot;project-houses.csv&quot;     &quot;Project_Trees.csv&quot;</code></pre>
+<p>Obviously we still have some pesky files in there that we don’t want. Up step the… only joking! We now actually have all the tools to complete the task. The filenames we want take the form project-objects or project_objects, so we know that preceeding that block of letters for “objects” we want either a dash or an underscore. We can use a group and pipe for this</p>
+<pre class="r"><code>str_subset(files, &quot;(\\_|\\-)[a-zA-Z]*\\.(csv|ods)$&quot;)
+## [1] &quot;tmp-project.csv&quot;        &quot;project2-csv-specs.csv&quot;
+## [3] &quot;project_cars.ods&quot;       &quot;project-houses.csv&quot;    
+## [5] &quot;Project_Trees.csv&quot;</code></pre>
+<p>We still have two pesky files sneaking in there. How do those two files and the three files we want differ? Well the files we want all start with “project-” or “project_” where as the other two don’t. We must also take note that the project could have a capital “P”. We can combat that using a group!</p>
+<pre class="r"><code>str_subset(files, &quot;(P|p)roject(\\_|\\-)[a-zA-Z]*\\.(csv|ods)$&quot;)
+## [1] &quot;project_cars.ods&quot;   &quot;project-houses.csv&quot; &quot;Project_Trees.csv&quot;</code></pre>
+<p>If we had a huge file list, we’d want to stop files such as “2Project_Trees.csv” filtering in as well. So we can just use the hat to specify the start of a line</p>
+<pre class="r"><code>str_subset(files, &quot;^(P|p)roject(\\_|\\-)[a-zA-Z]*\\.(csv|ods)$&quot;)
+## [1] &quot;project_cars.ods&quot;   &quot;project-houses.csv&quot; &quot;Project_Trees.csv&quot;</code></pre>
+<p>Regular expressions are definitely a trade worth learning. They play a big role in modern data analytics. For a good table of metacharacters, quantifiers and useful regular expressions, see <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference">this microsoft page</a>. Remember, in R you have to double escape metacharacters!</p>
+<p>That’s all for now. Cheers for reading!</p>
+<hr />
+<p><a href="https://www.jumpingrivers.com/?utm_source=regularexpressions&amp;utm_medium=logo&amp;utm_campaign=blog"><img src="/img/logos/300_125.jpg" /></a></p>
+</div>
