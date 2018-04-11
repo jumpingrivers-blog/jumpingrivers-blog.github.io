@@ -1,0 +1,29 @@
+---
+title: "ReCoding the Wall: Mixing art and code"
+author: "Sebastian Mellor"
+date: 2018-04-11
+output: html_document
+image: "img/2018/wall01.jpg"
+draft: false
+slug: "recoding_the_wall"
+tags: [code, community]
+---
+
+
+
+<p><img src="/img/2018/wall01.jpg" width="400" /></p>
+<p>At Jumping Rivers we often collaborate with the local community. This includes attending regional events such as those run by Creative FUSE, a partnership between the North East’s five universities. I recently attended an event at the National Glass Centre called <a href="http://www.designnetworknorth.org/events/recoding-wall-digital-making-day/">ReCoding the Wall</a>.</p>
+<p>The artwork, Colour Field, is a large interactive LED wall currently on display at the National Glass Centre in Sunderland. This was an opportunity to investigate, experiment with, and modify a new artwork by Cate Watkinson and Colin Rennie. The artwork, Colour Field, is a large interactive LED wall currently on display at the National Glass Centre in Sunderland. Dominic Smith took <a href="https://www.flickr.com/photos/dominicsmith/sets/72157689126146010/">a few nice photos of the event</a> and Suzy O’Hara helped organise and first recommended this event to me.</p>
+<p>The day began with coffee and an introduction to the two artists involved with the wall, an installation that had been on display in the <a href="http://www.nationalglasscentre.com/about/whatson/details/?id=818">National Glass Centre</a>. Colin and Cate are both glass artists, while Cate often works on larger installations, Colin works with some more digital aspects of design, such as scanning organically shaped glass works at high resolution so that they may be reincorporated into new works with precision cut metalwork.</p>
+<p><img src="/img/2018/wall15.jpg" width="400" /></p>
+<p>We spent the morning getting to know each other and looking at some of the interesting machinery you might not expect in a glass centre such as a water jet CNC type machine that can cut through metal sheets up to 30mm thick with very high accuracy, or a ceramic 3D printer which thanks to the thicker nozzle required for liquid clay actually prints faster than your standard ABS (plastic) printers (not counting the drying and firing time required :-)).</p>
+<p>After lunch we would get to play with the hardware and software that control the lighting of 19x10x5 LED wall of glass and metal, Colour Field.</p>
+<p>Unfortunately, due to <em>The Beast from the East</em> this event had been postponed and we would not be hacking on the wall in situ in the gallery, instead we travelled over the river to FabLab, part of a global network of digital fabrication spaces, where 3 of the panels would be waiting for our input.</p>
+<p>After a quick tour of the maker space (including a large laser cutter, vinyl cutters, CNC router, and full colour 3D printer!) we split into two groups to sketch out some possibilities of this wall.</p>
+<p><img src="/img/2018/wall41.jpg" width="400" /></p>
+<p>We had 3 of the 5 panels hooked up in the FabLab, this would still be plenty to work with, but much of the existing code was written with 5 panels in mind and a significant portion of the rendering being done on the Arduino itself rather than the computer with attached Kinect sensor. To allow everyone to render images freely on the wall the code on the Arduino based LED controller would have to be modified significantly.</p>
+<p>Ultimately we worked together with one team creating a sound reactive visualisation and emulator for the wall, another working on a text display for the relatively low resolution display that is the wall, and both teams working on the code running on the Arduino controlling each strip to remove references to the 5 panels and enable arbitrary imagery to be sent over serial, fully opening up the possibilities of what could be displayed. Although 3 hours was not quite enough to hook everything together, the emulator allowed everyone to easily demonstrate their ideas without needing to hook directly into the wall.</p>
+<p><img src="/img/2018/wall57.jpg" width="400" /></p>
+<p>I will no doubt be taking some of the knowledge I picked up back home with me to make my own miniature wall. Expect to see a short blog post about what I make next quite soon!</p>
+<hr />
+<p><a href="https://www.jumpingrivers.com/?utm_source=blog&amp;utm_medium=image&amp;utm_campaign=recodethewall"><img src="/img/logos/300_125.jpg" /></a></p>
