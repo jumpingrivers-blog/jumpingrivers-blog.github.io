@@ -47,12 +47,13 @@ The three products that make up the app are:
 
 Here's a cheeky picture of us being winners:
 ```{r,echo = FALSE}
-knitr::include_graphics("hack3.jpg")
+knitr::include_graphics("../../../static/img/2018/hack3.jpg")
 ```
-A quick demo of the 'final' product:
-
-<iframe> link to video </iframe>
-htmltools::tags$iframe
+Quick demos of the 'final' product:      
+1.  [A walk through of the app and it's help modes](https://www.youtube.com/watch?v=SFkJDKSfSO0&t=8s)        
+2.  [A walk through of the API page](https://www.youtube.com/watch?v=YWYO3PpYTBw)      
+3.  [A walk through of the map and report generator pages](https://www.youtube.com/watch?v=TeggfVD1qno&t=11s)      
+4.  [A walk through of the voice command feature](https://www.youtube.com/watch?v=KR7CMV4MNq0)      
 
 #### And a few of the more technical details:
 
