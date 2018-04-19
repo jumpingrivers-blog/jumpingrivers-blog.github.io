@@ -42,7 +42,7 @@ Once again, thank you to all who entered and well done to our winners, Lukasz an
 
 ### What next?
 
-We're in the process of converting Jenny's & Lukasz's hard work into a nice dashboard that will magically updated via our list
+We're in the process of converting Jenny's & Lukasz's hard work into a nice dashboard that will be magically updated via our list
 of [useR groups](https://jumpingrivers.github.io/meetingsR/) and conferences. It should be ready in a few days.
 
 ---
