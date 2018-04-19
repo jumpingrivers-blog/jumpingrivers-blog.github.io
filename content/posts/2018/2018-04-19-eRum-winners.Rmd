@@ -1,11 +1,11 @@
 ---
-title: "eRum competition"
+title: "eRum Competition Winners"
 author: "Theo Roe"
 date: 2018-04-20
 output: html_document
 image: "img/2018/eRum.jpg"
 draft: FALSE
-slug: "erum_comp"
+slug: "erum2018-competition-winners"
 tags: [r, eRum, tidyverse, shiny, data, cleaning, tidy, visualisation, useR, R-Ladies, conferences, groups, competition]
 ---
 
