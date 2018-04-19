@@ -1,0 +1,73 @@
+---
+title: "The Water Hub Hackathon; We won!"
+author: "Theo Roe"
+date: 2018-04-20
+output: html_document
+image: "img/2018/hack.jpg"
+draft: false
+slug: "water-hack-winners-r"
+tags: [r, waterhub, hackathon, API,shiny]
+---
+
+
+
+<p>Well well well, we’ve only gone and won The Water Hub hackathon! Well, joint winners but the main word is <em>WINNER</em>. First of all we want to say thank you to all the guys at the <a href="http://www.thewaterhub.org.uk/">Water Hub</a> and the Sunderland Software Centre for organising and inviting. There was some tough competition there and we are thrilled to have been ajudged joint top! Here’s how we won:</p>
+<p>The first day started off with presentations from Antonia Scarr and Matt Starr from the enviroment agency (who we apologise profusely to for constantly harassing about their current system and data), Martin Colling from the Wear Rivers Trust and Louise Bracken of The Water Hub. Whilst we were listening to some passionate presentations about the enviroment and the problem at hand we were able to tuck into some free bacon and sausage sarnies!</p>
+<p>The main problems we thought the presentations established were:</p>
+<ol style="list-style-type: decimal">
+<li><p>The Enviroment Agency have created a fantastic data exploration tool with a <strong><em>TONNE</em></strong> of data available in it <em>but</em> it’s a little difficult to navigate and the API documentation is difficult. The data exploration tool along with all the data is available to view <a href="http://environment.data.gov.uk/catchment-planning/">here</a>.</p></li>
+<li><p>To help the enviroment, we need to engage a wide audience and encourage people to use the available data <em>but</em> because of the difficult/scary data exploration tool it is not easy to do so.</p></li>
+<li><p>No way for current users of the data who want to share their insight to integrate with the existing tool directly</p></li>
+</ol>
+<p>We then established a few criteria our app should meet based on these presentations and a few chats with people around the room:</p>
+<ol style="list-style-type: decimal">
+<li>Ability to subscribe to data updates</li>
+<li>Better visualisation tools</li>
+<li>Ability to look at multiple regions at once</li>
+<li>Improve user experience with reduced page load times</li>
+<li>Modularity</li>
+</ol>
+<p>So we came up with a product to tackle these problems. In reality it’s a collection of more focused products that sit together through a single web application. The bonus of this is that if we then develop more tools they will just slot into the app without us having to completely redesign the whole thing.</p>
+<p>With this being a hackathon and having less than 24 hours to design, build, re-design, and re-build our final application this modularity allowed each of us to work on fairly independents components without worrying about breaking the others’ code.</p>
+<p>The three products that make up the app are:</p>
+<ol style="list-style-type: decimal">
+<li><p>A map giving you the ability to chose more than one area for evaluation</p></li>
+<li>A simpler more consistent and visually appealing documentation for the API (This was actually added as we went along as we found the existing one to be a bit unfriendly)
+<ul>
+<li>The ability to explore the API in a more visual way</li>
+<li>The ability to generate Example API queries in the page - (could copy and paste out to your application)</li>
+</ul></li>
+<li>A bespoke reporting tool
+<ul>
+<li>This included dynamic html based reports generated from regions and data sets of interest in the explorer</li>
+<li>The ability to print these reports straight to pdf file (I still can’t believe you were copying tables and graphs over by hand.)</li>
+</ul></li>
+</ol>
+<p>Here’s a cheeky picture of us being winners:</p>
+<p><img src="/img/2018/hack3.jpg" width="400" /></p>
+<p>Quick demos of the ‘final’ product:</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://www.youtube.com/watch?v=SFkJDKSfSO0&amp;t=8s">A walk through of the app and it’s help modes</a><br />
+</li>
+<li><a href="https://www.youtube.com/watch?v=YWYO3PpYTBw">A walk through of the API page</a><br />
+</li>
+<li><a href="https://www.youtube.com/watch?v=TeggfVD1qno&amp;t=11s">A walk through of the map and report generator pages</a><br />
+</li>
+<li><a href="https://www.youtube.com/watch?v=KR7CMV4MNq0">A walk through of the voice command feature</a></li>
+</ol>
+<div id="and-a-few-of-the-more-technical-details" class="section level4">
+<h4>And a few of the more technical details:</h4>
+<p>To begin with we chose some technologies well-suited to, or designed for, implementing paramaterised reporting, statistical analysis, and interactive data exploration. For us this was <strong>R</strong> with <em>RStudio</em>, <em>Shiny</em>, and <em>Rmarkdown</em>.</p>
+<p>RStudio allowed us to each grab bits of the catchment planning data from their APIs and explore the consistency, coverage, and general structure. Together we discovered that (1) understanding the API and data structures can initially be hard, and (2) a few small tweaks could make the experience much better for ourselves and for others who would access this data in the future. The quality of the data (once understood) was very good and would provide us plenty to work with.</p>
+<p>The first tweak was to redescribe the API with the <a href="https://swagger.io/specification/">OpenAPI Specification</a>, by providing a representation of the endpoints that was both human and machine readable we could quickly generate an interactive version of the API. This allows both navigation through the data structures and also provides real-time previews of the requests required to fetch any data <em>and</em> results from those requests.</p>
+<p>We liked the concept of navigation through the catchment planning data via maps, but the experience could be smoother. The existing navigation tool requires selecting one of many regions on a zoomable map, and then leaving that page to see a new map where you could further select smaller regions. The necessity to reload the entire page and display a new map can hinder the user experience if the users are not already familiar with these areas. We proposed to re-use the same map while refining the region selection process, reducing page navigation and context switching.</p>
+<p>A second result of the existing design was that the refinement process is strictly hierarchical. If you wish to examine data from two neighbouring <em>water bodies</em> (the smallest region type) you may have to navigate back to the very first page if they happen to fall across two different <em>river basin districts</em> (the largest region type), or similar across <em>management catchments</em> and <em>operational catchments</em>. Using a single map view would allow us to easily select multiple water bodies from within any parent areas. To build this interface we created a Shiny app with the Leaflet.js plugin and a little bit of customisation.</p>
+<p>Finally, the reporting tools that existing users would expect from the current website were to be reproduced, but now with more control over the bodies included in each summary. Once again, Shiny and R allowed us to gather all the required data from the environment agency’s APIs and generate a few of the summary tables and graphics as a proof of concept. Additionally, using Shiny we could further filter the data displayed.</p>
+<p>These two shiny apps and the interactive API run independently and are brought together by the final web UI.</p>
+<p>Final report documents can be generated from the interactive report Shiny app as it is written using R Markdown, an interpreted markup language allowing reproducibility and configurability of documents in a variety of output formats including PDF.</p>
+<p>We kept our code in a single git repository during development and described the requirements to run each component with a <em>Dockerfile</em>. The Dockerfile actually describes everything requried to build an environment within which the application will run, from the operating system, to the packages, any additional software, services, and configurations, and finally the application itself. A <code>docker-compose.yml</code> file describes the relationships between our three main services allowing them to communicate with each other and the users.</p>
+<p>Of course, our presentation pitch was also produced with <em>R Markdown</em>.</p>
+<p>We’ll be writing more about our containerised workflows in a future blog post.</p>
+<hr />
+<p><a href="https://www.jumpingrivers.com/?utm_source=blog&amp;utm_medium=image&amp;utm_campaign=waterhack"><img src="/img/logos/300_125.jpg" /></a></p>
+</div>

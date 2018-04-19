@@ -1,12 +1,12 @@
 ---
-title: "The Water Hub Hackathon"
+title: "The Water Hub Hackathon; We won!"
 author: "Theo Roe"
-date: 2018-01-01
+date: 2018-04-20
 output: html_document
 image: "img/2018/hack.jpg"
-draft: TRUE
-slug: "water_hack"
-tags: [r, waterhub, hackathon, API]
+draft: false
+slug: "water-hack-winners-r"
+tags: [r, waterhub, hackathon, API,shiny]
 ---
 
 Well well well, we've only gone and won The Water Hub hackathon! Well, joint winners but the main word is *WINNER*. First of all we want to say thank you to all the guys at the [Water Hub](http://www.thewaterhub.org.uk/) and the Sunderland Software Centre for organising and inviting. There was some tough competition there and we are thrilled to have been ajudged joint top! Here's how we won:
@@ -46,14 +46,18 @@ The three products that make up the app are:
     + The ability to print these reports straight to pdf file (I still can't believe you were copying tables and graphs over by hand.)
 
 Here's a cheeky picture of us being winners:
-```{r,echo = FALSE}
-knitr::include_graphics("../../../static/img/2018/hack3.jpg")
+
+```{r,echo = FALSE, out.width="400"}
+knitr::include_graphics("/img/2018/hack3.jpg")
 ```
+
 Quick demos of the 'final' product:      
+
 1.  [A walk through of the app and it's help modes](https://www.youtube.com/watch?v=SFkJDKSfSO0&t=8s)        
 2.  [A walk through of the API page](https://www.youtube.com/watch?v=YWYO3PpYTBw)      
 3.  [A walk through of the map and report generator pages](https://www.youtube.com/watch?v=TeggfVD1qno&t=11s)      
 4.  [A walk through of the voice command feature](https://www.youtube.com/watch?v=KR7CMV4MNq0)      
+
 
 #### And a few of the more technical details:
 
@@ -79,3 +83,8 @@ We kept our code in a single git repository during development and described the
 Of course, our presentation pitch was also produced with *R Markdown*.
 
 We'll be writing more about our containerised workflows in a future blog post.
+
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=waterhack)
