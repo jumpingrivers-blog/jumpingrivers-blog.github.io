@@ -1,21 +1,23 @@
 ---
 title: "eRum competition"
 author: "Theo Roe"
-date: 2018-01-01
+date: 2018-04-20
 output: html_document
 image: "img/2018/eRum.jpg"
-draft: TRUE
+draft: FALSE
 slug: "erum_comp"
 tags: [r, eRum, tidyverse, shiny, data, cleaning, tidy, visualisation, useR, R-Ladies, conferences, groups, competition]
 ---
 
-The results of the eRum competition are in! Before we announce the winners we would like to thank everyone who entered. It has been a pleasure to look at all of the ideas on show. 
+![](/img/2018/eRum_jr.png)
+
+The results of the eR[um competition](https://blog.jumpingrivers.com/posts/2018/jumping_rivers_erum/) are in! Before we announce the winners we would like to thank everyone who entered. It has been a pleasure to look at all of the ideas on show. 
 
 ### The Main Competition 
 
-The winner of the main competition is Lukasz Janiszewski. Lukasz provided a fantasic visualisation of the locations of each R user/ladies group and all R conferences. You can see his app [here](https://ch2m.shinyapps.io/erum_jr/). If you want to view his code, you are able to do so in this [GitHub repo](https://github.com/lukuiR/Rpublic). The code is contained in the directory erum_jr and the data preparation can be seen in budap.R. 
+The winner of the main competition is Lukasz Janiszewski. Lukasz provided a fantastic visualisation of the locations of each R user/ladies group and all R conferences. You can see his app [here](https://ch2m.shinyapps.io/erum_jr/). If you want to view his code, you are able to do so in this [GitHub repo](https://github.com/lukuiR/Rpublic). The code is contained in the directory erum_jr and the data preparation can be seen in `budap.R`. 
 
-Lukasz made 3 csv files contained the information about the R user, R ladies and R conferences. Using the help of [an Rbloggers post](https://www.r-bloggers.com/osm-nominatim-with-r-getting-locations-geo-coordinates-by-its-address/), he was able to add the geospatial information to those csv files. Finally, he scraped each meetup page for information on the R-ladies groups. Using all of this information, he was able to make aninformative, visually appealing dashboard with **shiny**. 
+Lukasz made 3 csv files contained the information about the R user, R ladies and R conferences. Using the help of [an Rbloggers post](https://www.r-bloggers.com/osm-nominatim-with-r-getting-locations-geo-coordinates-by-its-address/), he was able to add the geospatial information to those csv files. Finally, he scraped each meetup page for information on the R-ladies groups. Using all of this information, he was able to make an informative, visually appealing dashboard with **shiny**. 
 
 Lukasz will now be jetting off to Budapest, to eRum 2018! 
 
@@ -23,7 +25,7 @@ Lukasz will now be jetting off to Budapest, to eRum 2018!
 
 The winner of the secondary competition is Jenny Snape. Jenny provided an excellent script to parse the current .Rmd files and extract the conference and group urls & locations. The script can be found in this [GitHub gist](https://gist.github.com/jumpingrivers/a05f8ae598747be49679b0b75790f2e2). Jenny has written a few words to summarise her script...
 
-"The files on github can be read into R as character vectors (where each line is a element of the vector) using the R "readLines" function.
+"The files on github can be read into R as character vectors (where each line is a element of the vector) using the R `readLines()` function.
 
 From this character vector, we need to extract the country, the group name and url. This can be done by recognising that each line containing a country starts with a '##' and each line containing the group name and url starts with a '*'. Therefore we can use these 'tags' to cycle through each element of the character vector and pull out vectors containing the countries, the cities and the urls of the R groups.  These vectors can then be cleaned and joined together into a data frame.
 
@@ -33,10 +35,16 @@ Running this function on each of the character vectors creates separate data set
 
 As well as this, Jenny provided us with a fantastic [**shiny** dashboard](https://jennifersnape.shinyapps.io/leaflet_app/), summarising the data.
 
-Jenny has now recieved a free copy of [Efficient R Prgoramming](http://shop.oreilly.com/?cmp=af-npa--storehome_cj_11257098_4003003)!
+Jenny has now received a free copy of [Efficient R Prgoramming](http://shop.oreilly.com/?cmp=af-npa--storehome_cj_11257098_4003003)!
 
 Once again, thank you to all who entered and well done to our winners, Lukasz and Jenny! 
 
+
+### What next?
+
+We're in the process of converting Jenny's & Lukasz's hard work into a nice dashboard that will magically updated via our list
+of [useR groups](https://jumpingrivers.github.io/meetingsR/) and conferences. It should be ready in a few days.
+
 ---
 
-[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=basegraphics2018)
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=eRumCompeition)
