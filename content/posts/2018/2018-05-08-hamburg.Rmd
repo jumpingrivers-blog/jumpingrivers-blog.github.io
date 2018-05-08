@@ -1,10 +1,11 @@
 ---
 title: "R Courses in Hamburg"
 author: "Theo Roe"
-date: 2018-XX-XX
+date: 2018-05-09
 output: html_document
 image: "img/2018/hamburg.jpg"
-draft: TRUE
+slug: "r-training-hamburg-tidyverse-2018"
+draft: false
 tags: [r,intro,tidyverse,mastering,stats,modelling,predictive,analytics, automate, reporting]
 ---
 
@@ -30,7 +31,7 @@ Tired of having to write a new report for every single data set? With **R Markdo
 
 The R package **Shiny** allows you to create cutting edge, interactive web graphics and applications that react to your data in a new and innovative way. Not only that, but **shiny** provides a platform where you can host your web applications for free! 
 
-## [Predictive Analytics- 27/28th](https://www.jumpingrivers.com/courses/8_predictive-analytics)
+## [Predictive Analytics - 27/28th](https://www.jumpingrivers.com/courses/8_predictive-analytics)
 
 You will learn about popular analytical techniques practised in industry today such as simple regression, clustering, discriminant analysis, random forests, splines and many more. Of course by the end of the day you will be able to use R to apply these methods to your data, often in *one line* of code!
 
@@ -40,5 +41,5 @@ Cheers!
 
 ---
 
-[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=basegraphics2018)
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=hamburg)
 
