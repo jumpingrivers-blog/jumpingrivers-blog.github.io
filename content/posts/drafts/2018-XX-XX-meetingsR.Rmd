@@ -1,0 +1,41 @@
+---
+title: "UseR groups across the world"
+author: "Colin Gillespie"
+date: 2018-01-01
+output: html_document
+image: "img/2018/meetingsR-screenshot.png"
+draft: TRUE
+slug: "r-user-groups-conferences"
+tags: [r, conferences, user-groups]
+---
+
+For the last couple of years we maintained (well actually the community)
+a list of [R-user groups and conferences](https://jumpingrivers.github.io/meetingsR/).
+The data is stored in [GitHub](https://github.com/jumpingrivers/meetingsR) and
+is free to use. Over the course of 18 months, we've had __57__ contributors that 
+have added new user groups and occasionally pruned defunct groups.
+
+A few months ago we launched a competition, in conjunction with eRum 2018, to visualise this
+data and had some great submissions - see this recent [post](posts/2018/erum2018-competition-winners/)
+giving details. The ultimate aim is to dynamically link the visualisations with the useR group repo, i.e.
+when a new event is added, the visualisation is updated. We wanted the visualisation to be as light weight as possible,
+both to encourage contributions from the community and also to make maintance easy!
+
+Version 0.1 has been just been launched - please [try it out](https://jumpingrivers.shinyapps.io/meetingsR/)
+
+```{r, echo=FALSE, out.width="600"}
+knitr::include_graphics("/img/2018/meetingsR-screenshot.png")
+```
+
+Currently the dashboard is automatically updated from the repo; this is our first priority. 
+  
+#### References
+
+  * The GitHub list of useR groups was based on the sterling work of [David Smith](http://blog.revolutionanalytics.com/local-r-groups.html), who for many
+  years kept track useR groups.
+  * The winner of the eRum visualisation competition was Lukasz Janiszewski - [app](https://ch2m.shinyapps.io/erum_jr/), [repo](https://github.com/lukuiR/Rpublic)
+  * The winner of the data parsing competition was Jenny Snapp - [repo](https://gist.github.com/jumpingrivers/a05f8ae598747be49679b0b75790f2e2)
+
+---
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=meetings_2018&utm_medium=logo&utm_campaign=blog)
