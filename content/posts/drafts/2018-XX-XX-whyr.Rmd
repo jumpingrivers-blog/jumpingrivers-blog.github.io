@@ -1,0 +1,21 @@
+---
+title: "Competition: WhyR 2018"
+author: "Theo Roe"
+date: 2018-XX-XX
+output: html_document
+image: "img/2018/whyr.jpg"
+draft: true
+tags: [r, competition, typeform]
+---
+
+It's competition time! We're sponsoring Why R? 2018 Conference. The conference runs from the *2-5th of July* in __*Wroclaw, Poland*__ and us nice folks here at Jumping Rivers are giving away a free ticket to the conference!
+
+## The competition 
+
+To enter your name into the prize draw all you have to do is follow one step:
+
+Step 1) Fill out [this questionnaire](https://www.jumpingrivers.com/q/whyr-comp.html).  
+
+That's it! Don't worry, there are no intrusive personal questions. The winner will be decided by drawing one entrant at random. The closing time for entries is 5PM (GMT) on the 2nd June.
+
+That's all, cheers!
