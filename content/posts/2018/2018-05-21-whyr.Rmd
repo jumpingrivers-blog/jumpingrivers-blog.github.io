@@ -1,11 +1,12 @@
 ---
 title: "Competition: WhyR 2018"
 author: "Theo Roe"
-date: 2018-05-21
+date: 2018-05-22
 output: html_document
 image: "img/2018/whyr.jpg"
-draft: true
-tags: [r, competition, typeform]
+slug: r-competition-whyr-poland
+draft: false
+tags: [r, competition]
 ---
 
 It's competition time! We're sponsoring Why R? 2018 Conference. The conference runs from the *2-5th of July* in __*Wroclaw, Poland*__ and us nice folks here at [Jumping Rivers](https://www.jumpingrivers.com) are giving away a free ticket to the conference!
