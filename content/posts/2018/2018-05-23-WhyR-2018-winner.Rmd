@@ -1,0 +1,45 @@
+---
+title: "Why R 2018 Winners"
+author: "Theo Roe"
+date: 2018-06-23
+output: html_document
+image: "img/2018/whyr.jpg"
+draft: TRUE
+tags: [r, typeform, sample, competition, questionnaire]
+---
+
+So it's here... After lots of entries (147 to be precise), we can finally announce the winner of the WhyR 2018 Competition! But first, we have to tell you quickly about how we picked the winner. 
+
+## How we did it
+
+So it really wasn't that hard. We held the questionnaire on typeform. Conveniently, my colleague has created a package **rtypeform** which is an interface to the typeform API. You can install this from CRAN in the usual way
+
+```{r, eval = FALSE}
+install.packages("rtypeform")
+library("rtypeform")
+```
+
+The following code will give you a data frame called `q` containing a column for each question contained in the `WhyR` questionnaire. 
+
+```{r, eval = FALSE}
+typeforms = get_all_typeforms()$content
+uid = typeforms[typeforms$name == "WhyR","uid"]
+q = get_questionnaire(uid)$completed
+```
+
+Now, obviously, we can't give you access to this so I've hidden the Jumping Rivers API key. But, given you have your own API key assigned to the variable `typeform_api` this code will work (remember to change the questionnaire name!). With that, a bit of **dplyr** and the classic `sample()`, we can generate a winner for the competition
+
+## The winners
+
+Drum roll please... the winner is...
+
+Agnieszka Fronczyk!
+
+Congratulations Agnieszka! We'll see you in Wroclaw! 
+
+Commiserations to all our unlucky participants. However, we are sponsoring more data science events to come so keep an eye out here for more competitions!
+
+---
+
+
+[![](/img/logos/300_125.jpg)](https://www.jumpingrivers.com/?utm_source=blog&utm_medium=image&utm_campaign=whyr-comp)
