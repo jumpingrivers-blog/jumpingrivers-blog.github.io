@@ -1,0 +1,186 @@
+---
+title: "How many arguments inside the functions of the tidyverse?"
+author: "Theo Roe"
+date: 2018-01-01
+output: html_document
+image: "img/2018/tidyverse.png"
+draft: TRUE
+slug: "tidyverse-arguments"
+tags: [r, tidyverse, arguments, functions, dplyr, ggplot, tidyr, tidytext]
+---
+
+Before we start anything, I'd like to mention that most of the hard work came from *nsaunders* and his blog post [Idle thoughts lead to R internals: how to count function arguments](https://nsaunders.wordpress.com/2018/06/22/idle-thoughts-lead-to-r-internals-how-to-count-function-arguments/amp/). 
+
+Let's get started. 
+
+The aim of this blog is to capture the number of arguments present in each function with packages of the **tidyverse**. First we need to load the necessary packages 
+
+```{r, message = FALSE}
+library("tidyverse")
+library("tidytext")
+```
+Now we need to grab the relevant **tidyverse** packages 
+```{r}
+tpkg = tidyverse_packages()
+tpkg[17] = "readxl"
+head(tpkg)
+```
+We've had to reset the 17th element to `readxl` as it gets loaded as `readxl\n(>=`, which breaks the next block of code. Now we also need to load in the tidyverse packages. Doing this one by one would be a pain, so I've gone for a for loop...
+```{r, message = FALSE}
+for(i in tpkg){
+  library(i, character.only = TRUE)
+}
+```
+
+Now, for the actual analysis I'm just going to whack the full code in now, then go through it line by line. 
+
+```{r, warning=FALSE}
+pkg = tpkg %>% 
+  as.tibble() %>% 
+  rename(package = value) %>%  
+  rowwise() %>% 
+  mutate(funcs = paste0(ls(paste0("package:", package)), collapse = ",")) %>% 
+  unnest_tokens(func, funcs, token = stringr::str_split, 
+                pattern = ",", to_lower = FALSE) %>% 
+  filter(is.function(get(func, pos = paste0("package:", package)))) %>% 
+  mutate(num_args = length(formalArgs(args(get(func, pos = paste0("package:", package)))))) %>% 
+  ungroup()
+```
+This is what the head of `pkg` looks like 
+```{r}
+head(pkg)
+```
+
+### Lines `1-4`
+
+Lines 1-4 look like this 
+```{r, eval = FALSE}
+tpkg %>% 
+  as.tibble() %>% 
+  rename(package = value) %>%  
+  rowwise() %>% 
+```
+
+Here we are grabbing, the tidyverse packages character vector, converting it to a tibble and renaming the column. We then use `rowwise()` so that we can work in a row-wise fashion. 
+
+### Line 5 
+
+```{r, eval = FALSE}
+mutate(funcs = paste0(ls(paste0("package:", package)), collapse = ",")) %>% 
+```
+
+To get a character vector back of the objects within a package, we do `ls("package:package_name")`. However, we want to store this as a single string, so we need to use our old friend `paste0()` to do so. We then use mutate to attach this to the data frame. Our data from now looks like this 
+
+```{r, echo = FALSE}
+tpkg %>% 
+  as.tibble() %>% 
+  rename(package = value) %>%  
+  rowwise() %>% 
+  mutate(funcs = paste0(ls(paste0("package:", package)), collapse = ",")) %>% 
+  head()
+```
+
+### Lines 6 - 7
+
+```{r, eval = FALSE}
+unnest_tokens(func, funcs, token = stringr::str_split, 
+                pattern = ",", to_lower = FALSE) %>% 
+```
+
+As we've stored the function names as a single string, we can now apply some **tidytext** to turn our data into long data! We do this using the `unnest_tokens()` function. Here we are taking the `funcs` variable, turning it into `func` by splitting it up using `str_split()` from **stringr**. The data now looks like this 
+
+```{r, echo = FALSE}
+tpkg %>% 
+  as.tibble() %>% 
+  rename(package = value) %>%  
+  rowwise() %>% 
+  mutate(funcs = paste0(ls(paste0("package:", package)), collapse = ",")) %>% 
+  unnest_tokens(func, funcs, token = stringr::str_split, 
+                pattern = ",", to_lower = FALSE) %>% 
+  head()
+```
+
+### Line 8
+
+```{r, eval = FALSE}
+filter(is.function(get(func, pos = paste0("package:", package)))) %>%
+```
+
+Now, not every object inside a package is a function. We can use `is.function()` to test this. However, as our function names are stored as strings, we us wrap them in the `get()` function. For instance, 
+
+```{r}
+is.function("augment")
+is.function(get("augment"))
+```
+
+What if we have conflicts in function names? We can also specify the package our function is from, using the argument `pos` 
+
+```{r}
+is.function(get("augment", pos = "package:broom"))
+```
+
+We can then use this condition within a filter command to remove any objects that aren't functions
+
+
+### Lines 9 - end
+
+```{r, eval = FALSE}
+mutate(num_args = length(formalArgs(args(get(func, pos = paste0("package:", package)))))) %>% 
+  ungroup()
+```
+
+It is possible to withdraw the arguments of a function using the `formalArgs()` function. However, this does not work on primitive functions
+```{r}
+formalArgs(get("add", pos = "package:magrittr"))
+formalArgs(get("augment", pos = "package:broom"))
+```
+
+We can counter act this by wrapping the function in `args()` first. This method now works for both primitives and non-primitives
+
+```{r}
+formalArgs(args(get("add", pos = "package:magrittr")))
+formalArgs(args(get("augment", pos = "package:broom")))
+```
+
+To work out the number of these argument we simply wrap this expression in `length()`. 
+
+## The big reveal
+
+```{r}
+pkg %>% 
+  arrange(desc(num_args))
+```
+
+So it turns out that `theme()` from **ggplot2** is king of the arguments, by a clear 49!  
+
+We can go a step further and retrieve the argument names as well. To do this we use the same tecnhique as before with the functions
+
+```{r, warning = FALSE}
+pkg %>% 
+  rowwise() %>% 
+  mutate(args = paste0(formalArgs(args(get(func, pos = paste0("package:", package)))), 
+                       collapse = ",")) %>% 
+  unnest_tokens(arg, args, token = stringr::str_split, 
+                pattern = ",", to_lower = FALSE) %>% 
+  ungroup() %>% 
+  count(arg) %>% 
+  arrange(desc(n))
+```
+
+It's no surprise `...` and `x` are up there! We could also do this per package...
+
+```{r, warning = FALSE}
+pkg %>% 
+  rowwise() %>% 
+  mutate(args = paste0(formalArgs(args(get(func, pos = paste0("package:", package)))), 
+                       collapse = ",")) %>% 
+  unnest_tokens(arg, args, token = stringr::str_split, 
+                pattern = ",", to_lower = FALSE) %>% 
+  ungroup() %>% 
+  group_by(package) %>% 
+  count(arg) %>% 
+  arrange(package, desc(n)) %>% 
+  slice(1) %>% 
+  arrange(n) %>% 
+  as.data.frame()
+```
