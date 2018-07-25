@@ -27,4 +27,4 @@
 /about/                                           https://www.jumpingrivers.com/about/
 /contact/                                         https://www.jumpingrivers.com/contact/
 /index.xml                                        https://www.jumpingrivers.com/feed/
-/tags/:tag/index.xml                              https://www.jumpingrivers.com/blog/tag/:tag/feed/
+/tags/:tag/index.xml                              https://www.jumpingrivers.com/blog/tag/:tag/feed/    301!
