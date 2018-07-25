@@ -25,18 +25,17 @@ tpkg = tidyverse_packages()
 tpkg[17] = "readxl"
 head(tpkg)
 ```
-We've had to reset the 17th element to `readxl` as it gets loaded as `readxl\n(>=`, which breaks the next block of code. Now we also need to load in the tidyverse packages. Doing this one by one would be a pain, so I've gone for a for loop...
+We've had to reset the 17th element to **readxl** as it gets loaded as `readxl\n(>=`, which breaks the next block of code. Now we also need to load in the tidyverse packages. Doing this one by one would be a pain, so I've 
+use `map()`
 ```{r, message = FALSE}
-for(i in tpkg){
-  library(i, character.only = TRUE)
-}
+map(tpkg, library, character.only = TRUE)
 ```
 
-Now, for the actual analysis I'm just going to whack the full code in now, then go through it line by line. 
+Now for the actual analysis I'm just going to whack the full code in now, then go through it line by line. 
 
 ```{r, warning=FALSE}
 pkg = tpkg %>% 
-  as.tibble() %>% 
+  as_tibble() %>% 
   rename(package = value) %>%  
   rowwise() %>% 
   mutate(funcs = paste0(ls(paste0("package:", package)), collapse = ",")) %>% 
@@ -56,7 +55,7 @@ head(pkg)
 Lines 1-4 look like this 
 ```{r, eval = FALSE}
 tpkg %>% 
-  as.tibble() %>% 
+  as_tibble() %>% 
   rename(package = value) %>%  
   rowwise() %>% 
 ```
@@ -73,7 +72,7 @@ To get a character vector back of the objects within a package, we do `ls("packa
 
 ```{r, echo = FALSE}
 tpkg %>% 
-  as.tibble() %>% 
+  as_tibble() %>% 
   rename(package = value) %>%  
   rowwise() %>% 
   mutate(funcs = paste0(ls(paste0("package:", package)), collapse = ",")) %>% 
@@ -91,7 +90,7 @@ As we've stored the function names as a single string, we can now apply some **t
 
 ```{r, echo = FALSE}
 tpkg %>% 
-  as.tibble() %>% 
+  as_tibble() %>% 
   rename(package = value) %>%  
   rowwise() %>% 
   mutate(funcs = paste0(ls(paste0("package:", package)), collapse = ",")) %>% 
@@ -148,10 +147,52 @@ To work out the number of these argument we simply wrap this expression in `leng
 
 ```{r}
 pkg %>% 
-  arrange(desc(num_args))
+  arrange(desc(num_args)) %>%
 ```
 
 So it turns out that `theme()` from **ggplot2** is king of the arguments, by a clear 49!  
+
+-------------------------------------------
+
+## Other bits
+
+```{r}
+# Smallest and largest?
+pkg %>%
+  group_by(package) %>%
+  count() %>%
+  arrange(n) %>%
+  head(5)
+
+largest = pkg %>%
+  group_by(package) %>%
+  count() %>%
+  arrange(desc(n)) %>%
+  head(8) %>%
+  pull(package)
+```
+
+
+
+
+```{r}
+# Sort the order to match largest vector
+pkg %>% 
+  filter(package %in% largest) %>%
+  ggplot(aes(x = num_args)) + 
+  geom_histogram(binwidth = 1) + 
+  facet_wrap(~package) + 
+  xlim(c(0, 25)) + 
+  theme_bw()# Only removes three values
+
+```
+
+
+
+-------------------------------------------
+
+
+
 
 We can go a step further and retrieve the argument names as well. To do this we use the same tecnhique as before with the functions
 
@@ -166,8 +207,8 @@ pkg %>%
   count(arg) %>% 
   arrange(desc(n))
 ```
-
-It's no surprise `...` and `x` are up there! We could also do this per package...
+ 
+It's no surprise `...` and `x` are up there! __WHY??__ We could also do this per package...
 
 ```{r, warning = FALSE}
 pkg %>% 
@@ -180,7 +221,9 @@ pkg %>%
   group_by(package) %>% 
   count(arg) %>% 
   arrange(package, desc(n)) %>% 
-  slice(1) %>% 
-  arrange(n) %>% 
-  as.data.frame()
+  slice(2) %>% 
+  arrange(arg, desc(n)) 
 ```
+__AND????????__
+
+
