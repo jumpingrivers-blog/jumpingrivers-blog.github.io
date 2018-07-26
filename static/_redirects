@@ -28,4 +28,4 @@
 /contact/                                         https://www.jumpingrivers.com/contact/
 /index.xml                                        https://www.jumpingrivers.com/feed/
 /tags/:tag/index.xml                              https://www.jumpingrivers.com/blog/tag/:tag/feed/    301!
-/                                                 https://www.jumpingrivers.com/blog/
+/                                                 https://www.jumpingrivers.com/blog/                  301!
