@@ -25,7 +25,7 @@ create the default ggplot2 graph, before applying a bit of care and attention.
 
 ## The standard ggplot version
 
-The standard scatter plot is straightforward to great. Load the package
+The standard scatter plot is straightforward to create. Load the package
 
 ```{r, message=FALSE}
 library("ggplot2")
@@ -76,7 +76,7 @@ are two ways of complentary ways of doing this: scales and themes. The ggplot sc
 things like colours and point size. In the latest version of ggplot2, version 3.0.0,
 the viridis colour palette was introduced. This palette is particularly useful for 
 creating colour-blind friendly palettes
-```{r}
+```{r}m
 g + scale_colour_viridis_d() # d for discrete
 ```
 The theme controls elements such as, grid lines, fonts, labels. I'm partial to 
@@ -116,4 +116,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   xlim(c(4, 8))
 ```
 
+Notice we can add data from two data sets onto a ggplot with relative ease. 
 
+
+Thanks for reading, see you next time! 
