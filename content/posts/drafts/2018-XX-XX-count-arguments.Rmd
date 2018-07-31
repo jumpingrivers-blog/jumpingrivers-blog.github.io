@@ -27,7 +27,7 @@ head(tpkg)
 ```
 We've had to reset the 17th element to **readxl** as it gets loaded as `readxl\n(>=`, which breaks the next block of code. Now we also need to load in the tidyverse packages. Doing this one by one would be a pain, so I've 
 use `map()`
-```{r, message = FALSE}
+```{r, message = FALSE, results = "hide"}
 map(tpkg, library, character.only = TRUE)
 ```
 
@@ -105,7 +105,7 @@ tpkg %>%
 filter(is.function(get(func, pos = paste0("package:", package)))) %>%
 ```
 
-Now, not every object inside a package is a function. We can use `is.function()` to test this. However, as our function names are stored as strings, we us wrap them in the `get()` function. For instance, 
+Now, not every object inside a package is a function. We can use `is.function()` to test this. However, as our function names are stored as strings, we must wrap them in the `get()` function. For instance, 
 
 ```{r}
 is.function("augment")
@@ -147,51 +147,54 @@ To work out the number of these argument we simply wrap this expression in `leng
 
 ```{r}
 pkg %>% 
-  arrange(desc(num_args)) %>%
+  arrange(desc(num_args))
 ```
 
-So it turns out that `theme()` from **ggplot2** is king of the arguments, by a clear 49!  
+So it turns out that `theme()` from **ggplot2** is king of the arguments, by a clear 49! The largest per package looks like this 
+```{r, echo = FALSE}
+pkg %>% 
+  group_by(package) %>% 
+  arrange(desc(num_args)) %>% 
+  slice(1) %>% 
+  ungroup() %>% 
+  select(package, num_args) %>% 
+  ggplot(aes(x = fct_reorder(package, num_args, .desc = TRUE), y = num_args)) + 
+  geom_col() + 
+  labs(x = "Package",
+       y = "Max no of arguments in a function per package") + 
+  coord_flip() + 
+  theme_bw()
+```
 
 -------------------------------------------
 
-## Other bits
-
+We're not done there! The 9 packages with the largest sum of arguments are
 ```{r}
-# Smallest and largest?
-pkg %>%
-  group_by(package) %>%
-  count() %>%
-  arrange(n) %>%
-  head(5)
-
 largest = pkg %>%
   group_by(package) %>%
   count() %>%
   arrange(desc(n)) %>%
-  head(8) %>%
+  head(9) %>%
   pull(package)
+largest
 ```
 
 
-
+We can plot a histogram, for each package, of the no. of arguments in each function like so.. 
 
 ```{r}
-# Sort the order to match largest vector
 pkg %>% 
   filter(package %in% largest) %>%
   ggplot(aes(x = num_args)) + 
   geom_histogram(binwidth = 1) + 
   facet_wrap(~package) + 
   xlim(c(0, 25)) + 
-  theme_bw()# Only removes three values
-
+  theme_bw()
 ```
 
 
 
 -------------------------------------------
-
-
 
 
 We can go a step further and retrieve the argument names as well. To do this we use the same tecnhique as before with the functions
@@ -208,7 +211,7 @@ pkg %>%
   arrange(desc(n))
 ```
  
-It's no surprise `...` and `x` are up there! __WHY??__ We could also do this per package...
+The most commonly used arguments in the tidyverse are `...` and `x` by some distance. 
 
 ```{r, warning = FALSE}
 pkg %>% 
@@ -222,8 +225,11 @@ pkg %>%
   count(arg) %>% 
   arrange(package, desc(n)) %>% 
   slice(2) %>% 
-  arrange(arg, desc(n)) 
+  arrange(desc(n)) 
 ```
-__AND????????__
+
+So you can see that `data` is the most common argument within **ggplot2**, `.x` is the most common argument within **purrr** and so on... 
+
+That's it for this blog post. Hope you've enjoyed! 
 
 

@@ -24,3 +24,8 @@
 /posts/2017/stancon_ticket_annoucement/           https://www.jumpingrivers.com/blog/competition-stancon-2018-ticket/
 /posts/2018/trouble_with_tibbles/                 https://www.jumpingrivers.com/blog/the-trouble-with-tibbles/
 /posts/2018/2018-01-24-base-r-graphics/           https://www.jumpingrivers.com/blog/styling-base-r-graphics/
+/about/                                           https://www.jumpingrivers.com/about/
+/contact/                                         https://www.jumpingrivers.com/contact/
+/index.xml                                        https://www.jumpingrivers.com/feed/
+/tags/:tag/index.xml                              https://www.jumpingrivers.com/blog/tag/:tag/feed/    301!
+/                                                 https://www.jumpingrivers.com/blog/                  301!
