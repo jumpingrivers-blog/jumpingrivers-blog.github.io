@@ -158,12 +158,13 @@ pkg %>%
   slice(1) %>% 
   ungroup() %>% 
   select(package, num_args) %>% 
-  ggplot(aes(x = fct_reorder(package, num_args, .desc = TRUE), y = num_args)) + 
-  geom_col() + 
+  ggplot(aes(x = fct_reorder(package, num_args, .desc = FALSE), y = num_args)) + 
+  geom_col(fill = "steelblue") + 
   labs(x = "Package",
        y = "Max no of arguments in a function per package") + 
   coord_flip() + 
-  theme_bw()
+  theme_minimal() + 
+  scale_y_continuous(expand = c(0, 0))
 ```
 
 -------------------------------------------
@@ -186,10 +187,10 @@ We can plot a histogram, for each package, of the no. of arguments in each funct
 pkg %>% 
   filter(package %in% largest) %>%
   ggplot(aes(x = num_args)) + 
-  geom_histogram(binwidth = 1) + 
+  geom_histogram(binwidth = 1, fill = "steelblue") + 
   facet_wrap(~package) + 
   xlim(c(0, 25)) + 
-  theme_bw()
+  theme_minimal()
 ```
 
 
