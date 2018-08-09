@@ -2,7 +2,8 @@
 title: "Styling ggplot2 Graphics"
 author: "Colin Gillespie"
 date: 2018-01-25
-output: html_document
+output: 
+  md_document:
 image: "img/2018/baseR.gif"
 draft: true
 tags: [r,graphics,base]
@@ -10,7 +11,8 @@ tags: [r,graphics,base]
 
 ```{r, echo=FALSE, out.width="400", fig.align="center"}
 library("datasets")
-knitr::opts_chunk$set(fig_width=6, dev="png", fig.align="center")
+knitr::opts_chunk$set(fig_width=6, dev="png", fig.align="center",fig.path='blog-2018-ggplot2-',
+                      self.contained = FALSE)
 
 ```
 
