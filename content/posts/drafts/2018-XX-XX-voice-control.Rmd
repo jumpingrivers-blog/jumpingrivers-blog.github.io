@@ -9,7 +9,7 @@ slug: "voice_control"
 tags: [r, annyang, shiny, voice]
 ---
 
-I love R and I love shiny. One of the things I really like about shiny is the ease with which you can incorporate other Javascript based tools and libraries. By my own admission my JavaScript skills are definitely lacking but there are so many cool libraries out there which can really make visualisation and interaction with displayed content come alive. One such library I came across about a year ago now is [annyang](https://www.talater.com/annyang/). 
+I love R and I love shiny. One of the things I really like about shiny is the ease with which you can incorporate other Javascript based tools and libraries. By my own admission my JavaScript skills are definitely lacking but there are so many cool libraries out there which can really make visualisation and interaction with displayed content come alive. One such library I came across about a while ago now is [annyang](https://www.talater.com/annyang/). 
 
 ## What is annyang?
 
